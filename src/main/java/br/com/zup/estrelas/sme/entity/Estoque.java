@@ -17,7 +17,7 @@ public class Estoque {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEstoque;
 
-    @OneToOne
+    @OneToOne 
     @JoinColumn(name = "id_produto", foreignKey = @ForeignKey(name = "FK_PRODUTO_ESTOQUE"))
     private Produto produto;
 
