@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.ProdutoDTO;
 import br.com.zup.estrelas.sme.entity.Produto;
-import br.com.zup.estrelas.sme.service.impl.IProdutoServiceImp;
+import br.com.zup.estrelas.sme.service.ProdutoService;
 
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
 
     @Autowired
-    IProdutoServiceImp produtoService;
+    ProdutoService produtoService;
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO adicionaProduto(@RequestBody ProdutoDTO produto) {
@@ -38,8 +38,14 @@ public class ProdutoController {
         return produtoService.consultarPorId(idProduto);
     }
 
+    @GetMapping(path = "/nome/{nome}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<Produto> consultarPeloNome(@PathVariable String nome) {
+        return produtoService.consultarPeloNome(nome);
+    }
+
     @PutMapping(path = "/{idProduto}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO alteraProduto(@PathVariable Long idProduto, @RequestBody ProdutoDTO produto) {
+    public MensagemDTO alteraProduto(@PathVariable Long idProduto,
+            @RequestBody ProdutoDTO produto) {
         return produtoService.alterarProduto(idProduto, produto);
     }
 
