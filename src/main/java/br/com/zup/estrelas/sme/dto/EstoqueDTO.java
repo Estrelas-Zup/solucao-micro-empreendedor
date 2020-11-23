@@ -10,7 +10,7 @@ public class EstoqueDTO {
     private boolean perda;
     private String motivoPerda;
     private boolean disponibilidade;
-    
+
     public EstoqueDTO() {
         super();
     }
