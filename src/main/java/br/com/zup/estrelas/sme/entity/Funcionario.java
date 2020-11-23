@@ -33,7 +33,7 @@ public class Funcionario {
     private String cpf;
 
     @Column(nullable = false)
-    private String salario;
+    private Double salario;
 
     @Column(name = "data_admissao", nullable = false)
     private LocalDate dataAdmissao;
@@ -97,11 +97,11 @@ public class Funcionario {
         this.cpf = cpf;
     }
 
-    public String getSalario() {
+    public Double getSalario() {
         return salario;
     }
 
-    public void setSalario(String salario) {
+    public void setSalario(Double salario) {
         this.salario = salario;
     }
 
