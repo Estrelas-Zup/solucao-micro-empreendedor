@@ -2,7 +2,7 @@ package br.com.zup.estrelas.sme.dto;
 
 public class MensagemDTO {
     private String mensagem;
-
+    
     public MensagemDTO(String mensagem) {
         this.mensagem = mensagem;
     }
