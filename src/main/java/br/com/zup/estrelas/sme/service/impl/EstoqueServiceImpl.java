@@ -16,6 +16,10 @@ import br.com.zup.estrelas.sme.service.EstoqueService;
 @Service
 public class EstoqueServiceImpl implements EstoqueService {
 
+    private static final String ESTOQUE_CRIADO_COM_SUCESSO = "Estoque criado com sucesso!";
+
+    private static final String PRODUTO_INEXISTENTE = "Infelizmente não foi possivel realizar a operação, produto inexistente.";
+
     @Autowired
     EstoqueRepository estoqueRepository;
 
@@ -23,18 +27,21 @@ public class EstoqueServiceImpl implements EstoqueService {
     ProdutoRepository produtoRepository;
 
     public MensagemDTO adicionarEstoque(EstoqueDTO estoqueDTO) {
-
         Estoque estoque = new Estoque();
 
         Optional<Produto> produtoConsultado = produtoRepository.findById(estoqueDTO.getIdProduto());
-
+        
+        if(produtoConsultado.isEmpty()) {
+            return new MensagemDTO(PRODUTO_INEXISTENTE);
+        }
+        
         Produto produto = produtoConsultado.get();
 
         BeanUtils.copyProperties(estoqueDTO, estoque);
         estoque.setProduto(produto);
         estoqueRepository.save(estoque);
 
-        return new MensagemDTO("Estoque criado com sucesso");
+        return new MensagemDTO(ESTOQUE_CRIADO_COM_SUCESSO);
     }
 
     public MensagemDTO alterarEstoque(Long idEstorque, EstoqueDTO estoqueDTO) {
@@ -54,12 +61,10 @@ public class EstoqueServiceImpl implements EstoqueService {
     }
 
     public List<Estoque> consultarEstoquePorProduto(Long idProduto) {
-        List<Estoque> estoquesPoduto = estoqueRepository.findAllByProdutoIdProduto(idProduto);
-        return estoquesPoduto;
+        return estoqueRepository.findAllByProdutoIdProduto(idProduto);
     }
 
     public List<Estoque> listarEstoques() {
-        List<Estoque> estoques = (List<Estoque>) estoqueRepository.findAll();
-        return estoques;
+        return (List<Estoque>) estoqueRepository.findAll();
     }
 }

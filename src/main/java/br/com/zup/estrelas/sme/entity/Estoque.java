@@ -27,13 +27,13 @@ public class Estoque {
     @Column(name = "data_validade", nullable = false)
     private LocalDate dataValidade;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(columnDefinition = "boolean default false", insertable = false, updatable = true)
     private boolean perda;
 
     @Column(name = "motivo_perda", nullable = true)
     private String motivoPerda;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT true")
+    @Column(columnDefinition = "boolean default true", insertable = false, updatable = true)
     private boolean disponibilidade;
 
     public Long getIdEstoque() {

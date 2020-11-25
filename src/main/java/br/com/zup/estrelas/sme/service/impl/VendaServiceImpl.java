@@ -101,7 +101,7 @@ public class VendaServiceImpl implements VendaService {
             if (!verificarValorDescontoInferiorOuIgualValorTotal) {
                 return new MensagemDTO(VALOR_DESCONTO_SUPERIOR_AO_VALOR_TOTAL);
             }
-            
+
             Double descontoAlterado = alterarVendaDTO.getValorDesconto();
 
             Double novoValorTotal = valorTotalSemDesconto - descontoAlterado;
@@ -117,19 +117,16 @@ public class VendaServiceImpl implements VendaService {
         return new MensagemDTO(VENDA_ALTERADA_COM_SUCESSO);
     }
 
-    @Override
     public Venda buscarVendaPorId(Long idVenda) {
         return repository.findById(idVenda).orElse(null);
     }
 
-    @Override
     public List<Venda> listarVendas() {
         return (List<Venda>) repository.findAll();
     }
 
-    @Override
     public MensagemDTO removerVenda(Long idVenda) {
-        // TODO Auto-generated method stub
+        // DEVO RETORNAR A QUANTIDADE EM ESTOQUE, PEGAR VALOR TOTAL SEM DESCONTO E DIVIDIR PELO VALOR VENDA
         return null;
     }
 
