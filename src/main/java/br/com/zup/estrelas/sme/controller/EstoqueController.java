@@ -28,9 +28,9 @@ public class EstoqueController {
     }
 
     @PutMapping(path = "/{idEstoque}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO alterarEstoque(@PathVariable Long idEstorque,
+    public MensagemDTO alterarEstoque(@PathVariable Long idEstoque,
             @RequestBody EstoqueDTO estoqueDTO) {
-        return estoqueService.alterarEstoque(idEstorque, estoqueDTO);
+        return estoqueService.alterarEstoque(idEstoque, estoqueDTO);
     }
 
     @GetMapping(path = "/{idProduto}", produces = {MediaType.APPLICATION_JSON_VALUE})

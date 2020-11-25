@@ -16,9 +16,13 @@ import br.com.zup.estrelas.sme.service.EstoqueService;
 @Service
 public class EstoqueServiceImpl implements EstoqueService {
 
+    private static final String ESTOQUE_INEXISTENTE =
+            "Não foi possivel realizar a operação, estoque inexistente";
+
     private static final String ESTOQUE_CRIADO_COM_SUCESSO = "Estoque criado com sucesso!";
 
-    private static final String PRODUTO_INEXISTENTE = "Infelizmente não foi possivel realizar a operação, produto inexistente.";
+    private static final String PRODUTO_INEXISTENTE =
+            "Infelizmente não foi possivel realizar a operação, produto inexistente.";
 
     @Autowired
     EstoqueRepository estoqueRepository;
@@ -30,11 +34,11 @@ public class EstoqueServiceImpl implements EstoqueService {
         Estoque estoque = new Estoque();
 
         Optional<Produto> produtoConsultado = produtoRepository.findById(estoqueDTO.getIdProduto());
-        
-        if(produtoConsultado.isEmpty()) {
+
+        if (produtoConsultado.isEmpty()) {
             return new MensagemDTO(PRODUTO_INEXISTENTE);
         }
-        
+
         Produto produto = produtoConsultado.get();
 
         BeanUtils.copyProperties(estoqueDTO, estoque);
@@ -44,13 +48,21 @@ public class EstoqueServiceImpl implements EstoqueService {
         return new MensagemDTO(ESTOQUE_CRIADO_COM_SUCESSO);
     }
 
-    public MensagemDTO alterarEstoque(Long idEstorque, EstoqueDTO estoqueDTO) {
-        Optional<Estoque> estoqueConsultado = estoqueRepository.findById(idEstorque);
+    public MensagemDTO alterarEstoque(Long idEstoque, EstoqueDTO estoqueDTO) {
+        Optional<Estoque> estoqueConsultado = estoqueRepository.findById(idEstoque);
 
+        if (estoqueConsultado.isEmpty()) {
+            return new MensagemDTO(ESTOQUE_INEXISTENTE);
+        }
+        
         Estoque estoque = estoqueConsultado.get();
-
+        
         Optional<Produto> produtoConsultado = produtoRepository.findById(estoqueDTO.getIdProduto());
-
+       
+        if (produtoConsultado.isEmpty()) {
+            return new MensagemDTO(PRODUTO_INEXISTENTE);
+        }
+        
         Produto produto = produtoConsultado.get();
 
         BeanUtils.copyProperties(estoqueDTO, estoque);
