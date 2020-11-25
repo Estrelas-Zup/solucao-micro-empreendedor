@@ -41,14 +41,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     public List<Produto> consultarPeloNome(String nome) {
-
-        List<Produto> produtoConsultado = produtoRepository.findByNomeLike(nome);
-
-        if (produtoConsultado.isEmpty()) {
-            return null;
-        }
-
-        return produtoConsultado;
+        return produtoRepository.findByNomeLike(nome);
     }
 
     public MensagemDTO alterarProduto(Long idProduto, ProdutoDTO produtoDTO) {
