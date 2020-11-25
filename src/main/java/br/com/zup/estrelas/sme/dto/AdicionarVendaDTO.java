@@ -6,7 +6,7 @@ public class AdicionarVendaDTO {
     private int quantidade;
     private String observacao;
     private Double valorDesconto;
-    private List<Long> idProdutos;
+    private List<ProdutosVendaDTO> produtosVenda;
 
     public int getQuantidade() {
         return quantidade;
@@ -20,8 +20,8 @@ public class AdicionarVendaDTO {
         return valorDesconto;
     }
 
-    public List<Long> getIdProdutos() {
-        return idProdutos;
+    public List<ProdutosVendaDTO> getProdutosVenda() {
+        return produtosVenda;
     }
 
 }

@@ -2,17 +2,18 @@ package br.com.zup.estrelas.sme.service;
 
 import java.util.List;
 import br.com.zup.estrelas.sme.dto.AdicionarVendaDTO;
+import br.com.zup.estrelas.sme.dto.AlterarVendaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Venda;
 
 public interface VendaService {
-    public MensagemDTO adicionarVenda(AdicionarVendaDTO vendaDTO);
+    public MensagemDTO adicionarVenda(AdicionarVendaDTO adicionarVendaDTO);
     
-    public MensagemDTO alterarVenda(Long numeroVenda, AdicionarVendaDTO vendaDTO);
+    public MensagemDTO alterarVenda(Long idVenda, AlterarVendaDTO alterarVendaDTO);
     
-    public Venda buscarVendaPorId(Long numeroPedido);
+    public Venda buscarVendaPorId(Long idVenda);
     
     public List<Venda> listarVendas();
     
-    public MensagemDTO removerVenda(Long numeroPedido);
+    public MensagemDTO removerVenda(Long idVenda);
 }
