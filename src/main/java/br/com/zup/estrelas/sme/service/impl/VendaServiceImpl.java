@@ -119,8 +119,7 @@ public class VendaServiceImpl implements VendaService {
 
     @Override
     public Venda buscarVendaPorId(Long idVenda) {
-        // TODO Auto-generated method stub
-        return null;
+        return repository.findById(idVenda).orElse(null);
     }
 
     @Override

@@ -35,7 +35,7 @@ public class VendaController {
     }
 
     @GetMapping(path = "/{idVenda}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Venda buscarVendaPorId(Long idVenda) {
+    public Venda buscarVendaPorId(@PathVariable Long idVenda) {
         return service.buscarVendaPorId(idVenda);
     }
 
@@ -45,7 +45,7 @@ public class VendaController {
     }
     
     @DeleteMapping(path = "/{idVenda}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO removerVenda(Long idVenda) {
+    public MensagemDTO removerVenda(@PathVariable Long idVenda) {
         return service.removerVenda(idVenda);
     }
 }
