@@ -18,7 +18,6 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     private static final String FUNCIONARIO_CADASTRADO_COM_SUCESSO = "Funcionario cadastrado com sucesso!";
     private static final String FUNCIONARIO_ALTERADO_COM_SUCESSO = "Funcionario alterado com sucesso!";
-    private static final String FUNCIONARIO_NAO_ALTERADO = "Funcionario não pode ser alterado.";
     private static final String FUNCIONARIO_REMOVIDO_COM_SUCESSO = "Funcionario removido com sucesso!";
     private static final String FUNCIONARIO_INEXISTENTE = "Funcionario inexistente.";
     private static final String FUNCIONARIO_NAO_CADASTRADO = "Funcionario não foi cadastrado";
@@ -39,17 +38,16 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
 
     @Override
-    public MensagemDTO alterarFuncionario(Long idFuncionario, AlteraFuncionarioDTO alteraFuncionarioDTO) {
-           
+    public MensagemDTO alterarFuncionario(Long idFuncionario, AlteraFuncionarioDTO alteraFuncionarioDTO) {        
         Optional<Funcionario> funcionarioConsultado = funcionarioRepository.findById(idFuncionario);
-        
-        
+            
         if (funcionarioConsultado.isEmpty()) {
-          return new MensagemDTO(FUNCIONARIO_NAO_ALTERADO);
+          return new MensagemDTO(FUNCIONARIO_INEXISTENTE);
         }
         
         Funcionario funcionario = funcionarioConsultado.get();   
         BeanUtils.copyProperties(alteraFuncionarioDTO, funcionario);
+        
         funcionarioRepository.save(funcionario);
         
         return new MensagemDTO(FUNCIONARIO_ALTERADO_COM_SUCESSO);
