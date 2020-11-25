@@ -16,12 +16,13 @@ import br.com.zup.estrelas.sme.service.FuncionarioService;
 @Service
 public class FuncionarioServiceImpl implements FuncionarioService {
 
-    private static final String FUNCIONARIO_CADASTRADO_COM_SUCESSO = "Funcionario cadastrado com sucesso!";
-    private static final String FUNCIONARIO_ALTERADO_COM_SUCESSO = "Funcionario alterado com sucesso!";
-    private static final String FUNCIONARIO_REMOVIDO_COM_SUCESSO = "Funcionario removido com sucesso!";
+    private static final String FUNCIONARIO_CADASTRADO_COM_SUCESSO =
+            "Funcionario cadastrado com sucesso!";
+    private static final String FUNCIONARIO_ALTERADO_COM_SUCESSO =
+            "Funcionario alterado com sucesso!";
+    private static final String FUNCIONARIO_REMOVIDO_COM_SUCESSO =
+            "Funcionario removido com sucesso!";
     private static final String FUNCIONARIO_INEXISTENTE = "Funcionario inexistente.";
-    private static final String FUNCIONARIO_NAO_CADASTRADO = "Funcionario não foi cadastrado";
-
 
     @Autowired
     FuncionarioRepository funcionarioRepository;
@@ -38,18 +39,19 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
 
     @Override
-    public MensagemDTO alterarFuncionario(Long idFuncionario, AlteraFuncionarioDTO alteraFuncionarioDTO) {        
+    public MensagemDTO alterarFuncionario(Long idFuncionario,
+            AlteraFuncionarioDTO alteraFuncionarioDTO) {
         Optional<Funcionario> funcionarioConsultado = funcionarioRepository.findById(idFuncionario);
-            
+
         if (funcionarioConsultado.isEmpty()) {
-          return new MensagemDTO(FUNCIONARIO_INEXISTENTE);
+            return new MensagemDTO(FUNCIONARIO_INEXISTENTE);
         }
-        
-        Funcionario funcionario = funcionarioConsultado.get();   
+
+        Funcionario funcionario = funcionarioConsultado.get();
         BeanUtils.copyProperties(alteraFuncionarioDTO, funcionario);
-        
+
         funcionarioRepository.save(funcionario);
-        
+
         return new MensagemDTO(FUNCIONARIO_ALTERADO_COM_SUCESSO);
     }
 
@@ -65,13 +67,14 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public MensagemDTO removerFuncionario(String cpf) {
+        Optional<Funcionario> funcionarioConsultado = funcionarioRepository.findByCpf(cpf);
 
-        if (funcionarioRepository.existsByCpf(cpf)) {
-            funcionarioRepository.deleteByCpf(cpf);
-            return new MensagemDTO(FUNCIONARIO_REMOVIDO_COM_SUCESSO);
+        if (funcionarioConsultado.isEmpty()) {
+            return new MensagemDTO(FUNCIONARIO_INEXISTENTE);
         }
 
-        return new MensagemDTO(FUNCIONARIO_INEXISTENTE);
+        funcionarioRepository.delete(funcionarioConsultado.get());
+        return new MensagemDTO(FUNCIONARIO_REMOVIDO_COM_SUCESSO);
     }
 
     @Override
@@ -80,5 +83,5 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         return null;
     }
 
-   
+
 }

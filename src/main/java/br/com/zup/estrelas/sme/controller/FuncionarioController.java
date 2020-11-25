@@ -34,7 +34,7 @@ public class FuncionarioController {
         return funcionarioService.alterarFuncionario(idFuncionario, alteraFuncionarioDTO); 
     }
     
-    @GetMapping(path = "/{idFuncionario}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(path = "/{cpf}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public Funcionario consultarFuncionarioPorCpf(@PathVariable String cpf) {
         return funcionarioService.consultarFuncionarioPorCpf(cpf);
     }
@@ -44,7 +44,7 @@ public class FuncionarioController {
         return funcionarioService.listarFuncionarios();
     }
     
-    @DeleteMapping(path = "/{idFuncionario}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    @DeleteMapping(path = "/{cpf}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public MensagemDTO removerFuncionario(@PathVariable String cpf) {
         return funcionarioService.removerFuncionario(cpf);
     }
