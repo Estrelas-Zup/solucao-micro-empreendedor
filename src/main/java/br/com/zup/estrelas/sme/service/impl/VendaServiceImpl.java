@@ -124,8 +124,7 @@ public class VendaServiceImpl implements VendaService {
 
     @Override
     public List<Venda> listarVendas() {
-        // TODO Auto-generated method stub
-        return null;
+        return (List<Venda>) repository.findAll();
     }
 
     @Override
