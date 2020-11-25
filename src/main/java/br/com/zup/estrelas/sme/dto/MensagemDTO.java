@@ -7,9 +7,11 @@ public class MensagemDTO {
         this.mensagem = mensagem;
     }
 
+
     public String getMensagem() {
         return mensagem;
     }
+
 
     @Override
     public boolean equals(Object obj) {
