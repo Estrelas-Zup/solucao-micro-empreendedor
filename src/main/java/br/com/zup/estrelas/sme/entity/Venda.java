@@ -7,26 +7,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Venda {
     @Id
-    @Column(name = "numero_pedido")
+    @Column(name = "id_venda")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long numeroPedido;
-
-    @Column(nullable = false)
-    private int quantidade;
+    private Long idVenda;
 
     @Column(nullable = true)
     private String observacao;
 
-    @OneToMany
+    @ManyToMany
     private List<Estoque> estoques;
-
-    @Column(name = "valor_total_produtos", nullable = false)
-    private Double valorTotalProdutos;
 
     @Column(name = "valor_desconto", columnDefinition = "DOUBLE DEFAULT 0")
     private Double valorDesconto;
@@ -37,20 +31,12 @@ public class Venda {
     @Column(name = "data_venda", nullable = false)
     private LocalDate dataVenda;
 
-    public Long getNumeroPedido() {
-        return numeroPedido;
+    public Long getIdVenda() {
+        return idVenda;
     }
 
-    public void setNumeroPedido(Long numeroPedido) {
-        this.numeroPedido = numeroPedido;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
+    public void setIdVenda(Long idVenda) {
+        this.idVenda = idVenda;
     }
 
     public String getObservacao() {
@@ -67,14 +53,6 @@ public class Venda {
 
     public void setEstoques(List<Estoque> estoques) {
         this.estoques = estoques;
-    }
-
-    public Double getValorTotalProdutos() {
-        return valorTotalProdutos;
-    }
-
-    public void setValorTotalProdutos(Double valorTotalProdutos) {
-        this.valorTotalProdutos = valorTotalProdutos;
     }
 
     public Double getValorDesconto() {

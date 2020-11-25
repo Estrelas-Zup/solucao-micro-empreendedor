@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +39,7 @@ public class Caixa {
     private List<Despesa> despesas;
 
     @OneToMany
-    @JoinColumn(name = "id_venda")
+//    @JoinColumn(name = "id_venda", foreignKey = @ForeignKey(name = "FK_VENDA_CAIXA"))
     private List<Venda> vendas;
 
     public Long getIdCaixa() {
