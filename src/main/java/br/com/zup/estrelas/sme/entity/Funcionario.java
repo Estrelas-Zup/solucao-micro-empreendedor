@@ -21,8 +21,8 @@ public class Funcionario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_funcionario")
     private Long idFuncionario;
-    
-    
+
+
     @NotNull(message = "O campo não pode ficar em branco")
     @NotBlank(message = "O campo nome é obrigatório!")
     @Column(nullable = false)
@@ -35,7 +35,7 @@ public class Funcionario {
     private String email;
 
     @NotNull(message = "O campo não pode ficar em branco")
-    @Size(min = 10, max =11, message = "numeros não validos")
+    @Size(min = 10, max = 11, message = "numeros não validos")
     @Column(nullable = false)
     private String telefone;
 
@@ -43,7 +43,7 @@ public class Funcionario {
     @Past(message = "Coloque uma data valida!")
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
-    
+
     @NotNull(message = "O campo não pode ficar em branco")
     @NotBlank(message = "O campo endereço é obrigatório!")
     @Column(nullable = false)
@@ -70,7 +70,7 @@ public class Funcionario {
     @NotBlank(message = "O Campo número da carteira de trabalho é obrigatório!")
     @Column(name = "numero_carteira_trabalho", nullable = false, unique = false)
     private String numeroCarteiraTrabalho;
-  
+
     @NotNull(message = "O campo não pode ficar em branco")
     @NotBlank(message = "O campo Cargo é obrigatório!")
     @Column(nullable = false)

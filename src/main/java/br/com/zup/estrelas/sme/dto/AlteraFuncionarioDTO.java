@@ -20,7 +20,7 @@ public class AlteraFuncionarioDTO {
     private String endereco;
 
     @NotNull(message = "O campo não pode ficar em branco")
-    @Size(min = 10, max =11, message = "numeros não validos com números")
+    @Size(min = 10, max = 11, message = "numeros não validos com números")
     @Column(nullable = false)
     private Double telefone;
 

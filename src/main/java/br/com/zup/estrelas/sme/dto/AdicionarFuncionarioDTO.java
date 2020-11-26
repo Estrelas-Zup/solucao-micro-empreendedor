@@ -34,7 +34,7 @@ public class AdicionarFuncionarioDTO {
     private LocalDate dataNascimento;
 
     @NotNull(message = "O campo não pode ficar em branco")
-    @Size(min = 10, max =11, message = "numeros não validos")
+    @Size(min = 10, max = 11, message = "numeros não validos")
     @Column(nullable = false)
     private String telefone;
 
