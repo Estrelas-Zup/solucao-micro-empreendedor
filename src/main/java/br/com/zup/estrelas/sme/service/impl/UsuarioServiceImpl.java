@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.zup.estrelas.sme.dto.AlterarUsuarioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.UsuarioDTO;
 import br.com.zup.estrelas.sme.entity.Usuario;
@@ -37,7 +38,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     //TODO: Alterar UsuarioDTO para AlteraUsuarioDTO (senha, role)
-    public MensagemDTO alterarUsuario(String email, UsuarioDTO usuarioDTO) {
+    public MensagemDTO alterarUsuario(String email, AlterarUsuarioDTO alterarUsuarioDTO) {
 
         Optional<Usuario> usuarioConsultado = usuarioRepository.findById(email);
 
@@ -47,7 +48,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         Usuario usuario = usuarioConsultado.get();
 
-        BeanUtils.copyProperties(usuarioDTO, usuario);
+        BeanUtils.copyProperties(alterarUsuarioDTO, usuario);
 
         usuarioRepository.save(usuario);
         return new MensagemDTO(USUARIO_ALTERADO_COM_SUCESSO);

@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class RelatorioVenda {
@@ -16,11 +16,11 @@ public class RelatorioVenda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRelatorioVenda;
     
-    @OneToOne 
+    @ManyToOne 
     @JoinColumn(name = "id_venda", foreignKey = @ForeignKey(name = "FK_VENDA_RELATORIOVENDA"))
     private Venda venda;
     
-    @OneToOne 
+    @ManyToOne 
     @JoinColumn(name = "id_estoque", foreignKey = @ForeignKey(name = "FK_ESTOQUE_RELATORIOVENDA"))
     private Estoque estoque;
     
