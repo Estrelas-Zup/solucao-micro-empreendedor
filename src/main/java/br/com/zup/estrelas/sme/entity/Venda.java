@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Venda {
@@ -21,7 +22,7 @@ public class Venda {
 
     @Column(name = "valor_desconto", columnDefinition = "DOUBLE DEFAULT 0", insertable = false,
             updatable = true)
-    @Positive(message = "Valor desconto deve ser maior que zero!")
+    @PositiveOrZero(message = "Valor desconto deve ser igual ou maior a zero!")
     private Double valorDesconto;
 
     @Column(name = "valor_total", nullable = false)
