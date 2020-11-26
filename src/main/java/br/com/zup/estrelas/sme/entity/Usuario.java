@@ -4,13 +4,21 @@ package br.com.zup.estrelas.sme.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Usuario {
     @Id
+    @Email
+    @NotBlank(message = "O campo email é obrigatório!")
     @Column(nullable = false)
     private String email;
 
+  
+    @NotBlank(message = "O campo é obrigatório!")
+    @Size(min = 8, max = 16)
     @Column(nullable = false)
     private String senha;
 
