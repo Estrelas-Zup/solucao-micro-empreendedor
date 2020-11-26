@@ -8,7 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -25,21 +27,27 @@ public class Caixa {
     @Column(nullable = false)
     private LocalDate data;
 
-    @Positive(message = "Saldo inicial deve ser maior que zero")
     @Column(name = "saldo_inicial", nullable = false)
+    @Positive(message = "Saldo inicial deve ser maior que zero!")
+    @NotNull(message = "Saldo inicial não pode ser vazio!")
+    @NotBlank(message = "Saldo inicial não pode estar em branco!")
     private Double saldoInicial;
 
-    @Positive(message = "Saldo inicial deve ser maior que zero")
     @Column(columnDefinition = "Double default 0", name = "valor_total_despesa", insertable = false,
             updatable = true)
+    @Positive(message = "Valor total de despesa deve ser maior que zero!")
+    @NotNull(message = "Valor total despesa não pode ser vazio!")
+    @NotBlank(message = "Valor total despesa não pode estar em branco!")
     private Double valorTotalDespesa;
 
-    @Positive(message = "Valor total deve ser maior que zero")
     @Column(columnDefinition = "Double default 0", name = "valor_total", insertable = false,
             updatable = true)
+    @Positive(message = "Valor total deve ser maior que zero!")
+    @NotNull(message = "Valor total não pode ser vazio!")
+    @NotBlank(message = "Valor total não pode estar em branco!")
     private Double valorTotal;
 
-    @NotEmpty(message = "")
+    @NotEmpty(message = "Despesas não pode estar vazio!")
     @OneToMany(mappedBy = "caixa")
     @JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
