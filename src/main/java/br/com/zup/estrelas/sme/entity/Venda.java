@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Venda {
@@ -15,16 +19,20 @@ public class Venda {
     private Long idVenda;
 
     @Column(nullable = true)
+    @NotBlank(message = "Observação não deve ter apenas espaço")
     private String observacao;
 
     @Column(name = "valor_desconto", columnDefinition = "DOUBLE DEFAULT 0", insertable = false,
             updatable = true)
+    @PositiveOrZero(message = "Valor desconto deve ser igual ou maior a zero!")
     private Double valorDesconto;
 
     @Column(name = "valor_total", nullable = false)
+    @Positive(message = "Valor total deve ser maior que zero!")
     private Double valorTotal;
 
     @Column(name = "data_venda", nullable = false)
+    @FutureOrPresent(message = "Data de venda deve ser igual data atual ou superior.")
     private LocalDate dataVenda;
 
     public Long getIdVenda() {
