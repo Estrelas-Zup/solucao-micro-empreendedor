@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Positive;
 
 @Entity
 public class Venda {
@@ -19,12 +21,15 @@ public class Venda {
 
     @Column(name = "valor_desconto", columnDefinition = "DOUBLE DEFAULT 0", insertable = false,
             updatable = true)
+    @Positive(message = "Valor desconto deve ser maior que zero!")
     private Double valorDesconto;
 
     @Column(name = "valor_total", nullable = false)
+    @Positive(message = "Valor total deve ser maior que zero!")
     private Double valorTotal;
 
     @Column(name = "data_venda", nullable = false)
+    @FutureOrPresent(message = "Data de venda deve ser igual data atual ou superior.")
     private LocalDate dataVenda;
 
     public Long getIdVenda() {

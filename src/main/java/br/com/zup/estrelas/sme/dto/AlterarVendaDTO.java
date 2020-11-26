@@ -1,7 +1,11 @@
 package br.com.zup.estrelas.sme.dto;
 
+import javax.validation.constraints.Positive;
+
 public class AlterarVendaDTO {
     private String observacao;
+
+    @Positive(message = "Valor desconto deve ser maior que zero!")
     private Double valorDesconto;
 
     public String getObservacao() {
