@@ -48,9 +48,9 @@ public class VendaServiceImpl implements VendaService {
         Double valorTotalProdutos = 0D;
 
         List<ProdutosVendaDTO> produtosVenda = adicionarVendaDTO.getProdutosVenda();
-        
+
         // TODO: Validar idProduto iguais
-        
+
         for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) {
             Optional<Estoque> estoqueConsultado = estoqueRepository
                     .findFirstByDisponibilidadeAndProdutoIdProdutoOrderByDataValidadeAsc(true,
@@ -102,7 +102,7 @@ public class VendaServiceImpl implements VendaService {
             Double valorTotalSemDesconto = venda.getValorTotal() + venda.getValorDesconto();
 
             boolean verificarValorDescontoInferiorOuIgualValorTotal =
-                    alterarVendaDTO.getValorDesconto() <= valorTotalSemDesconto;
+                    alterarVendaDTO.getValorDesconto() < valorTotalSemDesconto;
 
             if (!verificarValorDescontoInferiorOuIgualValorTotal) {
                 return new MensagemDTO(VALOR_DESCONTO_SUPERIOR_AO_VALOR_TOTAL);
@@ -131,12 +131,13 @@ public class VendaServiceImpl implements VendaService {
     }
 
     public MensagemDTO removerVenda(Long idVenda) {
-        if(repository.existsById(idVenda)) {
-            List<RelatorioVenda> relatorioVendas = relatorioVendaRepository.findAllByVendaIdVenda(idVenda);
+        if (repository.existsById(idVenda)) {
+            List<RelatorioVenda> relatorioVendas =
+                    relatorioVendaRepository.findAllByVendaIdVenda(idVenda);
             relatorioVendaRepository.deleteAll(relatorioVendas);
-            
+
             repository.deleteById(idVenda);
-            
+
             return new MensagemDTO("Venda removida com sucesso!");
         }
         return new MensagemDTO(VENDA_INEXISTENTE);
@@ -153,12 +154,12 @@ public class VendaServiceImpl implements VendaService {
 
             Estoque estoque =
                     estoqueRepository.findFirstByProdutoIdProduto(produtosVendaDTO.getIdProduto());
-            
+
             relatorioVenda.setQuantidade(produtosVendaDTO.getQuantidade());
 
             relatorioVenda.setVenda(ultimaVendaAdicionada);
             relatorioVenda.setEstoque(estoque);
-            
+
             relatorioVendaRepository.save(relatorioVenda);
         }
     }
