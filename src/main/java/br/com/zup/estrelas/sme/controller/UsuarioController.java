@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.sme.controller;
 
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +32,7 @@ public class UsuarioController {
     
     // TODO: Passar email no corpo e não na URL
     @PutMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @Transactional
     public MensagemDTO alterarUsuario(@PathVariable String email,
             @RequestBody AlterarUsuarioDTO alterarUsuarioDTO) {
 
@@ -50,6 +52,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @Transactional
     public MensagemDTO removerUsuario(@PathVariable String email) {
         return usuarioService.removerUsuario(email);
     }
