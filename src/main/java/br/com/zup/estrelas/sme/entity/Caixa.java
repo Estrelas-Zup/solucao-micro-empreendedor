@@ -25,8 +25,8 @@ public class Caixa {
     @Column(name = "saldo_inicial", nullable = false)
     private Double saldoInicial;
 
-    @Column(columnDefinition = "Double default 0", name = "valor_despesa", insertable = false, updatable = true)
-    private Double valorDespesa;
+    @Column(columnDefinition = "Double default 0", name = "valor_total_despesa", insertable = false, updatable = true)
+    private Double valorTotalDespesa;
 
     @Column(columnDefinition = "Double default 0", name = "valor_total", insertable = false, updatable = true)
     private Double valorTotal;
@@ -64,12 +64,12 @@ public class Caixa {
         this.saldoInicial = saldoInicial;
     }
 
-    public Double getValorDespesa() {
-        return valorDespesa;
+    public Double getValorTotalDespesa() {
+        return valorTotalDespesa;
     }
 
     public void setValorDespesa(Double valorDespesa) {
-        this.valorDespesa = valorDespesa;
+        this.valorTotalDespesa = valorDespesa;
     }
 
     public Double getValorTotal() {

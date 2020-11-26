@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.sme.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
@@ -16,7 +17,7 @@ import br.com.zup.estrelas.sme.service.CaixaService;
 public class CaixaServiceImpl implements CaixaService {
 
     private static final String CAIXA_CADASTRADO_COM_SUCESSO = "Caixa cadastrado com sucesso!";
-    private static final String CAIXA_INEXISTENTE = "Caixa inexistente!";
+    private static final String CAIXA_INEXISTENTE = "Não foi possivel realizar a operação, caixa inexistente.";
     private static final String CAIXA_REMOVIDO_COM_SUCESSO = "Caixa removido com sucesso!";
     private static final String CAIXA_ALTERADO_COM_SUCESSO = "Caixa alterado com sucesso!";
 
@@ -28,7 +29,10 @@ public class CaixaServiceImpl implements CaixaService {
         Caixa caixa = new Caixa();
 
         BeanUtils.copyProperties(caixaDTO, caixa);
-
+        //Validar existencia da data
+        
+        caixa.setData(LocalDate.now());
+        
         caixaRepository.save(caixa);
         return new MensagemDTO(CAIXA_CADASTRADO_COM_SUCESSO);
     }
@@ -41,35 +45,26 @@ public class CaixaServiceImpl implements CaixaService {
         return caixaRepository.findById(idCaixa).orElse(null);
     }
 
-    public List<Caixa> consultarPelaData(ConsultaDataDTO dataDTO) {
-        
-        List<Caixa> caixaConsultado = caixaRepository.findByData(dataDTO.getData());
-
-        if (caixaConsultado.isEmpty()) {
-           return null; 
-        }
-        return caixaConsultado;
-        
+    public List<Caixa> consultarCaixaPorData(ConsultaDataDTO dataDTO) {   
+        return caixaRepository.findByData(dataDTO.getData());
     }
 
-    public MensagemDTO alteraCaixa(Long idCaixa, CaixaDTO caixaDTO) {
+    public MensagemDTO alterarCaixa(Long idCaixa, CaixaDTO caixaDTO) {
 
         Optional<Caixa> caixaProcurado = caixaRepository.findById(idCaixa);
 
-        if (caixaProcurado.isPresent()) {
-
-            Caixa caixaAlterado = caixaProcurado.get();
-            BeanUtils.copyProperties(caixaDTO, caixaAlterado);
-
-            caixaRepository.save(caixaAlterado);
-            return new MensagemDTO(CAIXA_ALTERADO_COM_SUCESSO);
+        if (caixaProcurado.isEmpty()) {
+            return new MensagemDTO(CAIXA_INEXISTENTE);
         }
 
-        return new MensagemDTO(CAIXA_INEXISTENTE);
+        Caixa caixaAlterado = caixaProcurado.get();
+        BeanUtils.copyProperties(caixaDTO, caixaAlterado);
+
+        caixaRepository.save(caixaAlterado);
+        return new MensagemDTO(CAIXA_ALTERADO_COM_SUCESSO);
     }
 
     public MensagemDTO removerCaixa(Long idCaixa) {
-
         if (caixaRepository.existsById(idCaixa)) {
             caixaRepository.deleteById(idCaixa);
             return new MensagemDTO(CAIXA_REMOVIDO_COM_SUCESSO);

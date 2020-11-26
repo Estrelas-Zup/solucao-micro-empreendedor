@@ -30,7 +30,7 @@ public class CaixaController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Caixa> listaCaixa() {
+    public List<Caixa> listarCaixa() {
         return caixaService.listarCaixa();
     }
 
@@ -39,18 +39,18 @@ public class CaixaController {
         return caixaService.consultarPorId(idCaixa);
     }
 
-    @GetMapping(path = "/data", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Caixa> consultarPelaData(@RequestBody ConsultaDataDTO dataDTO) {
-        return caixaService.consultarPelaData(dataDTO);
+    @GetMapping(path = "/datas", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<Caixa> consultarCaixaPorData(@RequestBody ConsultaDataDTO consultaDataDTO) {
+        return caixaService.consultarCaixaPorData(consultaDataDTO);
     }
 
     @PutMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO alteraCaixa(@PathVariable Long idCaixa, @RequestBody CaixaDTO caixaDTO) {
-        return caixaService.alteraCaixa(idCaixa, caixaDTO);
+    public MensagemDTO alterarCaixa(@PathVariable Long idCaixa, @RequestBody CaixaDTO caixaDTO) {
+        return caixaService.alterarCaixa(idCaixa, caixaDTO);
     }
 
     @DeleteMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO removeCaixa(@PathVariable Long idCaixa) {
+    public MensagemDTO removerCaixa(@PathVariable Long idCaixa) {
         return caixaService.removerCaixa(idCaixa);
     }
 
