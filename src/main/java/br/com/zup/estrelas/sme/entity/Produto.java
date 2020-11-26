@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import br.com.zup.estrelas.sme.enums.UnidadeMedida;
 
 @Entity
@@ -16,6 +17,7 @@ public class Produto {
     @Column(name = "id_produto")
     private Long idProduto;
 
+    @NotBlank(message = "O campo nome é obrigatório!")
     @Column(nullable = false)
     private String nome;
 
