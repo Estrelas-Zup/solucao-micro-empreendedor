@@ -1,6 +1,5 @@
 package br.com.zup.estrelas.sme.dto;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,33 +10,27 @@ public class AlteraFuncionarioDTO {
 
     @NotNull(message = "O campo não pode ficar em branco")
     @NotBlank(message = "O campo nome é obrigatório com caracteres!")
-    @Column(nullable = false)
     private String nome;
 
     @NotNull(message = "O campo não pode ficar em branco")
     @NotBlank(message = "O campo endereço é obrigatório caracteres!")
-    @Column(nullable = false)
     private String endereco;
 
     @NotNull(message = "O campo não pode ficar em branco")
     @Size(min = 10, max = 11, message = "numeros não validos com números")
-    @Column(nullable = false)
     private Double telefone;
 
     @NotNull(message = "O campo não pode ficar em branco")
     @NotBlank(message = "O campo email é obrigatório com caracteres!")
     @Email(message = "O campo email esta com formato invalido.")
-    @Column(nullable = false)
     private String email;
 
     @NotNull(message = "O campo não pode ficar em branco")
     @NotBlank(message = "O campo Cargo é obrigatório com caracteres!")
-    @Column(nullable = false)
     private String cargo;
 
     @NotNull(message = "O campo não pode ficar em branco")
     @Positive(message = "O Salário deve ser maior que zero!")
-    @Column(nullable = false)
     private Double salario;
 
     public String getNome() {
