@@ -21,13 +21,13 @@ public class RelatorioVenda {
     
     @ManyToOne 
     @JoinColumn(name = "id_venda", foreignKey = @ForeignKey(name = "FK_VENDA_RELATORIOVENDA"))
-    @Valid
     @NotNull(message = "Venda não pode ser vazia!")
+    @Valid
     private Venda venda;
     
     @ManyToOne 
     @JoinColumn(name = "id_estoque", foreignKey = @ForeignKey(name = "FK_ESTOQUE_RELATORIOVENDA"))
-    @NotNull(message = "Venda não pode ser vazia!")
+    @NotNull(message = "Estoque não pode ser vazio!")
     @Valid
     private Estoque estoque;
     
