@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
@@ -18,6 +19,7 @@ public class Venda {
     private Long idVenda;
 
     @Column(nullable = true)
+    @NotBlank(message = "Observação não deve ter apenas espaço")
     private String observacao;
 
     @Column(name = "valor_desconto", columnDefinition = "DOUBLE DEFAULT 0", insertable = false,
