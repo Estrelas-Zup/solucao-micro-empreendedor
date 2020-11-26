@@ -6,13 +6,13 @@ import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Despesa;
 
 public interface DespesaService {
-    
-    public MensagemDTO adicionarDespesa(DespesaDTO despesa);
-    
+
+    public MensagemDTO adicionarDespesa(DespesaDTO despesaDTO);
+
     public List<Despesa> listarDespesa();
-    
+
     public MensagemDTO alterarDespesa(Long idDespesa, DespesaDTO despesaDTO);
-    
+
     public MensagemDTO removerDespesa(Long idDespesa);
-    
+
 }

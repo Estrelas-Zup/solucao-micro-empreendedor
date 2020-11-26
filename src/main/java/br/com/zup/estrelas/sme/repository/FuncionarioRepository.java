@@ -7,11 +7,5 @@ import br.com.zup.estrelas.sme.entity.Funcionario;
 
 @Repository
 public interface FuncionarioRepository extends CrudRepository<Funcionario, Long> {
-
-    boolean existsByCpf(String cpf);
-
-    void deleteByCpf(String cpf);
-
     Optional<Funcionario> findByCpf(String cpf);
-
 }

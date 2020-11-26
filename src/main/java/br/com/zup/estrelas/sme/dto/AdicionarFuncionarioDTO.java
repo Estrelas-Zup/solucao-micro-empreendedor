@@ -18,11 +18,11 @@ public class AdicionarFuncionarioDTO {
 
     private String cargo;
 
-    private String salario;
+    private Double salario;
 
     private String numeroCarteiraTrabalho;
 
-    
+
     public String getNome() {
         return nome;
     }
@@ -79,11 +79,11 @@ public class AdicionarFuncionarioDTO {
         this.cargo = cargo;
     }
 
-    public String getSalario() {
+    public Double getSalario() {
         return salario;
     }
 
-    public void setSalario(String salario) {
+    public void setSalario(Double salario) {
         this.salario = salario;
     }
 

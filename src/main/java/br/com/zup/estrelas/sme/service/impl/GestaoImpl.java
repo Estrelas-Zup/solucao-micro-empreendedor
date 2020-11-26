@@ -5,26 +5,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.AberturaComercioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
-import br.com.zup.estrelas.sme.entity.GestaoCaixa;
-import br.com.zup.estrelas.sme.repository.GestaoCaixaRepository;
-import br.com.zup.estrelas.sme.service.GestaoCaixaService;
+import br.com.zup.estrelas.sme.entity.Gestao;
+import br.com.zup.estrelas.sme.repository.GestaoRepository;
+import br.com.zup.estrelas.sme.service.GestaoService;
 
 @Service
-public class GestaoCaixaImpl implements GestaoCaixaService {
+public class GestaoImpl implements GestaoService {
 
+    private static final String BOM_TRABALHO_E_BOA_SORTE =
+            "Abertura de comercio inicializada, bom trabalho e boa sorte!";
+   
     @Autowired
-    GestaoCaixaRepository gestaoRepository;
-    
+    GestaoRepository gestaoRepository;
+
     @Override
     public MensagemDTO aberturaComercio(AberturaComercioDTO aberturaComercioDTO) {
-        
-        GestaoCaixa gestao = new GestaoCaixa();
+
+        Gestao gestao = new Gestao();
         BeanUtils.copyProperties(aberturaComercioDTO, gestao);
-        
+
         gestaoRepository.save(gestao);
-        
-        
-        return new MensagemDTO("cadastrou");
+
+        return new MensagemDTO(BOM_TRABALHO_E_BOA_SORTE);
     }
 
 }

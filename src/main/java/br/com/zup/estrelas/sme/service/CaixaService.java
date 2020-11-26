@@ -12,11 +12,11 @@ public interface CaixaService {
 
     public List<Caixa> listarCaixa();
 
-    public List<Caixa> consultarPelaData(ConsultaDataDTO dataDTO);
+    public List<Caixa> consultarCaixaPorData(ConsultaDataDTO consultaDataDTO);
 
     public Caixa consultarPorId(Long idCaixa);
 
-    public MensagemDTO alteraCaixa(Long idCaixa, CaixaDTO caixaDTO);
+    public MensagemDTO alterarCaixa(Long idCaixa, CaixaDTO caixaDTO);
 
     public MensagemDTO removerCaixa(Long idCaixa);
 

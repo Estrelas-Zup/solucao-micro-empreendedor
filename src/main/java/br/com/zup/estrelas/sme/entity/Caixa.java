@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -26,10 +25,10 @@ public class Caixa {
     @Column(name = "saldo_inicial", nullable = false)
     private Double saldoInicial;
 
-    @Column(columnDefinition = "Double default 0", name = "valor_despesa")
-    private Double valorDespesa;
+    @Column(columnDefinition = "Double default 0", name = "valor_total_despesa", insertable = false, updatable = true)
+    private Double valorTotalDespesa;
 
-    @Column(columnDefinition = "Double default 0", name = "valor_total")
+    @Column(columnDefinition = "Double default 0", name = "valor_total", insertable = false, updatable = true)
     private Double valorTotal;
 
     @OneToMany(mappedBy = "caixa")
@@ -38,7 +37,7 @@ public class Caixa {
     private List<Despesa> despesas;
 
     @OneToMany
-    @JoinColumn(name = "id_venda")
+//    @JoinColumn(name = "id_venda", foreignKey = @ForeignKey(name = "FK_VENDA_CAIXA"))
     private List<Venda> vendas;
 
     public Long getIdCaixa() {
@@ -65,12 +64,12 @@ public class Caixa {
         this.saldoInicial = saldoInicial;
     }
 
-    public Double getValorDespesa() {
-        return valorDespesa;
+    public Double getValorTotalDespesa() {
+        return valorTotalDespesa;
     }
 
     public void setValorDespesa(Double valorDespesa) {
-        this.valorDespesa = valorDespesa;
+        this.valorTotalDespesa = valorDespesa;
     }
 
     public Double getValorTotal() {

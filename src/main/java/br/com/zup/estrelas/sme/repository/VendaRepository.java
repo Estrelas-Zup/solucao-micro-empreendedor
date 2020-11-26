@@ -6,5 +6,5 @@ import br.com.zup.estrelas.sme.entity.Venda;
 
 @Repository
 public interface VendaRepository extends CrudRepository<Venda, Long> {
-
+    Venda findFirstByOrderByIdVendaDesc();
 }

@@ -16,14 +16,13 @@ import br.com.zup.estrelas.sme.service.FuncionarioService;
 @Service
 public class FuncionarioServiceImpl implements FuncionarioService {
 
-    private static final String FUNCIONARIO_CADASTRADO_COM_SUCESSO = "funcionario cadastrado com Sucesso.";
-    private static final String FUNCIONARIO_ALTERADO_COM_SUCESSO = "funcionario alterado com Sucesso.";
-    private static final String FUNCIONARIO_NAO_ALTERADO = "funcionario não pode ser alterado.";
-    private static final String FUNCIONARIO_REMOVIDO_COM_SUCESSO = "funcionario removida com Sucesso.";
-    private static final String FUNCIONARIO_JA_CADASTRADO ="O cadastro não ocorreu, funcionario já cadastrado na Prefeitura!";
-    private static final String FUNCIONARIO_INEXISTENTE = "A funcionario não existe.";
-    private static final String FUNCIONARIO_NAO_CADASTRADO = "O funcionario não foi cadastrado";
-
+    private static final String FUNCIONARIO_CADASTRADO_COM_SUCESSO =
+            "Funcionario cadastrado com sucesso!";
+    private static final String FUNCIONARIO_ALTERADO_COM_SUCESSO =
+            "Funcionario alterado com sucesso!";
+    private static final String FUNCIONARIO_REMOVIDO_COM_SUCESSO =
+            "Funcionario removido com sucesso!";
+    private static final String FUNCIONARIO_INEXISTENTE = "Funcionario inexistente.";
 
     @Autowired
     FuncionarioRepository funcionarioRepository;
@@ -34,30 +33,25 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         Funcionario funcionario = new Funcionario();
         BeanUtils.copyProperties(adicionarFuncionarioDTO, funcionario);
 
-        if (funcionario.getCpf() != null) {
-            return new MensagemDTO(FUNCIONARIO_JA_CADASTRADO);
-        }
-
         funcionario.setDataAdmissao(LocalDate.now());
         funcionarioRepository.save(funcionario);
         return new MensagemDTO(FUNCIONARIO_CADASTRADO_COM_SUCESSO);
-
     }
 
     @Override
-    public MensagemDTO alterarFuncionario(Long idFuncionario, AlteraFuncionarioDTO alteraFuncionarioDTO) {
-           
+    public MensagemDTO alterarFuncionario(Long idFuncionario,
+            AlteraFuncionarioDTO alteraFuncionarioDTO) {
         Optional<Funcionario> funcionarioConsultado = funcionarioRepository.findById(idFuncionario);
-        
-        
+
         if (funcionarioConsultado.isEmpty()) {
-          return new MensagemDTO(FUNCIONARIO_NAO_ALTERADO);
+            return new MensagemDTO(FUNCIONARIO_INEXISTENTE);
         }
-        
-        Funcionario funcionario = funcionarioConsultado.get();   
+
+        Funcionario funcionario = funcionarioConsultado.get();
         BeanUtils.copyProperties(alteraFuncionarioDTO, funcionario);
+
         funcionarioRepository.save(funcionario);
-        
+
         return new MensagemDTO(FUNCIONARIO_ALTERADO_COM_SUCESSO);
     }
 
@@ -73,13 +67,14 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public MensagemDTO removerFuncionario(String cpf) {
+        Optional<Funcionario> funcionarioConsultado = funcionarioRepository.findByCpf(cpf);
 
-        if (funcionarioRepository.existsByCpf(cpf)) {
-            funcionarioRepository.deleteByCpf(cpf);
-            return new MensagemDTO(FUNCIONARIO_REMOVIDO_COM_SUCESSO);
+        if (funcionarioConsultado.isEmpty()) {
+            return new MensagemDTO(FUNCIONARIO_INEXISTENTE);
         }
 
-        return new MensagemDTO(FUNCIONARIO_INEXISTENTE);
+        funcionarioRepository.delete(funcionarioConsultado.get());
+        return new MensagemDTO(FUNCIONARIO_REMOVIDO_COM_SUCESSO);
     }
 
     @Override
@@ -88,5 +83,5 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         return null;
     }
 
-   
+
 }

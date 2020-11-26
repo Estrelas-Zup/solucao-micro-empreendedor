@@ -8,7 +8,7 @@ import br.com.zup.estrelas.sme.entity.Caixa;
 
 @Repository
 public interface CaixaRepository extends CrudRepository<Caixa, Long> {
-
     List<Caixa> findByData(LocalDate data);
 
+    Caixa findFirstByOrderByIdCaixaDesc();
 }

@@ -24,23 +24,23 @@ public class DespesaController {
     DespesaService despesaService;
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO adicionarDespesa(@RequestBody DespesaDTO despesa) {
-        return despesaService.adicionarDespesa(despesa);
-    }
-
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Despesa> listaDespesa() {
-        return despesaService.listarDespesa();
+    public MensagemDTO adicionarDespesa(@RequestBody DespesaDTO despesaDTO) {
+        return despesaService.adicionarDespesa(despesaDTO);
     }
 
     @PutMapping(path = "/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO alteraDespesa(@PathVariable Long idDespesa,
+    public MensagemDTO alterarDespesa(@PathVariable Long idDespesa,
             @RequestBody DespesaDTO despesaDTO) {
         return despesaService.alterarDespesa(idDespesa, despesaDTO);
     }
 
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<Despesa> listarDespesa() {
+        return despesaService.listarDespesa();
+    }
+
     @DeleteMapping(path = "/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO removeDespesa(@PathVariable Long idDespesa) {
+    public MensagemDTO removerDespesa(@PathVariable Long idDespesa) {
         return despesaService.removerDespesa(idDespesa);
     }
 }
