@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import br.com.zup.estrelas.sme.enums.UnidadeMedida;
 
 @Entity
@@ -24,16 +26,20 @@ public class Produto {
     @Column(nullable = true)
     private String descricao;
 
+    @NotBlank(message = "O campo unidade de medida é obrigatório!")
     @Enumerated(EnumType.STRING)
     @Column(name = "unidade_medida", nullable = false)
     private UnidadeMedida unidadeMedida;
 
+    @Positive(message = "Valor venda deve ser maior que zero!")
     @Column(name = "valor_venda", nullable = false)
     private Double valorVenda;
 
+    @Positive(message = "Valor custo deve ser maior que zero!")
     @Column(name = "valor_custo", nullable = false)
     private Double valorCusto;
 
+    @PositiveOrZero(message = "Margem de desconto deve ser igual ou maior a zero!")
     @Column(name = "margem_desconto", nullable = false)
     private Double margemDesconto;
 

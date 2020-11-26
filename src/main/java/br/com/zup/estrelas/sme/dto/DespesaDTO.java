@@ -2,7 +2,8 @@ package br.com.zup.estrelas.sme.dto;
 
 public class DespesaDTO {
     
-    private String descricao;   
+    private String descricao;  
+    
     private Double valor;
 
     public String getDescricao() {
