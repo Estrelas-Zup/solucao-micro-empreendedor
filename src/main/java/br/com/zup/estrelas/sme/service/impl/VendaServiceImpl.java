@@ -76,6 +76,8 @@ public class VendaServiceImpl implements VendaService {
         venda.setEstoques(estoques);
 
         repository.save(venda);
+        
+        //produtosVenda.size();
         return new MensagemDTO(VENDA_CADASTRADA_COM_SUCESSO);
     }
 

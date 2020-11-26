@@ -24,8 +24,8 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO adicionaProduto(@RequestBody ProdutoDTO produto) {
-        return produtoService.adicionarProduto(produto);
+    public MensagemDTO adicionaProduto(@RequestBody ProdutoDTO produtoDTO) {
+        return produtoService.adicionarProduto(produtoDTO);
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -38,7 +38,8 @@ public class ProdutoController {
         return produtoService.consultarPorId(idProduto);
     }
 
-    @GetMapping(path = "/nome/{nome}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/nomes/{nome}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    //TODO verificar possibilidade de passar nome no corpo ConsultarPeloNomeDTO
     public List<Produto> consultarPeloNome(@PathVariable String nome) {
         return produtoService.consultarPeloNome(nome);
     }

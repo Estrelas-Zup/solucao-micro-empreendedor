@@ -7,5 +7,5 @@ import br.com.zup.estrelas.sme.entity.Produto;
 
 @Repository
 public interface ProdutoRepository extends CrudRepository<Produto, Long> {
-    List<Produto> findByNomeLike(String nome);
+    List<Produto> findByNomeStartingWith(String nome);
 }

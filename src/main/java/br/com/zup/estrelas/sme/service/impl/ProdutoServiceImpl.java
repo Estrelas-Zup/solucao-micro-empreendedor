@@ -15,9 +15,10 @@ import br.com.zup.estrelas.sme.service.ProdutoService;
 public class ProdutoServiceImpl implements ProdutoService {
 
     private static final String PRODUTO_CADASTRADO_COM_SUCESSO = "Produto cadastrado com sucesso!";
-    private static final String PRODUTO_INEXISTENTE = "Impossível remover, produto inexistente!";
+    private static final String PRODUTO_INEXISTENTE =
+            "Infelizmente não foi possivel realizar a operação, produto inexistente.";
     private static final String PRODUTO_REMOVIDO_COM_SUCESSO = "Produto removido com sucesso!";
-    private static final String PRODUTO_ALTERADO_COM_SUCESSO = "Produto alterado com sucecsso!";
+    private static final String PRODUTO_ALTERADO_COM_SUCESSO = "Produto alterado com sucesso!";
 
     @Autowired
     ProdutoRepository produtoRepository;
@@ -41,24 +42,23 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     public List<Produto> consultarPeloNome(String nome) {
-        return produtoRepository.findByNomeLike(nome);
+        return produtoRepository.findByNomeStartingWith(nome);
     }
 
     public MensagemDTO alterarProduto(Long idProduto, ProdutoDTO produtoDTO) {
 
-        Optional<Produto> produtoProcurado = produtoRepository.findById(idProduto);
+        Optional<Produto> produtoConsultado = produtoRepository.findById(idProduto);
 
-        if (produtoProcurado.isPresent()) {
-
-            Produto produtoAlterado = produtoProcurado.get();
-            BeanUtils.copyProperties(produtoDTO, produtoAlterado);
-
-            produtoRepository.save(produtoAlterado);
-
-            return new MensagemDTO(PRODUTO_ALTERADO_COM_SUCESSO);
+        if (produtoConsultado.isEmpty()) {
+            return new MensagemDTO(PRODUTO_INEXISTENTE);
         }
 
-        return new MensagemDTO(PRODUTO_INEXISTENTE);
+        Produto produtoAlterado = produtoConsultado.get();
+        BeanUtils.copyProperties(produtoDTO, produtoAlterado);
+
+        produtoRepository.save(produtoAlterado);
+
+        return new MensagemDTO(PRODUTO_ALTERADO_COM_SUCESSO);
     }
 
     public MensagemDTO removerProduto(Long idProduto) {
