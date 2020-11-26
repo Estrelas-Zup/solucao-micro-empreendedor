@@ -45,10 +45,10 @@ public class ProdutoServiceImpl implements ProdutoService {
         List<Produto> produtoConsultado = produtoRepository.findByNomeLike(nome);
 
         if (produtoConsultado.isEmpty()) {
-            return produtoConsultado;
+            return null;
         }
 
-        return null;
+        return produtoConsultado;
     }
 
     public MensagemDTO alterarProduto(Long idProduto, ProdutoDTO produtoDTO) {
