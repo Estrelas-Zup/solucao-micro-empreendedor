@@ -1,7 +1,6 @@
 package br.com.zup.estrelas.sme.service.impl;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
@@ -12,8 +11,10 @@ import br.com.zup.estrelas.sme.dto.ProdutosVendaDTO;
 import br.com.zup.estrelas.sme.dto.AdicionarVendaDTO;
 import br.com.zup.estrelas.sme.dto.AlterarVendaDTO;
 import br.com.zup.estrelas.sme.entity.Estoque;
+import br.com.zup.estrelas.sme.entity.RelatorioVenda;
 import br.com.zup.estrelas.sme.entity.Venda;
 import br.com.zup.estrelas.sme.repository.EstoqueRepository;
+import br.com.zup.estrelas.sme.repository.RelatorioVendaRepository;
 import br.com.zup.estrelas.sme.repository.VendaRepository;
 import br.com.zup.estrelas.sme.service.VendaService;
 
@@ -39,13 +40,14 @@ public class VendaServiceImpl implements VendaService {
     @Autowired
     EstoqueRepository estoqueRepository;
 
+    @Autowired
+    RelatorioVendaRepository relatorioVendaRepository;
+
     @Override
     public MensagemDTO adicionarVenda(AdicionarVendaDTO adicionarVendaDTO) {
         Double valorTotalProdutos = 0D;
 
         List<ProdutosVendaDTO> produtosVenda = adicionarVendaDTO.getProdutosVenda();
-
-        List<Estoque> estoques = new ArrayList<>();
 
         for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) {
             Optional<Estoque> estoqueConsultado = estoqueRepository
@@ -63,21 +65,21 @@ public class VendaServiceImpl implements VendaService {
                     produtosVendaDTO.getQuantidade() * estoque.getProduto().getValorVenda();
 
             valorTotalProdutos += valorVendaProduto;
-            estoques.add(estoque);
         }
 
 
         Venda venda = new Venda();
         BeanUtils.copyProperties(adicionarVendaDTO, venda);
-        Double valorTotalComDesconto = valorTotalProdutos - adicionarVendaDTO.getValorDesconto();
+
         // TODO: validar valor desconto menor que valorTotalProdutos
+        Double valorTotalComDesconto = valorTotalProdutos - adicionarVendaDTO.getValorDesconto();
+
         venda.setValorTotal(valorTotalComDesconto);
         venda.setDataVenda(LocalDate.now());
-        venda.setEstoques(estoques);
 
         repository.save(venda);
-        
-        //produtosVenda.size();
+
+        adicionarRelatorioVenda(adicionarVendaDTO);
         return new MensagemDTO(VENDA_CADASTRADA_COM_SUCESSO);
     }
 
@@ -128,9 +130,29 @@ public class VendaServiceImpl implements VendaService {
     }
 
     public MensagemDTO removerVenda(Long idVenda) {
-        // DEVO RETORNAR A QUANTIDADE EM ESTOQUE, PEGAR VALOR TOTAL SEM DESCONTO E DIVIDIR PELO VALOR VENDA
+        // DEVO RETORNAR A QUANTIDADE EM ESTOQUE, PEGAR VALOR TOTAL SEM DESCONTO E DIVIDIR PELO
+        // VALOR VENDA
         return null;
     }
 
+    public void adicionarRelatorioVenda(AdicionarVendaDTO adicionarVendaDTO) {
+        List<ProdutosVendaDTO> produtosVenda = adicionarVendaDTO.getProdutosVenda();
 
+        Venda ultimaVendaAdicionada = repository.findFirstByOrderByIdVendaDesc();
+
+
+        for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) {
+            RelatorioVenda relatorioVenda = new RelatorioVenda();
+
+            Estoque estoque =
+                    estoqueRepository.findFirstByProdutoIdProduto(produtosVendaDTO.getIdProduto());
+            
+            relatorioVenda.setQuantidade(produtosVendaDTO.getQuantidade());
+
+            relatorioVenda.setVenda(ultimaVendaAdicionada);
+            relatorioVenda.setEstoque(estoque);
+            
+            relatorioVendaRepository.save(relatorioVenda);
+        }
+    }
 }

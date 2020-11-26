@@ -25,10 +25,10 @@ public class Caixa {
     @Column(name = "saldo_inicial", nullable = false)
     private Double saldoInicial;
 
-    @Column(columnDefinition = "Double default 0", name = "valor_despesa")
+    @Column(columnDefinition = "Double default 0", name = "valor_despesa", insertable = false, updatable = true)
     private Double valorDespesa;
 
-    @Column(columnDefinition = "Double default 0", name = "valor_total")
+    @Column(columnDefinition = "Double default 0", name = "valor_total", insertable = false, updatable = true)
     private Double valorTotal;
 
     @OneToMany(mappedBy = "caixa")

@@ -10,5 +10,7 @@ import br.com.zup.estrelas.sme.entity.Estoque;
 public interface EstoqueRepository extends CrudRepository<Estoque, Long> {
     List<Estoque> findAllByProdutoIdProduto(Long idProduto);
     
+    Estoque findFirstByProdutoIdProduto(Long idProduto);
+    
     Optional<Estoque> findFirstByDisponibilidadeAndProdutoIdProdutoOrderByDataValidadeAsc(boolean disponibilidade, Long idProduto);
 }

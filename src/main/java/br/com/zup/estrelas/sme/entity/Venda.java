@@ -1,13 +1,11 @@
 package br.com.zup.estrelas.sme.entity;
 
 import java.time.LocalDate;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 @Entity
 public class Venda {
@@ -19,10 +17,8 @@ public class Venda {
     @Column(nullable = true)
     private String observacao;
 
-    @ManyToMany
-    private List<Estoque> estoques;
-
-    @Column(name = "valor_desconto", columnDefinition = "DOUBLE DEFAULT 0")
+    @Column(name = "valor_desconto", columnDefinition = "DOUBLE DEFAULT 0", insertable = false,
+            updatable = true)
     private Double valorDesconto;
 
     @Column(name = "valor_total", nullable = false)
@@ -45,14 +41,6 @@ public class Venda {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
-    }
-
-    public List<Estoque> getEstoques() {
-        return estoques;
-    }
-
-    public void setEstoques(List<Estoque> estoques) {
-        this.estoques = estoques;
     }
 
     public Double getValorDesconto() {
