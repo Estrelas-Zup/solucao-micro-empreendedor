@@ -29,8 +29,8 @@ public class VendaServiceImpl implements VendaService {
     private static final String VENDA_INEXISTENTE =
             "Infelizmente não foi possivel realizar a operação, venda inexistente.";
 
-    private static final String PRODUTO_INEXISTENTE_VENDA =
-            "Infelizmente não foi possivel  relizar a operação, produto inexistente.";
+    private static final String PRODUTO_INEXISTENTE =
+            "Infelizmente não foi possivel relizar a operação, produto inexistente.";
 
     private static final String VENDA_CADASTRADA_COM_SUCESSO = "Venda cadastrada com sucesso!";
 
@@ -58,7 +58,7 @@ public class VendaServiceImpl implements VendaService {
 
             // TODO: Validar quantidade em estoque
             if (estoqueConsultado.isEmpty()) {
-                return new MensagemDTO(PRODUTO_INEXISTENTE_VENDA);
+                return new MensagemDTO(PRODUTO_INEXISTENTE);
             }
 
             Estoque estoque = estoqueConsultado.get();
@@ -117,7 +117,6 @@ public class VendaServiceImpl implements VendaService {
 
         venda.setObservacao(alterarVendaDTO.getObservacao());
 
-
         repository.save(venda);
 
         return new MensagemDTO(VENDA_ALTERADA_COM_SUCESSO);
@@ -132,9 +131,15 @@ public class VendaServiceImpl implements VendaService {
     }
 
     public MensagemDTO removerVenda(Long idVenda) {
-        // DEVO RETORNAR A QUANTIDADE EM ESTOQUE, PEGAR VALOR TOTAL SEM DESCONTO E DIVIDIR PELO
-        // VALOR VENDA
-        return null;
+        if(repository.existsById(idVenda)) {
+            List<RelatorioVenda> relatorioVendas = relatorioVendaRepository.findAllByVendaIdVenda(idVenda);
+            relatorioVendaRepository.deleteAll(relatorioVendas);
+            
+            repository.deleteById(idVenda);
+            
+            return new MensagemDTO("Venda removida com sucesso!");
+        }
+        return new MensagemDTO(VENDA_INEXISTENTE);
     }
 
     public void adicionarRelatorioVenda(AdicionarVendaDTO adicionarVendaDTO) {
