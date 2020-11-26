@@ -8,19 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.AberturaComercioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
-import br.com.zup.estrelas.sme.service.GestaoCaixaService;
+import br.com.zup.estrelas.sme.service.GestaoService;
 
 @RestController
 @RequestMapping("/gestao")
-public class GestaoCaixaController {
+public class GestaoController {
 
     @Autowired
-    GestaoCaixaService gestaoCaixaService;
+    GestaoService gestaoService;
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO aberturaComercio(@RequestBody AberturaComercioDTO aberturaComercioDTO) {
-        return gestaoCaixaService.aberturaComercio(aberturaComercioDTO);
+        return gestaoService.aberturaComercio(aberturaComercioDTO);
     }
-
-
 }

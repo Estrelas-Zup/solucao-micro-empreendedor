@@ -143,6 +143,7 @@ public class VendaServiceImpl implements VendaService {
         return new MensagemDTO(VENDA_INEXISTENTE);
     }
 
+    //TODO: Verificar em um melhor tipo de retorno
     public void adicionarRelatorioVenda(AdicionarVendaDTO adicionarVendaDTO) {
         List<ProdutosVendaDTO> produtosVenda = adicionarVendaDTO.getProdutosVenda();
 

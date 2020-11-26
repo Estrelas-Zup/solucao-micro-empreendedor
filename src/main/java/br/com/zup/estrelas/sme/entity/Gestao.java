@@ -7,21 +7,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class GestaoCaixa {
+public class Gestao {
     @Id
-    @Column(name = "id_gestao_caixa")
+    @Column(name = "id_gestao")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idGestaoCaixa;
+    private Long idGestao;
 
     @Column(name = "capital_social", nullable = false)
     private Double capitalSocial;
 
-    public Long getIdGestaoCaixa() {
-        return idGestaoCaixa;
+    public Long getIdGestao() {
+        return idGestao;
     }
 
-    public void setIdGestaoCaixa(Long idGestaoCaixa) {
-        this.idGestaoCaixa = idGestaoCaixa;
+    public void setIdGestao(Long idGestao) {
+        this.idGestao = idGestao;
     }
 
     public Double getCapitalSocial() {
