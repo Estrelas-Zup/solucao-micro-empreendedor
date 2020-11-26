@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import br.com.zup.estrelas.sme.enums.UnidadeMedida;
@@ -19,14 +20,17 @@ public class Produto {
     @Column(name = "id_produto")
     private Long idProduto;
 
-    @NotBlank(message = "O campo nome é obrigatório!")
+    @NotBlank(message = "Nome não pode ter apenas espaços!")
+    @NotNull(message = "O campo nome é obrigatório!")
     @Column(nullable = false)
     private String nome;
 
+    @NotBlank(message = "Descrição não pode ter apenas espaços!")
     @Column(nullable = true)
     private String descricao;
 
-    @NotBlank(message = "O campo unidade de medida é obrigatório!")
+    @NotBlank(message = "Unidade de medida não pode ter apenas espaços!")
+    @NotNull(message = "O campo unidade de medida é obrigatório!")
     @Enumerated(EnumType.STRING)
     @Column(name = "unidade_medida", nullable = false)
     private UnidadeMedida unidadeMedida;

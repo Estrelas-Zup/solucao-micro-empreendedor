@@ -10,24 +10,24 @@ import br.com.zup.estrelas.sme.enums.UnidadeMedida;
 
 public class ProdutoDTO {
 
-    @NotBlank(message = "O campo nome é obrigatório!")
+    @NotBlank(message = "Nome não pode ter apenas espaços!")
+    @NotNull(message = "O campo nome é obrigatório!")
     private String nome;
 
+    @NotBlank(message = "Descrição não pode ter apenas espaços!")
     private String descricao;
 
-    @NotBlank(message = "O campo unidade de medida é obrigatório!")
+    @NotBlank(message = "Unidade de medida não pode ter apenas espaços!")
+    @NotNull(message = "O campo unidade de medida é obrigatório!")
     @Enumerated(EnumType.STRING)
     private UnidadeMedida unidadeMedida;
 
-    @NotNull(message = "O campo valor venda não pode ser nulo!")
     @Positive(message = "Valor venda deve ser maior que zero!")
     private Double valorVenda;
 
-    @NotNull(message = "O campo valor custo não pode ser nulo!")
     @Positive(message = "Valor custo deve ser maior que zero!")
     private Double valorCusto;
 
-    @NotNull(message = "O campo margem desconto não pode ser nulo!")
     @PositiveOrZero(message = "Margem de desconto deve ser igual ou maior a zero!")
     private Double margemDesconto;
 
