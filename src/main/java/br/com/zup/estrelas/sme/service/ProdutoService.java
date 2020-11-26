@@ -12,11 +12,11 @@ public interface ProdutoService {
     public List<Produto> listarProdutos();
 
     public Produto consultarPorId(Long idProduto);
-    
+
     public List<Produto> consultarPeloNome(String nome);
 
     public MensagemDTO alterarProduto(Long idProduto, ProdutoDTO produto);
 
     public MensagemDTO removerProduto(Long idProduto);
-    
+
 }
