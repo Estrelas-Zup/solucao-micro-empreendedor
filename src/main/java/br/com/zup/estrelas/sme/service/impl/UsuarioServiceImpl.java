@@ -18,7 +18,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     UsuarioRepository usuarioRepository;
 
 
-    public MensagemDTO adicionaUsuario(UsuarioDTO adicionaUsuarioDto) {
+    public MensagemDTO adicionarUsuario(UsuarioDTO adicionaUsuarioDto) {
 
         Usuario usuario = new Usuario();
 
@@ -47,7 +47,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         return new MensagemDTO("Alterado com sucesso");
     }
 
-    public Usuario consultaUsuario(String email) {
+    public Usuario consultarUsuarioPorEmail(String email) {
 
         Optional<Usuario> usuarioConsultado = usuarioRepository.findById(email);
 

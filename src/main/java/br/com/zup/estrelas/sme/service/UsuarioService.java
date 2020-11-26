@@ -8,11 +8,11 @@ import br.com.zup.estrelas.sme.entity.Usuario;
 
 public interface UsuarioService {
 
-    public MensagemDTO adicionaUsuario(UsuarioDTO adicionaUsuarioDto);
+    public MensagemDTO adicionarUsuario(UsuarioDTO adicionaUsuarioDto);
 
     public MensagemDTO alterarUsuario(String email, UsuarioDTO alteraUsuarioD);
 
-    public Usuario consultaUsuario(String email);
+    public Usuario consultarUsuarioPorEmail(String email);
 
     public MensagemDTO removerUsuario(String email);
 

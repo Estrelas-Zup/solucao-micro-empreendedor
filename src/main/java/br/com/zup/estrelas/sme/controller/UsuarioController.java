@@ -24,39 +24,33 @@ public class UsuarioController {
     UsuarioService usuarioService;
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO adicionaUsuario(@RequestBody UsuarioDTO adicionaUsuarioDto) {
+    public MensagemDTO adicionarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        return usuarioService.adicionarUsuario(usuarioDTO);
+    }
+    
+    // TODO: Passar email no corpo e não na URL
+    @PutMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public MensagemDTO alterarUsuario(@PathVariable String email,
+            @RequestBody UsuarioDTO usuarioDTO) {
 
-        return usuarioService.adicionaUsuario(adicionaUsuarioDto);
+        return usuarioService.alterarUsuario(email, usuarioDTO);
     }
 
-    @PutMapping(path = "/{idEmail}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Usuario consultarUsuarioPorEmail(@PathVariable String email) {
 
-    public MensagemDTO alteraUsuario(@PathVariable String idEmail,
-            @RequestBody UsuarioDTO alteraUsuarioD) {
-
-        return usuarioService.alterarUsuario(idEmail, alteraUsuarioD);
-    }
-
-    @GetMapping(path = "/{idEmail}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Usuario consultaUsuario(@PathVariable String idEmail) {
-
-        return usuarioService.consultaUsuario(idEmail);
+        return usuarioService.consultarUsuarioPorEmail(email);
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-
     public List<Usuario> listarUsario() {
         return usuarioService.listarUsuarios();
 
     }
 
-    @DeleteMapping(path = "/{idEmail}", produces = {MediaType.APPLICATION_JSON_VALUE})
-
-    public MensagemDTO removerUsuario(@PathVariable String idEmail) {
-
-
-        return usuarioService.removerUsuario(idEmail);
-
+    @DeleteMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public MensagemDTO removerUsuario(@PathVariable String email) {
+        return usuarioService.removerUsuario(email);
     }
 
 }
