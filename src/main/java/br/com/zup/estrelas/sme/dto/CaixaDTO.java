@@ -1,8 +1,13 @@
 package br.com.zup.estrelas.sme.dto;
 
-public class CaixaDTO {
-    private Double saldoInicial;
+import javax.validation.constraints.Positive;
 
+public class CaixaDTO {
+    
+    @Positive
+    private Double saldoInicial;
+    
+    
     public Double getSaldoInicial() {
         return saldoInicial;
     }
