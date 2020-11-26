@@ -48,7 +48,9 @@ public class VendaServiceImpl implements VendaService {
         Double valorTotalProdutos = 0D;
 
         List<ProdutosVendaDTO> produtosVenda = adicionarVendaDTO.getProdutosVenda();
-
+        
+        // TODO: Validar idProduto iguais
+        
         for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) {
             Optional<Estoque> estoqueConsultado = estoqueRepository
                     .findFirstByDisponibilidadeAndProdutoIdProdutoOrderByDataValidadeAsc(true,

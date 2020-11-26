@@ -1,6 +1,5 @@
 package br.com.zup.estrelas.sme.service;
 
-
 import java.util.List;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.UsuarioDTO;

@@ -14,71 +14,60 @@ import br.com.zup.estrelas.sme.service.UsuarioService;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
+    private static final String USUARIO_EXCLUIDO_COM_SUCESSO = "Usuario excluido com sucesso!";
+
+    private static final String USUARIO_INEXISTENTE =
+            "Não foi possivel realizar a alteração, usuario inexistente.";
+
+    private static final String USUARIO_ALTERADO_COM_SUCESSO = "Usuario alterado com sucesso!";
+
+    private static final String USUARIO_CADASTRADO_COM_SUCESSO = "Usuario cadastrado com sucesso!";
+
     @Autowired
     UsuarioRepository usuarioRepository;
 
-
-    public MensagemDTO adicionarUsuario(UsuarioDTO adicionaUsuarioDto) {
-
+    public MensagemDTO adicionarUsuario(UsuarioDTO usuarioDTO) {
         Usuario usuario = new Usuario();
 
-        BeanUtils.copyProperties(adicionaUsuarioDto, usuario);
+        BeanUtils.copyProperties(usuarioDTO, usuario);
 
         usuarioRepository.save(usuario);
 
-        return new MensagemDTO("Usuario criado com sucesso");
+        return new MensagemDTO(USUARIO_CADASTRADO_COM_SUCESSO);
     }
 
-    public MensagemDTO alterarUsuario(String email, UsuarioDTO alteraUsuarioD) {
+    //TODO: Alterar UsuarioDTO para AlteraUsuarioDTO (senha, role)
+    public MensagemDTO alterarUsuario(String email, UsuarioDTO usuarioDTO) {
 
         Optional<Usuario> usuarioConsultado = usuarioRepository.findById(email);
 
         if (usuarioConsultado.isEmpty()) {
-
-
-            return new MensagemDTO("Usuario não encontrado");
+            return new MensagemDTO(USUARIO_INEXISTENTE);
         }
 
         Usuario usuario = usuarioConsultado.get();
 
-        BeanUtils.copyProperties(alteraUsuarioD, usuario);
+        BeanUtils.copyProperties(usuarioDTO, usuario);
 
         usuarioRepository.save(usuario);
-        return new MensagemDTO("Alterado com sucesso");
+        return new MensagemDTO(USUARIO_ALTERADO_COM_SUCESSO);
     }
 
     public Usuario consultarUsuarioPorEmail(String email) {
-
-        Optional<Usuario> usuarioConsultado = usuarioRepository.findById(email);
-
-        if (usuarioConsultado.isEmpty()) {
-
-            return new Usuario();
-        }
-
-        Usuario usuario = usuarioConsultado.get();
-
-        return usuario;
+        return usuarioRepository.findById(email).orElse(null);
     }
 
-
     public List<Usuario> listarUsuarios() {
-
-        List<Usuario> usuariosConsultados = usuarioRepository.findAll();
-
-        return usuariosConsultados;
+        return (List<Usuario>) usuarioRepository.findAll();
     }
 
     public MensagemDTO removerUsuario(String email) {
-
         if (usuarioRepository.existsById(email)) {
             usuarioRepository.deleteById(email);
-
-            return new MensagemDTO("Excluido com sucesso");
-
+            return new MensagemDTO(USUARIO_EXCLUIDO_COM_SUCESSO);
         }
 
-        return new MensagemDTO("Usuario não encontrado");
+        return new MensagemDTO(USUARIO_INEXISTENTE);
     }
 
 }
