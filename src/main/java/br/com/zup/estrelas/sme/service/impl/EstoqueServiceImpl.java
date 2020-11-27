@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.zup.estrelas.sme.dto.ContabilizaPerdaDTO;
 import br.com.zup.estrelas.sme.dto.EstoqueDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Estoque;
@@ -15,6 +16,8 @@ import br.com.zup.estrelas.sme.service.EstoqueService;
 
 @Service
 public class EstoqueServiceImpl implements EstoqueService {
+
+    private static final String PERDA_ADICIONADA_COM_SUCESSO = "Perda adicionada com sucesso";
 
     private static final String ESTOQUE_INEXISTENTE =
             "Não foi possivel realizar a operação, estoque inexistente";
@@ -54,15 +57,15 @@ public class EstoqueServiceImpl implements EstoqueService {
         if (estoqueConsultado.isEmpty()) {
             return new MensagemDTO(ESTOQUE_INEXISTENTE);
         }
-        
+
         Estoque estoque = estoqueConsultado.get();
-        
+
         Optional<Produto> produtoConsultado = produtoRepository.findById(estoqueDTO.getIdProduto());
-       
+
         if (produtoConsultado.isEmpty()) {
             return new MensagemDTO(PRODUTO_INEXISTENTE);
         }
-        
+
         Produto produto = produtoConsultado.get();
 
         BeanUtils.copyProperties(estoqueDTO, estoque);
@@ -78,5 +81,20 @@ public class EstoqueServiceImpl implements EstoqueService {
 
     public List<Estoque> listarEstoques() {
         return (List<Estoque>) estoqueRepository.findAll();
+    }
+
+    public MensagemDTO contablizarPerda(Long idEstoque, ContabilizaPerdaDTO contabilizaPerdaDTO) {
+        Optional<Estoque> estoqueConsultado = estoqueRepository.findById(idEstoque);
+
+        if (estoqueConsultado.isEmpty()) {
+            return new MensagemDTO(ESTOQUE_INEXISTENTE);
+        }
+
+        Estoque estoque = estoqueConsultado.get();
+        estoque.setMotivoPerda(contabilizaPerdaDTO.getMotivoPerda());
+        estoque.setPerda(true);
+        estoque.setDisponibilidade(false);
+
+        return new MensagemDTO(PERDA_ADICIONADA_COM_SUCESSO);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.zup.estrelas.sme.dto.ContabilizaPerdaDTO;
 import br.com.zup.estrelas.sme.dto.EstoqueDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Estoque;
@@ -41,5 +42,11 @@ public class EstoqueController {
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Estoque> listarEstoque() {
         return estoqueService.listarEstoques();
+    }
+
+    @PutMapping(path = "/perda/{idEstoque}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public MensagemDTO contablizarPerda(@PathVariable Long idEstoque,
+            @RequestBody ContabilizaPerdaDTO contabilizaPerdaDTO) {
+        return estoqueService.contablizarPerda(idEstoque, contabilizaPerdaDTO);
     }
 }

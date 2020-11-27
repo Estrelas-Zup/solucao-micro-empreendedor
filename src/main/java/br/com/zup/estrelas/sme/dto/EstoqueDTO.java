@@ -8,18 +8,18 @@ import javax.validation.constraints.Positive;
 
 public class EstoqueDTO {
     @Positive(message = "IdProduto deve ser maior que zero!")
-    @NotNull
-    @NotBlank
+    @NotNull(message = "IdProduto não pode ser vazia!")
+    @NotBlank(message = "IdProduto não pode estar em branco!")
     private long idProduto;
 
     @Positive(message = "Quantidade deve ser maior que zero!")
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Quantidade não pode ser vazia!")
+    @NotBlank(message = "Quantidade não pode estar em branco!")
     private int quantidade;
 
     @FutureOrPresent(message = "Data de validade não deve ser menor que data atual")
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Data de validade não pode ser vazia!")
+    @NotBlank(message = "Data de validade pode estar em branco!")
     private LocalDate dataValidade;
 
     public EstoqueDTO() {
