@@ -15,6 +15,9 @@ import br.com.zup.estrelas.sme.dto.DespesaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Despesa;
 import br.com.zup.estrelas.sme.service.DespesaService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("/despesas")
@@ -24,17 +27,28 @@ public class DespesaController {
     DespesaService despesaService;
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(value = "Inserir despesa")
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
+            @ApiResponse(code = 500, message = "Erro interno no servidor")})
     public MensagemDTO adicionarDespesa(@RequestBody DespesaDTO despesaDTO) {
         return despesaService.adicionarDespesa(despesaDTO);
     }
 
     @PutMapping(path = "/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(value = "Alterar despesa")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Alteração da despesa feita com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhum despesa alterado!")})
     public MensagemDTO alterarDespesa(@PathVariable Long idDespesa,
             @RequestBody DespesaDTO despesaDTO) {
         return despesaService.alterarDespesa(idDespesa, despesaDTO);
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(value = "Listar despesa")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Procura da despesa feita com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhuma despesa encontrado!")})
     public List<Despesa> listarDespesa() {
         return despesaService.listarDespesa();
     }
