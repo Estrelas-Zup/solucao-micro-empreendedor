@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -18,9 +20,12 @@ public class Despesa {
     private Long idDespesa;
 
     @Column(nullable = false)
+    @NotBlank(message = "Descrição não pode estar em branco!")
     private String descricao;
 
     @Column(nullable = false)
+    @NotBlank(message = "Valor não pode estar em branco!")
+    @Positive(message = "Valor deve ser maior que zero!")
     private Double valor;
 
     @ManyToOne

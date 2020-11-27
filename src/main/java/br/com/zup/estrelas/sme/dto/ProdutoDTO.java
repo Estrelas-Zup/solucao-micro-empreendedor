@@ -1,19 +1,34 @@
 package br.com.zup.estrelas.sme.dto;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import br.com.zup.estrelas.sme.enums.UnidadeMedida;
 
 public class ProdutoDTO {
 
+    @NotBlank(message = "Nome não pode ter apenas espaços!")
+    @NotNull(message = "O campo nome é obrigatório!")
     private String nome;
 
+    @NotBlank(message = "Descrição não pode ter apenas espaços!")
     private String descricao;
 
+    @NotBlank(message = "Unidade de medida não pode ter apenas espaços!")
+    @NotNull(message = "O campo unidade de medida é obrigatório!")
+    @Enumerated(EnumType.STRING)
     private UnidadeMedida unidadeMedida;
 
+    @Positive(message = "Valor venda deve ser maior que zero!")
     private Double valorVenda;
 
+    @Positive(message = "Valor custo deve ser maior que zero!")
     private Double valorCusto;
 
+    @PositiveOrZero(message = "Margem de desconto deve ser igual ou maior a zero!")
     private Double margemDesconto;
 
     public String getNome() {
