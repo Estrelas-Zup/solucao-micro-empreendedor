@@ -64,7 +64,7 @@ public class UsuarioController {
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Listar usuário")
     @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Procura do usuário feita com sucesso!"),
+            value = {@ApiResponse(code = 200, message = "Listagem de usuários realizada com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário encontrado!")})
     public List<Usuario> listarUsuario() {
         return usuarioService.listarUsuarios();
