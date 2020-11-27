@@ -19,7 +19,8 @@ public class EstoqueServiceImpl implements EstoqueService {
 
     private static final String ESTOQUE_ALTERADO_COM_SUCESSO = "Estoque alterado com sucesso";
 
-    private static final String ESTOQUE_JÁ_CONTABILIZADO_COMO_PERDA = "Estoque já foi contabilizado como perda";
+    private static final String ESTOQUE_JÁ_CONTABILIZADO_COMO_PERDA =
+            "Estoque já foi contabilizado como perda";
 
     private static final String PERDA_ADICIONADA_COM_SUCESSO = "Perda adicionada com sucesso";
 
@@ -93,16 +94,17 @@ public class EstoqueServiceImpl implements EstoqueService {
         if (estoqueConsultado.isEmpty()) {
             return new MensagemDTO(ESTOQUE_INEXISTENTE);
         }
-        
+
         Estoque estoque = estoqueConsultado.get();
-        
-        if (!estoque.isPerda()) {
+
+        if (estoque.isPerda()) {
             return new MensagemDTO(ESTOQUE_JÁ_CONTABILIZADO_COMO_PERDA);
         }
-        
+
         estoque.setMotivoPerda(contabilizaPerdaDTO.getMotivoPerda());
         estoque.setPerda(true);
         estoque.setDisponibilidade(false);
+        estoqueRepository.save(estoque);
 
         return new MensagemDTO(PERDA_ADICIONADA_COM_SUCESSO);
     }
