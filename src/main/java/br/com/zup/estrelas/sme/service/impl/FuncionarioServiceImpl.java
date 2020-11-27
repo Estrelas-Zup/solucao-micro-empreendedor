@@ -49,6 +49,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             funcionarioRepository.save(funcionario);
             return new MensagemDTO(FUNCIONARIO_CADASTRADO_COM_SUCESSO);
         }
+        //TODO: Sugiro criar uma constante (Boas praticas :D)
         return new MensagemDTO("Funcionario não cadastrado");
     }
 
