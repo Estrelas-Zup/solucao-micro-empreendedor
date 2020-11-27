@@ -37,10 +37,10 @@ public class CaixaController {
         return caixaService.adicionarCaixa(caixaDTO);
     }
 
-    @ApiOperation(value = "Listar caixa")
+    @ApiOperation(value = "Listar caixas")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Listagem do caixa feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum caixa encontrado!")})
+                    @ApiResponse(code = 204, message = "Nenhum caixa encontrado.")})
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Caixa> listarCaixa() {
         return caixaService.listarCaixa();
@@ -48,8 +48,8 @@ public class CaixaController {
 
     @ApiOperation(value = "Consultar caixa por ID")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Procura do ID do caixa feita com sucesso!"),
-            @ApiResponse(code = 204, message = "Nenhum caixa procurado pelo ID encontrado!")})
+            @ApiResponse(code = 200, message = "Procura ID do caixa feita com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum caixa encontrado pelo ID.")})
     @GetMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Caixa consultarPorId(@PathVariable Long idCaixa) {
         return caixaService.consultarPorId(idCaixa);
@@ -58,7 +58,7 @@ public class CaixaController {
     @ApiOperation(value = "Consultar caixa por data")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Consulta caixa por data realizada com sucesso!"),
-            @ApiResponse(code = 204, message = "Nenhum caixa nesta data encontrado!")})
+            @ApiResponse(code = 204, message = "Nenhum caixa nesta data encontrado.")})
     @GetMapping(path = "/datas", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Caixa> consultarCaixaPorData(@RequestBody ConsultaDataDTO consultaDataDTO) {
         return caixaService.consultarCaixaPorData(consultaDataDTO);
@@ -67,7 +67,7 @@ public class CaixaController {
     @ApiOperation(value = "Alterar caixa")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Alteração do caixa feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum caixa alterado!")})
+                    @ApiResponse(code = 204, message = "Nenhum caixa alterado.")})
     @PutMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO alterarCaixa(@PathVariable Long idCaixa, @RequestBody CaixaDTO caixaDTO) {
         return caixaService.alterarCaixa(idCaixa, caixaDTO);
@@ -76,7 +76,7 @@ public class CaixaController {
     @ApiOperation(value = "Remover caixa")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Remoção do caixa feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum caixa removido!")})
+                    @ApiResponse(code = 204, message = "Nenhum caixa removido.")})
     @DeleteMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO removerCaixa(@PathVariable Long idCaixa) {
         return caixaService.removerCaixa(idCaixa);
