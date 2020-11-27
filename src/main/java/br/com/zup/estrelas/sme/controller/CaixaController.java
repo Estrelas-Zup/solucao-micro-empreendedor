@@ -16,7 +16,10 @@ import br.com.zup.estrelas.sme.dto.CaixaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Caixa;
 import br.com.zup.estrelas.sme.service.CaixaService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api
 @RestController
 @RequestMapping("/caixas")
 public class CaixaController {
@@ -24,6 +27,7 @@ public class CaixaController {
     @Autowired
     CaixaService caixaService;
 
+    @ApiOperation(value = "Insere caixa")
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO adicionarCaixa(@RequestBody CaixaDTO caixaDTO) {
         return caixaService.adicionarCaixa(caixaDTO);
