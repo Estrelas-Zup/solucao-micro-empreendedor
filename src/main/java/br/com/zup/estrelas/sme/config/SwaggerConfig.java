@@ -15,15 +15,16 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurationSupport {
 
-    @Bean
+    @Bean 
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2).select()
                 .apis(RequestHandlerSelectors.basePackage("br.com.zup")).build()
                 .apiInfo(metaData());
     }
 
+
     private ApiInfo metaData() {
-        return new ApiInfoBuilder().title("Spring Boot REST API")
+        return new ApiInfoBuilder().title("Sisger Universe REST API")
                 .description("\"Spring Boot REST API\"").version("1.0.0").build();
     }
 

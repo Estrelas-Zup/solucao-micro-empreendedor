@@ -3,6 +3,7 @@ package br.com.zup.estrelas.sme.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +40,7 @@ public class CaixaController {
 
     @ApiOperation(value = "Listar caixas")
     @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Listagem do caixa feita com sucesso!"),
+            value = {@ApiResponse(code = 200, message = "Listagem do caixa realizada com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum caixa encontrado.")})
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Caixa> listarCaixa() {
