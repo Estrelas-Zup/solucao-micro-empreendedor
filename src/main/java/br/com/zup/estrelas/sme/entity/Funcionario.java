@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 @Entity
 public class Funcionario {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_funcionario")
     private Long idFuncionario;
 
