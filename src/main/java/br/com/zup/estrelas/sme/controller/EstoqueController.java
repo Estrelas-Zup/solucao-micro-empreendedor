@@ -65,11 +65,11 @@ public class EstoqueController {
     }
 
     @PutMapping(path = "/perda/{idEstoque}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Remover estoque")
+    @ApiOperation(value = "Contabilizar Perda")
     @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Remoção do estoque feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum estoque removido!")})
-    public MensagemDTO contablizarPerda(@PathVariable Long idEstoque,
+            value = {@ApiResponse(code = 200, message = "Alteração do estoque feita com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhum estoque alterado!")})
+    public MensagemDTO contabilizarPerda(@PathVariable Long idEstoque,
             @RequestBody ContabilizaPerdaDTO contabilizaPerdaDTO) {
         return estoqueService.contablizarPerda(idEstoque, contabilizaPerdaDTO);
     }
