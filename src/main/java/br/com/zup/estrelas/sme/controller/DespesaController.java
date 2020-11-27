@@ -15,20 +15,22 @@ import br.com.zup.estrelas.sme.dto.DespesaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Despesa;
 import br.com.zup.estrelas.sme.service.DespesaService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("/despesas")
+@Api(value = "Despesa")
 public class DespesaController {
 
     @Autowired
     DespesaService despesaService;
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Inserir despesa")
-    @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
+    @ApiOperation(value = "Adicionar despesa")
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Despesa adiconada com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
     public MensagemDTO adicionarDespesa(@RequestBody DespesaDTO despesaDTO) {
         return despesaService.adicionarDespesa(despesaDTO);
@@ -45,7 +47,7 @@ public class DespesaController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Listar despesa")
+    @ApiOperation(value = "Listar despesas")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Procura da despesa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhuma despesa encontrado!")})
@@ -54,6 +56,9 @@ public class DespesaController {
     }
 
     @DeleteMapping(path = "/{idDespesa}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(value = "Remover despesa")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Despesa removida com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhuma despesa encontrado!")})
     public MensagemDTO removerDespesa(@PathVariable Long idDespesa) {
         return despesaService.removerDespesa(idDespesa);
     }
