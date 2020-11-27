@@ -59,7 +59,7 @@ public class VendaController {
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Listar vendas")
     @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Procura da venda feita com sucesso!"),
+            value = {@ApiResponse(code = 200, message = "Listagem de venda realizada com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhuma venda encontrada!")})
     public List<Venda> listarVendas() {
         return service.listarVendas();
