@@ -58,7 +58,7 @@ public class EstoqueController {
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Listar estoque")
     @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Procura do estoque feita com sucesso!"),
+            value = {@ApiResponse(code = 200, message = "Listagem de estoque realizada com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum estoque encontrado!")})
     public List<Estoque> listarEstoque() {
         return estoqueService.listarEstoques();
