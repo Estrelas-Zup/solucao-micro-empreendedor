@@ -18,8 +18,10 @@ import br.com.zup.estrelas.sme.entity.Caixa;
 import br.com.zup.estrelas.sme.service.CaixaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
-@Api
+@Api(value = "Caixa")
 @RestController
 @RequestMapping("/caixas")
 public class CaixaController {
@@ -27,32 +29,54 @@ public class CaixaController {
     @Autowired
     CaixaService caixaService;
 
-    @ApiOperation(value = "Insere caixa")
+    @ApiOperation(value = "Adicionar caixa")
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
+            @ApiResponse(code = 500, message = "Erro interno no servidor")})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO adicionarCaixa(@RequestBody CaixaDTO caixaDTO) {
         return caixaService.adicionarCaixa(caixaDTO);
     }
 
+    @ApiOperation(value = "Listar caixas")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Listagem do caixa feita com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhum caixa encontrado.")})
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Caixa> listarCaixa() {
         return caixaService.listarCaixa();
     }
 
+    @ApiOperation(value = "Consultar caixa por ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Procura ID do caixa feita com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum caixa encontrado pelo ID.")})
     @GetMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Caixa consultarPorId(@PathVariable Long idCaixa) {
         return caixaService.consultarPorId(idCaixa);
     }
 
+    @ApiOperation(value = "Consultar caixa por data")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Consulta caixa por data realizada com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum caixa nesta data encontrado.")})
     @GetMapping(path = "/datas", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Caixa> consultarCaixaPorData(@RequestBody ConsultaDataDTO consultaDataDTO) {
         return caixaService.consultarCaixaPorData(consultaDataDTO);
     }
 
+    @ApiOperation(value = "Alterar caixa")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Alteração do caixa feita com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhum caixa alterado.")})
     @PutMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO alterarCaixa(@PathVariable Long idCaixa, @RequestBody CaixaDTO caixaDTO) {
         return caixaService.alterarCaixa(idCaixa, caixaDTO);
     }
 
+    @ApiOperation(value = "Remover caixa")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Remoção do caixa feita com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhum caixa removido.")})
     @DeleteMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO removerCaixa(@PathVariable Long idCaixa) {
         return caixaService.removerCaixa(idCaixa);
