@@ -29,11 +29,21 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Adiciona produto")
+    @ApiOperation(value = "Adicionar produto")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
     public MensagemDTO adicionaProduto(@RequestBody ProdutoDTO produtoDTO) {
         return produtoService.adicionarProduto(produtoDTO);
+    }
+
+    @PutMapping(path = "/{idProduto}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(value = "Alterar produto")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Alteração do produto feita com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhum produto alterado!")})
+    public MensagemDTO alteraProduto(@PathVariable Long idProduto,
+            @RequestBody ProdutoDTO produto) {
+        return produtoService.alterarProduto(idProduto, produto);
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -46,10 +56,10 @@ public class ProdutoController {
     }
 
     @GetMapping(path = "/{idProduto}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Consulta produto por Id")
+    @ApiOperation(value = "Consulta produto por ID")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Procura do Id do produto feita com sucesso!"),
-            @ApiResponse(code = 204, message = "Nenhum produto encontrado pelo Id!")})
+            @ApiResponse(code = 200, message = "Procura do ID do produto feita com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum produto encontrado pelo ID!")})
     public Produto consultarPorId(@PathVariable Long idProduto) {
         return produtoService.consultarPorId(idProduto);
     }
@@ -64,18 +74,8 @@ public class ProdutoController {
         return produtoService.consultarPeloNome(nome);
     }
 
-    @PutMapping(path = "/{idProduto}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Altera produto")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Alteração do produto feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum produto alterado!")})
-    public MensagemDTO alteraProduto(@PathVariable Long idProduto,
-            @RequestBody ProdutoDTO produto) {
-        return produtoService.alterarProduto(idProduto, produto);
-    }
-
     @DeleteMapping(path = "/{idProduto}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Exclui produto")
+    @ApiOperation(value = "Remover produto")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Remoção do produto feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum produto removido!")})
