@@ -1,25 +1,52 @@
 package br.com.zup.estrelas.sme.dto;
 
 import java.time.LocalDate;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 public class AdicionarFuncionarioDTO {
 
+    @NotNull(message = "O campo nome não pode ficar em branco")
+    @NotBlank(message = "O campo nome é obrigatório com caracteres!")
     private String nome;
 
+    @NotNull(message = "O campo CPF não pode ficar em branco")
+    @NotBlank(message = "O campo CPF é obrigatório com números!")
+    @Max(value = 11)
     private String cpf;
 
+    @NotNull(message = "O campo endereço não pode ficar em branco")
+    @NotBlank(message = "O campo endereço é obrigatório caracteres!")
     private String endereco;
 
+    @NotNull(message = "O campo data nascimento não pode ficar em branco")
+    @Past(message = "Coloque uma data valida!")
     private LocalDate dataNascimento;
 
+    @NotNull(message = "O campo telefone não pode ficar em branco")
+    @Size(min = 10, max = 11, message = "numeros não validos")
     private String telefone;
 
+    @NotNull(message = "O campo email não pode ficar em branco")
+    @NotBlank(message = "O campo email é obrigatório com caracteres!")
+    @Email(message = "O campo email esta com formato invalido.")
     private String email;
 
+    @NotNull(message = "O campo cargo não pode ficar em branco")
+    @NotBlank(message = "O campo cargo é obrigatório caracteres!")
     private String cargo;
 
+    @NotNull(message = "O campo salário não pode ficar em branco")
+    @Positive(message = "O campo salário deve ser maior que zero!")
     private Double salario;
 
+    @NotNull(message = "O campo número da carteira de trabalh não pode ficar em branco")
+    @NotBlank(message = "O campo número da carteira de trabalho é obrigatório com numeros!")
     private String numeroCarteiraTrabalho;
 
 
