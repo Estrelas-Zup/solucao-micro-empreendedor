@@ -23,56 +23,56 @@ public class Funcionario {
     private Long idFuncionario;
 
 
-    @NotNull(message = "O campo não pode ficar em branco")
+    @NotNull(message = "O campo nome não pode ficar em branco")
     @NotBlank(message = "O campo nome é obrigatório!")
     @Column(nullable = false)
     private String nome;
 
-    @NotNull(message = "O campo não pode ficar em branco")
+    @NotNull(message = "O campo email não pode ficar em branco")
     @NotBlank(message = "O campo email é obrigatório!")
     @Email(message = "O campo email esta com formato invalido.")
     @Column(nullable = false)
     private String email;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @Size(min = 10, max = 11, message = "numeros não validos")
+    @NotNull(message = "O campo telefone não pode ficar em branco")
+    @Size(min = 10, max = 11, message = "O campo telefone deve ter entre 10 e 11 caracteres")
     @Column(nullable = false)
     private String telefone;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @Past(message = "Coloque uma data valida!")
+    @NotNull(message = "O campo data nascimetno não pode ficar em branco")
+    @Past(message = "Coloque uma data nascimento valida!")
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    @NotNull(message = "O campo não pode ficar em branco")
+    @NotNull(message = "O campo endereco não pode ficar em branco")
     @NotBlank(message = "O campo endereço é obrigatório!")
     @Column(nullable = false)
     private String endereco;
 
-    @NotNull(message = "O campo não pode ficar em branco")
+    @NotNull(message = "O campo CPF não pode ficar em branco")
     @NotBlank(message = "O campo CPF é obrigatório!")
     @Max(value = 11)
     @Column(nullable = false, unique = false, length = 11)
     private String cpf;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @Positive(message = "O Salário deve ser maior que zero!")
+    @NotNull(message = "O campo salario não pode ficar em branco")
+    @Positive(message = "O campo salário deve ser maior que zero!")
     @Column(nullable = false)
     private Double salario;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @NotBlank(message = "O campo data de admissão é Obrigatório!")
+    @NotNull(message = "O campo data de admissão não pode ficar em branco")
+    @NotBlank(message = "O campo data de admissão é obrigatório!")
     @PastOrPresent(message = "O campo deve esta com a data atual!")
     @Column(name = "data_admissao", nullable = false)
     private LocalDate dataAdmissao;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @NotBlank(message = "O Campo número da carteira de trabalho é obrigatório!")
+    @NotNull(message = "O campo número da carteira de trabalho não pode ficar em branco")
+    @NotBlank(message = "O campo número da carteira de trabalho é obrigatório!")
     @Column(name = "numero_carteira_trabalho", nullable = false, unique = false)
     private String numeroCarteiraTrabalho;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @NotBlank(message = "O campo Cargo é obrigatório!")
+    @NotNull(message = "O campo cargo não pode ficar em branco")
+    @NotBlank(message = "O campo cargo é obrigatório!")
     @Column(nullable = false)
     private String cargo;
 
