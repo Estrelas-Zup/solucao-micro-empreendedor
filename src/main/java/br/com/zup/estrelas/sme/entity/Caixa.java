@@ -8,12 +8,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Caixa {
+
     @Id
     @Column(name = "id_caixa")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,21 +28,33 @@ public class Caixa {
     private LocalDate data;
 
     @Column(name = "saldo_inicial", nullable = false)
+    @Positive(message = "Saldo inicial deve ser maior que zero!")
+    @NotNull(message = "Saldo inicial não pode ser vazio!")
+    @NotBlank(message = "Saldo inicial não pode estar em branco!")
     private Double saldoInicial;
 
-    @Column(columnDefinition = "Double default 0", name = "valor_total_despesa", insertable = false, updatable = true)
+    @Column(columnDefinition = "Double default 0", name = "valor_total_despesa", insertable = false,
+            updatable = true)
+    @Positive(message = "Valor total de despesa deve ser maior que zero!")
+    @NotNull(message = "Valor total despesa não pode ser vazio!")
+    @NotBlank(message = "Valor total despesa não pode estar em branco!")
     private Double valorTotalDespesa;
 
-    @Column(columnDefinition = "Double default 0", name = "valor_total", insertable = false, updatable = true)
+    @Column(columnDefinition = "Double default 0", name = "valor_total", insertable = false,
+            updatable = true)
+    @Positive(message = "Valor total deve ser maior que zero!")
+    @NotNull(message = "Valor total não pode ser vazio!")
+    @NotBlank(message = "Valor total não pode estar em branco!")
     private Double valorTotal;
 
+    @NotEmpty(message = "Despesas não pode estar vazio!")
     @OneToMany(mappedBy = "caixa")
     @JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Despesa> despesas;
 
     @OneToMany
-//    @JoinColumn(name = "id_venda", foreignKey = @ForeignKey(name = "FK_VENDA_CAIXA"))
+    // @JoinColumn(name = "id_venda", foreignKey = @ForeignKey(name = "FK_VENDA_CAIXA"))
     private List<Venda> vendas;
 
     public Long getIdCaixa() {
