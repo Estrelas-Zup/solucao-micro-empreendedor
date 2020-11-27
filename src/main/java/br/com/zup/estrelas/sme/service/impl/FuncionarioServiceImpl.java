@@ -12,6 +12,7 @@ import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Funcionario;
 import br.com.zup.estrelas.sme.repository.FuncionarioRepository;
 import br.com.zup.estrelas.sme.service.FuncionarioService;
+import br.com.zup.estrelas.sme.service.GestaoService;
 
 @Service
 public class FuncionarioServiceImpl implements FuncionarioService {
@@ -27,15 +28,24 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Autowired
     FuncionarioRepository funcionarioRepository;
 
+    @Autowired
+    GestaoService gestaoService;
+
     @Override
     public MensagemDTO adicionarFuncionario(AdicionarFuncionarioDTO adicionarFuncionarioDTO) {
 
         Funcionario funcionario = new Funcionario();
         BeanUtils.copyProperties(adicionarFuncionarioDTO, funcionario);
 
-        funcionario.setDataAdmissao(LocalDate.now());
-        funcionarioRepository.save(funcionario);
-        return new MensagemDTO(FUNCIONARIO_CADASTRADO_COM_SUCESSO);
+        
+        if (verificarDisponibilidadeContratacao(funcionario.getSalario())) {
+            funcionarioRepository.save(funcionario);
+            
+            funcionario.setDataAdmissao(LocalDate.now());
+            funcionarioRepository.save(funcionario);
+            return new MensagemDTO(FUNCIONARIO_CADASTRADO_COM_SUCESSO);
+        }
+            return new MensagemDTO("Funcionario não cadastrado");
     }
 
     @Override
@@ -50,9 +60,15 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         Funcionario funcionario = funcionarioConsultado.get();
         BeanUtils.copyProperties(alteraFuncionarioDTO, funcionario);
 
-        funcionarioRepository.save(funcionario);
+        if (verificarDisponibilidadeContratacao(funcionario.getSalario())) {
+            funcionarioRepository.save(funcionario);
 
-        return new MensagemDTO(FUNCIONARIO_ALTERADO_COM_SUCESSO);
+            return new MensagemDTO(FUNCIONARIO_ALTERADO_COM_SUCESSO);
+        }
+
+        return new MensagemDTO(
+                "Infelizmente não foi possivel realizar a operação, lucro mensal insuficiente para a contratação.");
+
     }
 
     @Override
@@ -77,10 +93,17 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         return new MensagemDTO(FUNCIONARIO_REMOVIDO_COM_SUCESSO);
     }
 
-    @Override
-    public MensagemDTO verificarDisponibilidadeContratacao(Double salario) {
-        // TODO Auto-generated method stub
-        return null;
+
+    // TODO : finalizar implementação calcula lucro mensal em gestão.
+    public boolean verificarDisponibilidadeContratacao(Double salario) {
+        //
+        // LucroDTO lucroDTO = gestaoService.calcularLucroMensal());
+        //
+        // if (salario <= lucroDTO.getCalcularLucroMensal()) {
+        return true;
+        // }
+        // return false;
+        //
     }
 
 
