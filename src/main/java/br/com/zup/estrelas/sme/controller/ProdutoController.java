@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("/produtos")
-@Api(value = "API REST")
+@Api(value = "Produto")
 public class ProdutoController {
 
     @Autowired
@@ -37,7 +37,7 @@ public class ProdutoController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Lista produto")
+    @ApiOperation(value = "Listar produtos")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Procura do produto feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum produto encontrado!")})
@@ -49,7 +49,7 @@ public class ProdutoController {
     @ApiOperation(value = "Consulta produto por Id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Procura do Id do produto feita com sucesso!"),
-            @ApiResponse(code = 204, message = "Nenhum produto procurado pelo Id encontrado!")})
+            @ApiResponse(code = 204, message = "Nenhum produto encontrado pelo Id!")})
     public Produto consultarPorId(@PathVariable Long idProduto) {
         return produtoService.consultarPorId(idProduto);
     }
@@ -58,7 +58,7 @@ public class ProdutoController {
     @ApiOperation(value = "Consulta produto pelo nome")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Procura do nome do produto feita com sucesso!"),
-            @ApiResponse(code = 204, message = "Nenhum produto procurado pelo nome encontrado!")})
+            @ApiResponse(code = 204, message = "Nenhum produto encontrado pelo nome!")})
     // TODO verificar possibilidade de passar nome no corpo ConsultarPeloNomeDTO
     public List<Produto> consultarPeloNome(@PathVariable String nome) {
         return produtoService.consultarPeloNome(nome);
