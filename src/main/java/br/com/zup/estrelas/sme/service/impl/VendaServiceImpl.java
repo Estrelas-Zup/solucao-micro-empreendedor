@@ -10,9 +10,11 @@ import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.ProdutosVendaDTO;
 import br.com.zup.estrelas.sme.dto.AdicionarVendaDTO;
 import br.com.zup.estrelas.sme.dto.AlterarVendaDTO;
+import br.com.zup.estrelas.sme.entity.Caixa;
 import br.com.zup.estrelas.sme.entity.Estoque;
 import br.com.zup.estrelas.sme.entity.RelatorioVenda;
 import br.com.zup.estrelas.sme.entity.Venda;
+import br.com.zup.estrelas.sme.repository.CaixaRepository;
 import br.com.zup.estrelas.sme.repository.EstoqueRepository;
 import br.com.zup.estrelas.sme.repository.RelatorioVendaRepository;
 import br.com.zup.estrelas.sme.repository.VendaRepository;
@@ -23,16 +25,15 @@ public class VendaServiceImpl implements VendaService {
 
     private static final String VALOR_DESCONTO_SUPERIOR_AO_VALOR_TOTAL =
             "Infelizmente não foi possivel realizar a operação, valor desconto superior ao valor total.";
-
     private static final String VENDA_ALTERADA_COM_SUCESSO = "Venda alterada com sucesso!";
-
     private static final String VENDA_INEXISTENTE =
             "Infelizmente não foi possivel realizar a operação, venda inexistente.";
-
     private static final String PRODUTO_INEXISTENTE =
             "Infelizmente não foi possivel relizar a operação, produto inexistente.";
-
     private static final String VENDA_CADASTRADA_COM_SUCESSO = "Venda cadastrada com sucesso!";
+    private static final String ABERTURA_DE_CAIXA_NAO_REALIZADA =
+            "Infelizmente não foi possivel realizar a operação, ainda não houve abertura de caixa no dia de hoje.";
+
 
     @Autowired
     VendaRepository repository;
@@ -42,6 +43,9 @@ public class VendaServiceImpl implements VendaService {
 
     @Autowired
     RelatorioVendaRepository relatorioVendaRepository;
+
+    @Autowired
+    CaixaRepository caixaRepository;
 
     @Override
     public MensagemDTO adicionarVenda(AdicionarVendaDTO adicionarVendaDTO) {
@@ -76,8 +80,17 @@ public class VendaServiceImpl implements VendaService {
         // TODO: validar valor desconto menor que valorTotalProdutos
         Double valorTotalComDesconto = valorTotalProdutos - adicionarVendaDTO.getValorDesconto();
 
+        Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
+
+        if (caixaConsultado.isEmpty()) {
+            return new MensagemDTO(ABERTURA_DE_CAIXA_NAO_REALIZADA);
+        }
+
+        Caixa caixa = caixaConsultado.get();
+
         venda.setValorTotal(valorTotalComDesconto);
         venda.setDataVenda(LocalDate.now());
+        venda.setCaixa(caixa);
 
         repository.save(venda);
 
@@ -143,7 +156,7 @@ public class VendaServiceImpl implements VendaService {
         return new MensagemDTO(VENDA_INEXISTENTE);
     }
 
-    //TODO: Verificar em um melhor tipo de retorno
+    // TODO: Verificar em um melhor tipo de retorno
     public void adicionarRelatorioVenda(AdicionarVendaDTO adicionarVendaDTO) {
         List<ProdutosVendaDTO> produtosVenda = adicionarVendaDTO.getProdutosVenda();
 

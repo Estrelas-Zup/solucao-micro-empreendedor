@@ -17,7 +17,8 @@ import br.com.zup.estrelas.sme.service.CaixaService;
 public class CaixaServiceImpl implements CaixaService {
 
     private static final String CAIXA_CADASTRADO_COM_SUCESSO = "Caixa cadastrado com sucesso!";
-    private static final String CAIXA_INEXISTENTE = "Não foi possivel realizar a operação, caixa inexistente.";
+    private static final String CAIXA_INEXISTENTE =
+            "Não foi possivel realizar a operação, caixa inexistente.";
     private static final String CAIXA_REMOVIDO_COM_SUCESSO = "Caixa removido com sucesso!";
     private static final String CAIXA_ALTERADO_COM_SUCESSO = "Caixa alterado com sucesso!";
 
@@ -29,10 +30,10 @@ public class CaixaServiceImpl implements CaixaService {
         Caixa caixa = new Caixa();
 
         BeanUtils.copyProperties(caixaDTO, caixa);
-        //Validar existencia da data
-        
+        // Validar existencia da data
+
         caixa.setData(LocalDate.now());
-        
+
         caixaRepository.save(caixa);
         return new MensagemDTO(CAIXA_CADASTRADO_COM_SUCESSO);
     }
@@ -45,8 +46,8 @@ public class CaixaServiceImpl implements CaixaService {
         return caixaRepository.findById(idCaixa).orElse(null);
     }
 
-    public List<Caixa> consultarCaixaPorData(ConsultaDataDTO dataDTO) {   
-        return caixaRepository.findByData(dataDTO.getData());
+    public Caixa consultarCaixaPorData(ConsultaDataDTO dataDTO) {
+        return caixaRepository.findByData(dataDTO.getData()).orElse(null);
     }
 
     public MensagemDTO alterarCaixa(Long idCaixa, CaixaDTO caixaDTO) {

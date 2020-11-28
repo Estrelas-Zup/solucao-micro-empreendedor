@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.sme.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
@@ -9,13 +10,21 @@ import br.com.zup.estrelas.sme.dto.DespesaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Caixa;
 import br.com.zup.estrelas.sme.entity.Despesa;
+import br.com.zup.estrelas.sme.entity.Gestao;
 import br.com.zup.estrelas.sme.repository.CaixaRepository;
 import br.com.zup.estrelas.sme.repository.DespesaRepository;
+import br.com.zup.estrelas.sme.repository.GestaoRepository;
 import br.com.zup.estrelas.sme.service.DespesaService;
 
 @Service
 public class DespesaServiceImpl implements DespesaService {
 
+    private static final String NÃO_HOUVE_ABERTURA_DE_COMERCIO =
+            "Infelizmente não foi possivel realizar a operação, não houve abertura de comercio.";
+    private static final String VALOR_DA_DESPESA_SUPERIOR_AO_CAPITAL_SOCIAL =
+            "Infelizmente não foi possivel realizar a operação, valor da despesa superior ao capital social";
+    private static final String ABERTURA_DE_CAIXA_NAO_REALIZADA =
+            "Infelizmente não foi possivel realizar a operação, ainda não houve abertura de caixa no dia de hoje.";
     private static final String DESPESA_CADASTRADA_COM_SUCESSO = "Despesa cadastrada com sucesso!";
     private static final String DESPESA_INEXISTENTE =
             "Não foi possivel realizar a operação, despesa inexistente.";
@@ -28,11 +37,35 @@ public class DespesaServiceImpl implements DespesaService {
     @Autowired
     CaixaRepository caixaRepository;
 
+    @Autowired
+    GestaoRepository gestaoRepository;
+
     public MensagemDTO adicionarDespesa(DespesaDTO despesaDTO) {
+        Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
+
+        if (caixaConsultado.isEmpty()) {
+            return new MensagemDTO(ABERTURA_DE_CAIXA_NAO_REALIZADA);
+        }
+
+        Caixa caixa = caixaConsultado.get();
+
+        Optional<Gestao> gestaoConsultada = buscarGestao();
+
+        if (gestaoConsultada.isEmpty()) {
+            return new MensagemDTO(NÃO_HOUVE_ABERTURA_DE_COMERCIO);
+        }
+
+        Gestao gestao = gestaoConsultada.get();
+
+        if (verificarDisponibilidadeCapitalSocial(despesaDTO, gestao)) {
+            adicionarNovoValorCapitalSocialGestao(despesaDTO, gestao);
+        } else {
+            return new MensagemDTO(VALOR_DA_DESPESA_SUPERIOR_AO_CAPITAL_SOCIAL);
+        }
+
+        adicionarValorDepesaEmCaixa(caixa, despesaDTO.getValor());
+
         Despesa despesa = new Despesa();
-
-        Caixa caixa = caixaRepository.findFirstByOrderByIdCaixaDesc();
-
         BeanUtils.copyProperties(despesaDTO, despesa);
 
         despesa.setCaixa(caixa);
@@ -62,10 +95,65 @@ public class DespesaServiceImpl implements DespesaService {
 
     public MensagemDTO removerDespesa(Long idDespesa) {
         if (despesaRepository.existsById(idDespesa)) {
+            creditarCapitalSocial(idDespesa);
             despesaRepository.deleteById(idDespesa);
             return new MensagemDTO(DESPESA_REMOVIDA_COM_SUCESSO);
         }
 
         return new MensagemDTO(DESPESA_INEXISTENTE);
+    }
+
+    public boolean verificarDisponibilidadeCapitalSocial(DespesaDTO despesaDTO, Gestao gestao) {
+        boolean verificarValorDespesaMaiorCapitalSocial =
+                despesaDTO.getValor() > gestao.getCapitalSocial();
+
+        if (verificarValorDespesaMaiorCapitalSocial) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void adicionarNovoValorCapitalSocialGestao(DespesaDTO despesaDTO, Gestao gestao) {
+        Double novoValorCapitalSocial = gestao.getCapitalSocial() - despesaDTO.getValor();
+        gestao.setCapitalSocial(novoValorCapitalSocial);
+
+        gestaoRepository.save(gestao);
+    }
+
+    public void adicionarValorDepesaEmCaixa(Caixa caixa, Double valorDespesa) {
+        caixa.setValorTotalDespesa(caixa.getValorTotalDespesa() + valorDespesa);
+
+        caixaRepository.save(caixa);
+    }
+
+    public void creditarCapitalSocial(Long idDespesa) {
+        Despesa despesa = despesaRepository.findById(idDespesa).get();
+
+        Gestao gestaoConsultada = buscarGestao().get();
+
+        gestaoConsultada.setCapitalSocial(gestaoConsultada.getCapitalSocial() + despesa.getValor());
+
+        gestaoRepository.save(gestaoConsultada);
+        
+        subtrairValorTotalDespesaCaixa(despesa);
+    }
+
+
+    public void subtrairValorTotalDespesaCaixa(Despesa despesa) {
+        Long idCaixa = despesa.getCaixa().getIdCaixa();
+        
+        Caixa caixa = caixaRepository.findById(idCaixa).get();
+        
+        caixa.setValorTotalDespesa(caixa.getValorTotalDespesa() - despesa.getValor());
+        
+        caixaRepository.save(caixa);
+    }
+
+
+    public Optional<Gestao> buscarGestao() {
+        List<Gestao> listaGestao = (List<Gestao>) gestaoRepository.findAll();
+
+        return listaGestao.stream().findFirst();
     }
 }
