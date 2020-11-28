@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/usuarios")
-@Api(value = "Usuario")
+@Api(value = "Usuário", description = "REST API Usuário", tags = {"Usuário"})
 public class UsuarioController {
 
     @Autowired
@@ -53,9 +53,10 @@ public class UsuarioController {
 
     @GetMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar usuário por Email")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Procura do usuário feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum usuário encontrado pelo Email!")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200,
+                    message = "Consulta do usuário por email realizada com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum usuário encontrado pelo Email.")})
     public Usuario consultarUsuarioPorEmail(@PathVariable String email) {
 
         return usuarioService.consultarUsuarioPorEmail(email);
@@ -63,9 +64,9 @@ public class UsuarioController {
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Listar usuário")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Listagem de usuários realizada com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum usuário encontrado!")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Listagem de usuários realizada com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum usuário encontrado!")})
     public List<Usuario> listarUsuario() {
         return usuarioService.listarUsuarios();
 

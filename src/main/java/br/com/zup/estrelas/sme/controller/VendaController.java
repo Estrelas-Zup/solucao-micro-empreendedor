@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/vendas")
-@Api(value = "Venda")
+@Api(value = "Venda", description = "REST API Venda", tags = {"Venda"})
 public class VendaController {
 
     @Autowired
@@ -49,9 +49,9 @@ public class VendaController {
 
     @GetMapping(path = "/{idVenda}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Buscar venda por ID")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Procura do ID da venda feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhuma venda encontrada pelo ID!")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Procura do ID da venda feita com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhuma venda encontrada pelo ID!")})
     public Venda buscarVendaPorId(@PathVariable Long idVenda) {
         return service.buscarVendaPorId(idVenda);
     }

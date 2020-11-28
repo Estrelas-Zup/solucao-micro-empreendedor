@@ -24,8 +24,10 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
 
     private ApiInfo metaData() {
-        return new ApiInfoBuilder().title("Sisger Universe REST API")
-                .description("\"Spring Boot REST API\"").version("1.0.0").build();
+        return new ApiInfoBuilder().title("Sisger Universe REST API").description(
+                "Sistema automatizado, que calcula estrategicamente a otimização do controle de estoque e vendas.\n"
+                + "Saiba mais através de nosso [GitHub](https://github.com/Estrelas-Zup/solucao-micro-empreendedor).")
+                .version("1.0.0").build();
     }
 
     @Override
