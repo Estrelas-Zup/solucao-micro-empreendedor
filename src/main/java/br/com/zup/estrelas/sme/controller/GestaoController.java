@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/gestao")
-@Api(value = "Gestão", description = "REST API Gestão", tags = { "Gestão" })
+@Api(value = "Gestão", description = "REST API Gestão", tags = {"Gestão"})
 public class GestaoController {
 
     @Autowired

@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("/despesas")
-@Api(value = "Despesa", description = "REST API Despesa", tags = { "Despesa" })
+@Api(value = "Despesa", description = "REST API Despesa", tags = {"Despesa"})
 public class DespesaController {
 
     @Autowired

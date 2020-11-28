@@ -24,55 +24,58 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/funcionarios")
-@Api(value = "Funcionário", description = "REST API Funcionário", tags = { "Funcionário" })
+@Api(value = "Funcionário", description = "REST API Funcionário", tags = {"Funcionário"})
 public class FuncionarioController {
-    
+
     @Autowired
     FuncionarioService funcionarioService;
-    
-    @PostMapping (produces = {MediaType.APPLICATION_JSON_VALUE})
+
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Adicionar funcionário")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor.")})
-    public MensagemDTO adicionarFuncionario(@RequestBody AdicionarFuncionarioDTO adicionarFuncionarioDTO) {
+    public MensagemDTO adicionarFuncionario(
+            @RequestBody AdicionarFuncionarioDTO adicionarFuncionarioDTO) {
         return funcionarioService.adicionarFuncionario(adicionarFuncionarioDTO);
     }
-    
+
     @PutMapping(path = "/{idFuncionario}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Alterar funcionário")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Alteração do funcionário feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum funcionário alterado.")})
-    public MensagemDTO alterarFuncionario(@PathVariable Long idFuncionario, @RequestBody AlteraFuncionarioDTO alteraFuncionarioDTO) {
-        return funcionarioService.alterarFuncionario(idFuncionario, alteraFuncionarioDTO); 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Alteração do funcionário feita com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum funcionário alterado.")})
+    public MensagemDTO alterarFuncionario(@PathVariable Long idFuncionario,
+            @RequestBody AlteraFuncionarioDTO alteraFuncionarioDTO) {
+        return funcionarioService.alterarFuncionario(idFuncionario, alteraFuncionarioDTO);
     }
-    
-    @GetMapping(path = "/{cpf}", produces = { MediaType.APPLICATION_JSON_VALUE })
+
+    @GetMapping(path = "/{cpf}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar funcionário por CPF")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Consulta do funcionário pelo CPF realizada com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum funcionário encontrado pelo CPF.")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200,
+                    message = "Consulta do funcionário pelo CPF realizada com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum funcionário encontrado pelo CPF.")})
     public Funcionario consultarFuncionarioPorCpf(@PathVariable String cpf) {
         return funcionarioService.consultarFuncionarioPorCpf(cpf);
     }
-    
-    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Listar funcionário")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Listagem de funcionários realizada com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum funcionário encontrado!")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Listagem de funcionários realizada com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum funcionário encontrado!")})
     public List<Funcionario> listarFuncionarios() {
         return funcionarioService.listarFuncionarios();
     }
-    
-    @DeleteMapping(path = "/{cpf}", produces = { MediaType.APPLICATION_JSON_VALUE })
+
+    @DeleteMapping(path = "/{cpf}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover funcionário")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Remoção do funcionário feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum funcionário removido!")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Remoção do funcionário feita com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum funcionário removido!")})
     @Transactional
     public MensagemDTO removerFuncionario(@PathVariable String cpf) {
         return funcionarioService.removerFuncionario(cpf);
     }
-    
+
 }

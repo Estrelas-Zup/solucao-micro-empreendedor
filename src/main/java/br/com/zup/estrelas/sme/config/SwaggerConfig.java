@@ -27,8 +27,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         return new ApiInfoBuilder().title("Sisger Universe REST API").description(
                 "Sistema automatizado, que calcula estrategicamente a otimização do controle de estoque e vendas.\n"
                 + "Saiba mais através de nosso [GitHub](https://github.com/Estrelas-Zup/solucao-micro-empreendedor).")
-                .version("1.0.0")
-                .build();
+                .version("1.0.0").build();
     }
 
     @Override
