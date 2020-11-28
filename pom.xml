@@ -13,7 +13,7 @@
 	<artifactId>solucao-micro-empreendedor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>solucao-micro-empreendedor</name>
-	<description>Mudar essa descrição depois</description>
+	<description>Sistema automatizado que calcula estrategicamente a otimização do controle de estoque e vendas.</description>
 
 	<properties>
 		<java.version>11</java.version>
