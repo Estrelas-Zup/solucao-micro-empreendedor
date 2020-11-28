@@ -8,9 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Despesa {
@@ -29,8 +30,9 @@ public class Despesa {
     private Double valor;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "id_caixa", foreignKey = @ForeignKey(name = "FK_CAIXA_DESPESA"))
+    @NotNull(message = "Caixa não pode ser vazio!")
+    @Valid
     private Caixa caixa;
 
     public Long getIdDespesa() {

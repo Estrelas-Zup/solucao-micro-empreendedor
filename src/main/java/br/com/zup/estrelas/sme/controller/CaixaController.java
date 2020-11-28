@@ -3,7 +3,6 @@ package br.com.zup.estrelas.sme.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,9 +47,9 @@ public class CaixaController {
     }
 
     @ApiOperation(value = "Consultar caixa por ID")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Procura ID do caixa feita com sucesso!"),
-            @ApiResponse(code = 204, message = "Nenhum caixa encontrado pelo ID.")})
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Procura ID do caixa feita com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhum caixa encontrado pelo ID.")})
     @GetMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Caixa consultarPorId(@PathVariable Long idCaixa) {
         return caixaService.consultarPorId(idCaixa);
@@ -61,7 +60,7 @@ public class CaixaController {
             @ApiResponse(code = 200, message = "Consulta caixa por data realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum caixa nesta data encontrado.")})
     @GetMapping(path = "/datas", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Caixa> consultarCaixaPorData(@RequestBody ConsultaDataDTO consultaDataDTO) {
+    public Caixa consultarCaixaPorData(@RequestBody ConsultaDataDTO consultaDataDTO) {
         return caixaService.consultarCaixaPorData(consultaDataDTO);
     }
 

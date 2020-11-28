@@ -15,7 +15,8 @@ import br.com.zup.estrelas.sme.service.ProdutoService;
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
 
-    private static final String PRODUTO_CADASTRADO_EM_ESTOQUE = "Infelizmente não foi possivel realizar a operação, produto cadastrado em estoque.";
+    private static final String PRODUTO_CADASTRADO_EM_ESTOQUE =
+            "Infelizmente não foi possivel realizar a operação, produto cadastrado em estoque.";
     private static final String PRODUTO_CADASTRADO_COM_SUCESSO = "Produto cadastrado com sucesso!";
     private static final String PRODUTO_INEXISTENTE =
             "Infelizmente não foi possivel realizar a operação, produto inexistente.";
@@ -24,7 +25,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Autowired
     ProdutoRepository produtoRepository;
-    
+
     @Autowired
     EstoqueRepository estoqueRepository;
 
@@ -65,15 +66,16 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     public MensagemDTO removerProduto(Long idProduto) {
-        boolean verificaExistenciaProdutoEmEstoque = !estoqueRepository.findAllByProdutoIdProduto(idProduto).isEmpty();
+        boolean verificaExistenciaProdutoEmEstoque =
+                !estoqueRepository.findAllByProdutoIdProduto(idProduto).isEmpty();
         boolean verificaInexistenciaProduto = !produtoRepository.existsById(idProduto);
-        
+
         if (verificaInexistenciaProduto) {
             return new MensagemDTO(PRODUTO_INEXISTENTE);
         }
-        
-        if(verificaExistenciaProdutoEmEstoque) {
-            return new MensagemDTO(PRODUTO_CADASTRADO_EM_ESTOQUE); 
+
+        if (verificaExistenciaProdutoEmEstoque) {
+            return new MensagemDTO(PRODUTO_CADASTRADO_EM_ESTOQUE);
         }
 
         produtoRepository.deleteById(idProduto);

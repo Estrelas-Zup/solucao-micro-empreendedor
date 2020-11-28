@@ -12,7 +12,7 @@ public interface CaixaService {
 
     public List<Caixa> listarCaixa();
 
-    public List<Caixa> consultarCaixaPorData(ConsultaDataDTO consultaDataDTO);
+    public Caixa consultarCaixaPorData(ConsultaDataDTO consultaDataDTO);
 
     public Caixa consultarPorId(Long idCaixa);
 

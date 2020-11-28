@@ -3,11 +3,16 @@ package br.com.zup.estrelas.sme.entity;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
@@ -34,6 +39,12 @@ public class Venda {
     @Column(name = "data_venda", nullable = false)
     @FutureOrPresent(message = "Data de venda deve ser igual data atual ou superior.")
     private LocalDate dataVenda;
+
+    @ManyToOne
+    @JoinColumn(name = "id_caixa", foreignKey = @ForeignKey(name = "FK_CAIXA_VENDA"))
+    @NotNull(message = "Caixa não pode ser vazio!")
+    @Valid
+    private Caixa caixa;
 
     public Long getIdVenda() {
         return idVenda;
@@ -73,5 +84,13 @@ public class Venda {
 
     public void setDataVenda(LocalDate dataVenda) {
         this.dataVenda = dataVenda;
+    }
+
+    public Caixa getCaixa() {
+        return caixa;
+    }
+
+    public void setCaixa(Caixa caixa) {
+        this.caixa = caixa;
     }
 }
