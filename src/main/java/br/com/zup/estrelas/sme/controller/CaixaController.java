@@ -21,9 +21,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Api(value = "Caixa")
 @RestController
 @RequestMapping("/caixas")
+@Api(value = "Caixa", description = "REST API Caixa", tags = {"Caixa"})
 public class CaixaController {
 
     @Autowired
@@ -47,9 +47,9 @@ public class CaixaController {
     }
 
     @ApiOperation(value = "Consultar caixa por ID")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Procura ID do caixa feita com sucesso!"),
-            @ApiResponse(code = 204, message = "Nenhum caixa encontrado pelo ID.")})
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Procura ID do caixa feita com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhum caixa encontrado pelo ID.")})
     @GetMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Caixa consultarPorId(@PathVariable Long idCaixa) {
         return caixaService.consultarPorId(idCaixa);
