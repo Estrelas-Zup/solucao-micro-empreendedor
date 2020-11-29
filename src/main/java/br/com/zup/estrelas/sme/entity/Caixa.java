@@ -41,6 +41,17 @@ public class Caixa {
     @NotBlank(message = "Valor total não pode estar em branco!")
     private Double valorTotal;
 
+    @Column(name = "caixa_aberto")
+    private boolean caixaAberto;
+
+    public boolean isCaixaAberto() {
+        return caixaAberto;
+    }
+
+    public void setCaixaAberto(boolean caixaAberto) {
+        this.caixaAberto = caixaAberto;
+    }
+
     public Long getIdCaixa() {
         return idCaixa;
     }

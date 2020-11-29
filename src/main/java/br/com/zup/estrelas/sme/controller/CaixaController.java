@@ -82,4 +82,12 @@ public class CaixaController {
         return caixaService.removerCaixa(idCaixa);
     }
 
+    @ApiOperation(value = "Fechar caixa")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Fechamento do caixa feita com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhum caixa fechado.")})
+    @PutMapping(path = "/fechamento/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public MensagemDTO fechamentoCaixa(@PathVariable Long idCaixa) {
+        return caixaService.fechamentoCaixa(idCaixa);
+    }
 }
