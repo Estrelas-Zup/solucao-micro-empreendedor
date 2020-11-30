@@ -2,6 +2,7 @@ package br.com.zup.estrelas.sme.controller;
 
 import java.util.List;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +35,7 @@ public class UsuarioController {
     @ApiOperation(value = "Adicionar usuário")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
-    public MensagemDTO adicionarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public MensagemDTO adicionarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         return usuarioService.adicionarUsuario(usuarioDTO);
     }
 
