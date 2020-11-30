@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/estoques")
-@Api(value = "Estoque")
+@Api(value = "Estoque", description = "REST API Estoque", tags = {"Estoque"})
 public class EstoqueController {
 
     @Autowired
@@ -57,9 +57,9 @@ public class EstoqueController {
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Listar estoque")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Listagem de estoque realizada com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum estoque encontrado!")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Listagem de estoque realizada com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum estoque encontrado!")})
     public List<Estoque> listarEstoque() {
         return estoqueService.listarEstoques();
     }

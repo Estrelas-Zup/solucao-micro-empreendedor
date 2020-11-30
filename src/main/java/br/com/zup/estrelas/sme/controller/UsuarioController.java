@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import br.com.zup.estrelas.sme.dto.AlterarUsuarioDTO;
+import br.com.zup.estrelas.sme.dto.RemoveUsuarioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.UsuarioDTO;
 import br.com.zup.estrelas.sme.entity.Usuario;
@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/usuarios")
-@Api(value = "Usuario")
+@Api(value = "Usuário", description = "REST API Usuário", tags = {"Usuário"})
 public class UsuarioController {
 
     @Autowired
@@ -40,23 +40,22 @@ public class UsuarioController {
     }
 
     // TODO: Passar email no corpo e não na URL
-    @PutMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Alterar usuário")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Alteração do usuário feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário alterado!")})
     @Transactional
-    public MensagemDTO alterarUsuario(@PathVariable String email,
-            @RequestBody AlterarUsuarioDTO alterarUsuarioDTO) {
-
-        return usuarioService.alterarUsuario(email, alterarUsuarioDTO);
+    public MensagemDTO alterarUsuario(@RequestBody UsuarioDTO alterarUsuarioDTO) {
+        return usuarioService.alterarUsuario(alterarUsuarioDTO);
     }
 
     @GetMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar usuário por Email")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Procura do usuário feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum usuário encontrado pelo Email!")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200,
+                    message = "Consulta do usuário por email realizada com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum usuário encontrado pelo Email.")})
     public Usuario consultarUsuarioPorEmail(@PathVariable String email) {
 
         return usuarioService.consultarUsuarioPorEmail(email);
@@ -64,22 +63,22 @@ public class UsuarioController {
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Listar usuário")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Listagem de usuários realizada com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum usuário encontrado!")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Listagem de usuários realizada com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum usuário encontrado!")})
     public List<Usuario> listarUsuario() {
         return usuarioService.listarUsuarios();
 
     }
 
-    @DeleteMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover usuário")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Remoção do usuário feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário removido!")})
     @Transactional
-    public MensagemDTO removerUsuario(@PathVariable String email) {
-        return usuarioService.removerUsuario(email);
+    public MensagemDTO removerUsuario(@RequestBody RemoveUsuarioDTO removeUsuarioDTO) {
+        return usuarioService.removerUsuario(removeUsuarioDTO);
     }
 
 }

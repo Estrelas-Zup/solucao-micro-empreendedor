@@ -21,9 +21,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Api(value = "Caixa")
 @RestController
 @RequestMapping("/caixas")
+@Api(value = "Caixa", description = "REST API Caixa", tags = {"Caixa"})
 public class CaixaController {
 
     @Autowired
