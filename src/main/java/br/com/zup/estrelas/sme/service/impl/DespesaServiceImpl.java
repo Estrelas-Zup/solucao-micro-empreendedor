@@ -89,12 +89,12 @@ public class DespesaServiceImpl implements DespesaService {
         Double novoValorDespesa = despesaDTO.getValor();
 
         boolean valorTotalDespesaDiferenteAtual = valorAtualDespesa != novoValorDespesa;
-        
-        gestao.setCapitalSocial(gestao.getCapitalSocial() + valorAtualDespesa);
 
         if (valorTotalDespesaDiferenteAtual) {
+            gestao.setCapitalSocial(gestao.getCapitalSocial() + valorAtualDespesa);
+
             if (verificarDisponibilidadeCapitalSocial(despesaDTO, gestao)) {
-                creditarCapitalSocialGestao(valorAtualDespesa);   
+                creditarCapitalSocialGestao(valorAtualDespesa);
                 subtrairValorTotalDespesaCaixa(valorAtualDespesa, idCaixa);
 
                 subtrairCapitalSocialGestao(novoValorDespesa);
