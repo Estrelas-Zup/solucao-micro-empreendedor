@@ -5,8 +5,8 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import br.com.zup.estrelas.sme.dto.AlterarUsuarioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
+import br.com.zup.estrelas.sme.dto.RemoveUsuarioDTO;
 import br.com.zup.estrelas.sme.dto.UsuarioDTO;
 import br.com.zup.estrelas.sme.entity.Usuario;
 import br.com.zup.estrelas.sme.repository.UsuarioRepository;
@@ -27,10 +27,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public MensagemDTO adicionarUsuario(UsuarioDTO usuarioDTO) {
+    public MensagemDTO adicionarUsuario(UsuarioDTO adicionaUsuarioDTO) {
+        
         Usuario usuario = new Usuario();
-
-        BeanUtils.copyProperties(usuarioDTO, usuario);
+        BeanUtils.copyProperties(adicionaUsuarioDTO, usuario);
 
         usuarioRepository.save(usuario);
 
@@ -38,9 +38,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     //TODO: Alterar UsuarioDTO para AlteraUsuarioDTO (senha, role)
-    public MensagemDTO alterarUsuario(String email, AlterarUsuarioDTO alterarUsuarioDTO) {
+    public MensagemDTO alterarUsuario(UsuarioDTO alterarUsuarioDTO) {
 
-        Optional<Usuario> usuarioConsultado = usuarioRepository.findById(email);
+        Optional<Usuario> usuarioConsultado = usuarioRepository.findById(alterarUsuarioDTO.getEmail());
 
         if (usuarioConsultado.isEmpty()) {
             return new MensagemDTO(USUARIO_INEXISTENTE);
@@ -62,9 +62,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         return (List<Usuario>) usuarioRepository.findAll();
     }
 
-    public MensagemDTO removerUsuario(String email) {
-        if (usuarioRepository.existsById(email)) {
-            usuarioRepository.deleteById(email);
+    public MensagemDTO removerUsuario(RemoveUsuarioDTO removeUsuarioDTO) {
+        
+        if (usuarioRepository.existsById(removeUsuarioDTO.getEmail())) {
+            usuarioRepository.deleteById(removeUsuarioDTO.getEmail());
             return new MensagemDTO(USUARIO_EXCLUIDO_COM_SUCESSO);
         }
 
