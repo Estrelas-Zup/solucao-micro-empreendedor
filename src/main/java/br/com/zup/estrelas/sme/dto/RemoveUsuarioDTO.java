@@ -4,9 +4,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 public class RemoveUsuarioDTO {
-
-    @Email(message = "O Email é obrigatorio")
-    @NotBlank(message = "Email não deve ter apenas espaço.")
+    @Email(message = "O campo email esta invalido.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String email;
 
     public String getEmail() {

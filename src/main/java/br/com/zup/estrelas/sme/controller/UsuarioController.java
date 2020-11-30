@@ -39,14 +39,13 @@ public class UsuarioController {
         return usuarioService.adicionarUsuario(usuarioDTO);
     }
 
-    // TODO: Passar email no corpo e não na URL
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Alterar usuário")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Alteração do usuário feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário alterado!")})
     @Transactional
-    public MensagemDTO alterarUsuario(@RequestBody UsuarioDTO alterarUsuarioDTO) {
+    public MensagemDTO alterarUsuario(@Valid @RequestBody UsuarioDTO alterarUsuarioDTO) {
         return usuarioService.alterarUsuario(alterarUsuarioDTO);
     }
 
@@ -56,7 +55,7 @@ public class UsuarioController {
             @ApiResponse(code = 200,
                     message = "Consulta do usuário por email realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum usuário encontrado pelo Email.")})
-    public Usuario consultarUsuarioPorEmail(@PathVariable String email) {
+    public Usuario consultarUsuarioPorEmail(@Valid @PathVariable String email) {
 
         return usuarioService.consultarUsuarioPorEmail(email);
     }
@@ -77,7 +76,7 @@ public class UsuarioController {
             value = {@ApiResponse(code = 200, message = "Remoção do usuário feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário removido!")})
     @Transactional
-    public MensagemDTO removerUsuario(@RequestBody RemoveUsuarioDTO removeUsuarioDTO) {
+    public MensagemDTO removerUsuario(@Valid @RequestBody RemoveUsuarioDTO removeUsuarioDTO) {
         return usuarioService.removerUsuario(removeUsuarioDTO);
     }
 

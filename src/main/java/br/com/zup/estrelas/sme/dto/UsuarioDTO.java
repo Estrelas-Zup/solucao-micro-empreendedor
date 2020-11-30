@@ -7,15 +7,15 @@ import javax.validation.constraints.Size;
 
 
 public class UsuarioDTO {
-    @Email(message = "O Email é obrigatorio")
-    @NotBlank(message = "O campo não pode ficar vazio ou conter espaço.")
+    @Email(message = "O campo email esta invalido.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String email;
 
-    @NotBlank(message = "O campo não pode ficar vazio ou conter espaço.")
-    @Size(min = 8, max = 16, message = "Senha deve conterno minimo 8 caracteres e no maximo 16 ")
+    @Size(min = 8, max = 16, message = "O campo deve conter no mínimo 8 e no máximo 16 caracteres.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String senha;
 
-    @NotBlank(message = "O campo não pode ficar vazio ou conter espaço.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String role;
 
     public String getEmail() {
