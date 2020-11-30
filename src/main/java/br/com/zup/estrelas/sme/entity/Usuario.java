@@ -6,48 +6,29 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
 @Entity
 public class Usuario {
     @Id
-    @Email(message = "O Email é obrigatorio")
-    @NotBlank(message = "Email não deve ter apenas espaço.")
     @Column(nullable = false)
+    @Email(message = "O campo email esta invalido.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String email;
 
-
-    @NotBlank(message = "Não pode conter espaço.")
-    @Size(min = 8, max = 16, message = "Senha deve conterno minimo 8 caracteres e no maximo 16 ")
-    @NotNull(message = "O campo não pode ficar vazio.")
     @Column(nullable = false)
+    @Size(min = 8, max = 16, message = "O campo deve conter no mínimo 8 e no máximo 16 caracteres.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String senha;
 
-    @NotNull(message = "O campo não pode ficar vazio.")
-    @NotBlank(message = "Não pode conter espaço.")
     @Column(nullable = false)
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String role;
 
     public String getEmail() {
         return email;
     }
-
-
-    public Usuario() {
-
-    }
-
-
-    public Usuario(String email, String senha, String role) {
-        super();
-        this.email = email;
-        this.senha = senha;
-        this.role = role;
-    }
-
-
 
     public void setEmail(String email) {
         this.email = email;
