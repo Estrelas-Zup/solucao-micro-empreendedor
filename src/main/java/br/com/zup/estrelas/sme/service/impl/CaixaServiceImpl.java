@@ -22,6 +22,16 @@ import br.com.zup.estrelas.sme.service.DespesaService;
 @Service
 public class CaixaServiceImpl implements CaixaService {
 
+    private static final String PRODUTOS_COM_A_DATA_DE_VALIDADE_VENCIDO =
+            "Produtos com a data de validade vencido!";
+    private static final String CAIXA_FECHADO_COM_SUCESSO = "Caixa fechado com sucesso!";
+    private static final String CAIXA_JÁ_ESTAR_FECHADO = "Caixa já se encontra fechado!";
+    private static final String CAIXA_EXISTENTE =
+            "Infelizmente não foi possivel realizar operação, caixa já existente com a data atual";
+    private static final String SALDO_INICIAL_MAIOR_QUE_CAPITAL_INICIAL =
+            "Infelizmente não foi possivel realizar opreação, saldo inicial maior que capital inicial";
+    private static final String GESTÃO_INEXISTENTE =
+            "Infelizmente não foi possivel realizar a operação, gestão inexistente!";
     private static final String CAIXA_CADASTRADO_COM_SUCESSO = "Caixa cadastrado com sucesso!";
     private static final String CAIXA_INEXISTENTE =
             "Não foi possivel realizar a operação, caixa inexistente.";
@@ -44,33 +54,24 @@ public class CaixaServiceImpl implements CaixaService {
         Optional<Gestao> gestaoConsultado = buscarGestao();
 
         if (gestaoConsultado.isEmpty()) {
-            return new MensagemDTO(
-                    "Infelizmente não foi possivel realizar a operação, gestão inexistente!");
+            return new MensagemDTO(GESTÃO_INEXISTENTE);
         }
 
         Gestao gestao = gestaoConsultado.get();
         boolean verificaSaldoCapital = gestao.getCapitalSocial() < caixaDTO.getSaldoInicial();
 
         if (verificaSaldoCapital) {
-            return new MensagemDTO(
-                    "Infelizmente não foi possivel realizar opreação, saldo inicial maior que capital inicial");
+            return new MensagemDTO(SALDO_INICIAL_MAIOR_QUE_CAPITAL_INICIAL);
         }
 
         if (caixaRepository.existsByData(LocalDate.now())) {
-            return new MensagemDTO(
-                    "Infelizmente não foi possivel realizar operação, caixa já existente com a data atual");
+            return new MensagemDTO(CAIXA_EXISTENTE);
         }
 
-        double novoSaldoCapitalSocial = gestao.getCapitalSocial() - caixaDTO.getSaldoInicial();
-        gestao.setCapitalSocial(novoSaldoCapitalSocial);
-        gestaoRepository.save(gestao);
+        novoSaldoCapitalSocial(caixaDTO, gestao);
 
-        Caixa caixa = new Caixa();
-        BeanUtils.copyProperties(caixaDTO, caixa);
-        caixa.setData(LocalDate.now());
-        caixa.setCaixaAberto(true);
+        copiaDadosDTOParaCaixa(caixaDTO);
 
-        caixaRepository.save(caixa);
         return new MensagemDTO(CAIXA_CADASTRADO_COM_SUCESSO);
     }
 
@@ -110,7 +111,6 @@ public class CaixaServiceImpl implements CaixaService {
         return new MensagemDTO(CAIXA_INEXISTENTE);
     }
 
-    // esse retorno poderia ser uma mensagemDTO em vez de caixa?
     public MensagemDTO fechamentoCaixa(Long idCaixa) {
         Optional<Caixa> caixaConsultado = caixaRepository.findById(idCaixa);
 
@@ -121,7 +121,7 @@ public class CaixaServiceImpl implements CaixaService {
         Caixa caixa = caixaConsultado.get();
 
         if (!caixa.isCaixaAberto()) {
-            return new MensagemDTO("Caixa já se encontra fechado!");
+            return new MensagemDTO(CAIXA_JÁ_ESTAR_FECHADO);
         }
 
         double somaSaldoInicialEValorTotalCaixa = caixa.getSaldoInicial() + caixa.getValorTotal();
@@ -149,13 +149,13 @@ public class CaixaServiceImpl implements CaixaService {
 
         if (somaProdutosVencidos > 0) {
             DespesaDTO despesaDTO = new DespesaDTO();
-            despesaDTO.setDescricao("Produto com a data de validade vencido!");
+            despesaDTO.setDescricao(PRODUTOS_COM_A_DATA_DE_VALIDADE_VENCIDO);
             despesaDTO.setValor(somaProdutosVencidos);
 
             despesaService.adicionarDespesa(despesaDTO);
         }
 
-        return new MensagemDTO("Caixa fechado com sucesso!");
+        return new MensagemDTO(CAIXA_FECHADO_COM_SUCESSO);
 
     }
 
@@ -163,6 +163,20 @@ public class CaixaServiceImpl implements CaixaService {
         List<Gestao> listaGestao = (List<Gestao>) gestaoRepository.findAll();
 
         return listaGestao.stream().findFirst();
+    }
+
+    private void copiaDadosDTOParaCaixa(CaixaDTO caixaDTO) {
+        Caixa caixa = new Caixa();
+        BeanUtils.copyProperties(caixaDTO, caixa);
+        caixa.setData(LocalDate.now());
+        caixa.setCaixaAberto(true);
+        caixaRepository.save(caixa);
+    }
+
+    private void novoSaldoCapitalSocial(CaixaDTO caixaDTO, Gestao gestao) {
+        double novoSaldoCapitalSocial = gestao.getCapitalSocial() - caixaDTO.getSaldoInicial();
+        gestao.setCapitalSocial(novoSaldoCapitalSocial);
+        gestaoRepository.save(gestao);
     }
 
 }
