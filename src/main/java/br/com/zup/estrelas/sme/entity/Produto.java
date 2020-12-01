@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
@@ -20,31 +21,32 @@ public class Produto {
     @Column(name = "id_produto")
     private Long idProduto;
 
-    @NotBlank(message = "Nome não pode ter apenas espaços!")
-    @NotNull(message = "O campo nome é obrigatório!")
     @Column(nullable = false)
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String nome;
 
-    @NotBlank(message = "Descrição não pode ter apenas espaços!")
     @Column(nullable = true)
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String descricao;
 
-    @NotBlank(message = "Unidade de medida não pode ter apenas espaços!")
-    @NotNull(message = "O campo unidade de medida é obrigatório!")
     @Enumerated(EnumType.STRING)
     @Column(name = "unidade_medida", nullable = false)
+    @NotEmpty(message = "O campo não pode ser vazio.")
     private UnidadeMedida unidadeMedida;
 
-    @Positive(message = "Valor venda deve ser maior que zero!")
     @Column(name = "valor_venda", nullable = false)
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private Double valorVenda;
 
-    @Positive(message = "Valor custo deve ser maior que zero!")
     @Column(name = "valor_custo", nullable = false)
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private Double valorCusto;
 
-    @PositiveOrZero(message = "Margem de desconto deve ser igual ou maior a zero!")
     @Column(name = "margem_desconto", nullable = false)
+    @PositiveOrZero(message = "O campo deve ser igual ou maior a zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private Double margemDesconto;
 
     public Long getIdProduto() {

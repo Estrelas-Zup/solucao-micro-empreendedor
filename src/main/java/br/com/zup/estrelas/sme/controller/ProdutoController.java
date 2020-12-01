@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.sme.controller;
 
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,7 @@ public class ProdutoController {
     @ApiOperation(value = "Adicionar produto")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
-    public MensagemDTO adicionaProduto(@RequestBody ProdutoDTO produtoDTO) {
+    public MensagemDTO adicionaProduto(@Valid @RequestBody ProdutoDTO produtoDTO) {
         return produtoService.adicionarProduto(produtoDTO);
     }
 
@@ -42,7 +43,7 @@ public class ProdutoController {
             value = {@ApiResponse(code = 200, message = "Alteração do produto feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum produto alterado!")})
     public MensagemDTO alteraProduto(@PathVariable Long idProduto,
-            @RequestBody ProdutoDTO produto) {
+            @Valid @RequestBody ProdutoDTO produto) {
         return produtoService.alterarProduto(idProduto, produto);
     }
 
@@ -70,7 +71,7 @@ public class ProdutoController {
             @ApiResponse(code = 200, message = "Procura do nome do produto feita com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum produto encontrado pelo nome!")})
     // TODO verificar possibilidade de passar nome no corpo ConsultarPeloNomeDTO
-    public List<Produto> consultarPeloNome(@PathVariable String nome) {
+    public List<Produto> consultarPeloNome(@Valid @PathVariable String nome) {
         return produtoService.consultarPeloNome(nome);
     }
 
