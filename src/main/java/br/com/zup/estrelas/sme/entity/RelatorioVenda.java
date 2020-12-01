@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -18,21 +18,20 @@ public class RelatorioVenda {
     @Column(name = "id_relatorio_venda")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRelatorioVenda;
-    
-    @ManyToOne 
+
+    @ManyToOne
     @JoinColumn(name = "id_venda", foreignKey = @ForeignKey(name = "FK_VENDA_RELATORIOVENDA"))
-    @NotNull(message = "Venda não pode ser vazia!")
-    @Valid
+    @NotEmpty(message = "O campo não pode ser vazio.")
     private Venda venda;
-    
-    @ManyToOne 
+
+    @ManyToOne
     @JoinColumn(name = "id_estoque", foreignKey = @ForeignKey(name = "FK_ESTOQUE_RELATORIOVENDA"))
-    @NotNull(message = "Estoque não pode ser vazio!")
-    @Valid
+    @NotEmpty(message = "O campo não pode ser vazio.")
     private Estoque estoque;
-    
+
     @Column(nullable = false)
-    @Positive(message = "Quantidade deve ser maior que zero!")
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private int quantidade;
 
     public Long getIdRelatorioVenda() {

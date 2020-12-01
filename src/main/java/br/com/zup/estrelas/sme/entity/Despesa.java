@@ -8,8 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -21,18 +21,17 @@ public class Despesa {
     private Long idDespesa;
 
     @Column(nullable = false)
-    @NotBlank(message = "Descrição não pode estar em branco!")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String descricao;
 
     @Column(nullable = false)
-    @NotBlank(message = "Valor não pode estar em branco!")
-    @Positive(message = "Valor deve ser maior que zero!")
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private Double valor;
 
     @ManyToOne
     @JoinColumn(name = "id_caixa", foreignKey = @ForeignKey(name = "FK_CAIXA_DESPESA"))
-    @NotNull(message = "Caixa não pode ser vazio!")
-    @Valid
+    @NotEmpty(message = "O campo não pode ser vazio.")
     private Caixa caixa;
 
     public Long getIdDespesa() {
