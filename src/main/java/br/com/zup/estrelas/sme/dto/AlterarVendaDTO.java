@@ -1,11 +1,9 @@
 package br.com.zup.estrelas.sme.dto;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class AlterarVendaDTO {
-    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String observacao;
 
     @Positive(message = "O campo deve ser maior que zero.")

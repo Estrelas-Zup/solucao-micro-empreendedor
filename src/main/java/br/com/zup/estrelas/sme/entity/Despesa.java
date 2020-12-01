@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -31,7 +30,6 @@ public class Despesa {
 
     @ManyToOne
     @JoinColumn(name = "id_caixa", foreignKey = @ForeignKey(name = "FK_CAIXA_DESPESA"))
-    @NotEmpty(message = "O campo não pode ser vazio.")
     private Caixa caixa;
 
     public Long getIdDespesa() {

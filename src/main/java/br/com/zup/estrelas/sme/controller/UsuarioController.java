@@ -49,13 +49,14 @@ public class UsuarioController {
         return usuarioService.alterarUsuario(alterarUsuarioDTO);
     }
 
+    // TODO: Analisar possibilidade de consultar email pelo corpo
     @GetMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar usuário por Email")
     @ApiResponses(value = {
             @ApiResponse(code = 200,
                     message = "Consulta do usuário por email realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum usuário encontrado pelo Email.")})
-    public Usuario consultarUsuarioPorEmail(@Valid @PathVariable String email) {
+    public Usuario consultarUsuarioPorEmail(@PathVariable String email) {
 
         return usuarioService.consultarUsuarioPorEmail(email);
     }

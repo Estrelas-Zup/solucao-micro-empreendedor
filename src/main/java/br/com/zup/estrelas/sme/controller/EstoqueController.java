@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.sme.controller;
 
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ public class EstoqueController {
     @ApiOperation(value = "Adicionar estoque")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
-    public MensagemDTO adicionarEstoque(@RequestBody EstoqueDTO estoqueDTO) {
+    public MensagemDTO adicionarEstoque(@Valid @RequestBody EstoqueDTO estoqueDTO) {
         return estoqueService.adicionarEstoque(estoqueDTO);
     }
 
@@ -42,7 +43,7 @@ public class EstoqueController {
             value = {@ApiResponse(code = 200, message = "Alteração do estoque feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum estoque alterado!")})
     public MensagemDTO alterarEstoque(@PathVariable Long idEstoque,
-            @RequestBody EstoqueDTO estoqueDTO) {
+            @Valid @RequestBody EstoqueDTO estoqueDTO) {
         return estoqueService.alterarEstoque(idEstoque, estoqueDTO);
     }
 
@@ -70,7 +71,7 @@ public class EstoqueController {
             value = {@ApiResponse(code = 200, message = "Alteração do estoque feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum estoque alterado!")})
     public MensagemDTO contabilizarPerda(@PathVariable Long idEstoque,
-            @RequestBody ContabilizaPerdaDTO contabilizaPerdaDTO) {
+            @Valid @RequestBody ContabilizaPerdaDTO contabilizaPerdaDTO) {
         return estoqueService.contablizarPerda(idEstoque, contabilizaPerdaDTO);
     }
 }

@@ -38,8 +38,8 @@ public class Funcionario {
     private String telefone;
 
     @Column(name = "data_nascimento", nullable = false)
-    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
-    @Past(message = "O campo deve possuir data anterior ao dia atual")
+    @Past(message = "O campo deve possuir data anterior ao dia atual.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private LocalDate dataNascimento;
 
     @Column(nullable = false)
@@ -52,13 +52,13 @@ public class Funcionario {
     private String cpf;
 
     @Column(nullable = false)
-    @NotNull(message = "O campo não pode ser vazio.")
     @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private Double salario;
 
     @Column(name = "data_admissao", nullable = false)
-    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     @PastOrPresent(message = "O campo deve possuir data atual ou anterior.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private LocalDate dataAdmissao;
 
     @Column(name = "numero_carteira_trabalho", nullable = false, unique = false)

@@ -70,7 +70,8 @@ public class CaixaController {
             value = {@ApiResponse(code = 200, message = "Alteração do caixa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum caixa alterado.")})
     @PutMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO alterarCaixa(@PathVariable Long idCaixa, @Valid  @RequestBody CaixaDTO caixaDTO) {
+    public MensagemDTO alterarCaixa(@PathVariable Long idCaixa,
+            @Valid @RequestBody CaixaDTO caixaDTO) {
         return caixaService.alterarCaixa(idCaixa, caixaDTO);
     }
 

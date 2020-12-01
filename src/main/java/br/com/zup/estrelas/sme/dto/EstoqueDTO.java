@@ -2,32 +2,30 @@ package br.com.zup.estrelas.sme.dto;
 
 import java.time.LocalDate;
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class EstoqueDTO {
     @Positive(message = "O campo deve ser maior que zero.")
     @NotNull(message = "O campo não pode ser vazio.")
-    private long idProduto;
+    private Long idProduto;
 
-    @Positive(message = "O campo deve ser maior que zero.")
-    @NotNull(message = "O campo não pode ser vazio.")
+    // @Pattern(regexp = "[1-9]*", message = "O campo deve ser maior que zero.")
     private int quantidade;
 
     @FutureOrPresent(message = "O campo deve possuir data atual ou superior a atual.")
-    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private LocalDate dataValidade;
 
     public EstoqueDTO() {
         super();
     }
 
-    public long getIdProduto() {
+    public Long getIdProduto() {
         return idProduto;
     }
 
-    public void setIdProduto(long idProduto) {
+    public void setIdProduto(Long idProduto) {
         this.idProduto = idProduto;
     }
 

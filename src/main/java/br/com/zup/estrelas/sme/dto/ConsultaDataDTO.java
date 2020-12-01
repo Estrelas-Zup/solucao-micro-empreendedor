@@ -1,11 +1,10 @@
 package br.com.zup.estrelas.sme.dto;
 
 import java.time.LocalDate;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class ConsultaDataDTO {
-    
-    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private LocalDate data;
 
     public LocalDate getData() {

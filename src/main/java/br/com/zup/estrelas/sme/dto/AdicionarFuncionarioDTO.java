@@ -21,7 +21,7 @@ public class AdicionarFuncionarioDTO {
     @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String endereco;
 
-    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
+    @NotNull(message = "O campo não pode ser vazio.")
     @Past(message = "O campo deve possuir data anterior ao dia atual")
     private LocalDate dataNascimento;
 
@@ -43,7 +43,6 @@ public class AdicionarFuncionarioDTO {
 
     @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String numeroCarteiraTrabalho;
-
 
     public String getNome() {
         return nome;

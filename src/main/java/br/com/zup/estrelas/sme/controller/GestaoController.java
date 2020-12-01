@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.sme.controller;
 
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,8 @@ public class GestaoController {
     @ApiOperation(value = "Adicionar gestão")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
-    public MensagemDTO aberturaComercio(@RequestBody AberturaComercioDTO aberturaComercioDTO) {
+    public MensagemDTO aberturaComercio(
+            @Valid @RequestBody AberturaComercioDTO aberturaComercioDTO) {
         return gestaoService.aberturaComercio(aberturaComercioDTO);
     }
 }
