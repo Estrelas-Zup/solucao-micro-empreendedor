@@ -8,29 +8,26 @@ import javax.validation.constraints.Size;
 
 public class AlteraFuncionarioDTO {
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @NotBlank(message = "O campo nome é obrigatório com caracteres!")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String nome;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @NotBlank(message = "O campo endereço é obrigatório caracteres!")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String endereco;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @Size(min = 10, max = 11, message = "numeros não validos com números")
+    @Size(min = 10, max = 11,
+            message = "O campo deve conter no mínimo 10 e no máximo 11 caracteres.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private Double telefone;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @NotBlank(message = "O campo email é obrigatório com caracteres!")
-    @Email(message = "O campo email esta com formato invalido.")
+    @Email(message = "O campo email esta invalido.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String email;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @NotBlank(message = "O campo Cargo é obrigatório com caracteres!")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String cargo;
 
-    @NotNull(message = "O campo não pode ficar em branco")
-    @Positive(message = "O Salário deve ser maior que zero!")
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Positive(message = "O campo deve ser maior que zero.")
     private Double salario;
 
     public String getNome() {

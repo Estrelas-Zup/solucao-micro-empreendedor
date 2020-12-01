@@ -9,8 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.validation.Valid;
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -23,22 +24,24 @@ public class Estoque {
 
     @OneToOne
     @JoinColumn(name = "id_produto", foreignKey = @ForeignKey(name = "FK_PRODUTO_ESTOQUE"))
-    @NotNull(message = "IdProduto não pode ser vazio!")
-    @Valid
+    @NotEmpty (message = "O campo não pode ser vazio.")
     private Produto produto;
 
-    @Positive(message = "Quantidade não deve ser negativa!")
     @Column(nullable = false)
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private int quantidade;
 
-    @FutureOrPresent(message = "Data de validade não deve ser menor que data atual")
     @Column(name = "data_validade", nullable = false)
+    @FutureOrPresent(message = "O campo deve possuir data atual ou superior a atual.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private LocalDate dataValidade;
 
     @Column(columnDefinition = "boolean default false", insertable = false, updatable = true)
     private boolean perda;
 
     @Column(name = "motivo_perda", nullable = true)
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String motivoPerda;
 
     @Column(columnDefinition = "boolean default true", insertable = false, updatable = true)

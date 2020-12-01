@@ -40,6 +40,7 @@ public class Venda {
 
     @Column(name = "data_venda", nullable = false)
     @FutureOrPresent(message = "O campo deve possuir data atual ou superior a atual.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private LocalDate dataVenda;
 
     @ManyToOne

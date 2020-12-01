@@ -7,19 +7,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class EstoqueDTO {
-    @Positive(message = "IdProduto deve ser maior que zero!")
-    @NotNull(message = "IdProduto não pode ser vazia!")
-    @NotBlank(message = "IdProduto não pode estar em branco!")
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private long idProduto;
 
-    @Positive(message = "Quantidade deve ser maior que zero!")
-    @NotNull(message = "Quantidade não pode ser vazia!")
-    @NotBlank(message = "Quantidade não pode estar em branco!")
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private int quantidade;
 
-    @FutureOrPresent(message = "Data de validade não deve ser menor que data atual")
-    @NotNull(message = "Data de validade não pode ser vazia!")
-    @NotBlank(message = "Data de validade pode estar em branco!")
+    @FutureOrPresent(message = "O campo deve possuir data atual ou superior a atual.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private LocalDate dataValidade;
 
     public EstoqueDTO() {
