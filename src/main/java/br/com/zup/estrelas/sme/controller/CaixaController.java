@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.sme.controller;
 
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +34,7 @@ public class CaixaController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO adicionarCaixa(@RequestBody CaixaDTO caixaDTO) {
+    public MensagemDTO adicionarCaixa(@Valid @RequestBody CaixaDTO caixaDTO) {
         return caixaService.adicionarCaixa(caixaDTO);
     }
 
@@ -60,7 +61,7 @@ public class CaixaController {
             @ApiResponse(code = 200, message = "Consulta caixa por data realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum caixa nesta data encontrado.")})
     @GetMapping(path = "/datas", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Caixa consultarCaixaPorData(@RequestBody ConsultaDataDTO consultaDataDTO) {
+    public Caixa consultarCaixaPorData(@Valid @RequestBody ConsultaDataDTO consultaDataDTO) {
         return caixaService.consultarCaixaPorData(consultaDataDTO);
     }
 
@@ -69,7 +70,7 @@ public class CaixaController {
             value = {@ApiResponse(code = 200, message = "Alteração do caixa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum caixa alterado.")})
     @PutMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO alterarCaixa(@PathVariable Long idCaixa, @RequestBody CaixaDTO caixaDTO) {
+    public MensagemDTO alterarCaixa(@PathVariable Long idCaixa, @Valid  @RequestBody CaixaDTO caixaDTO) {
         return caixaService.alterarCaixa(idCaixa, caixaDTO);
     }
 

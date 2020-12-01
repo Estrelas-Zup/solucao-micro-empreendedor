@@ -1,11 +1,11 @@
 package br.com.zup.estrelas.sme.dto;
 
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.NotBlank;
 
 public class ProdutosVendaDTO {
     private Long idProduto;
-    
-    @Positive(message = "Quantidade deve ser maior que zero!")
+
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private int quantidade;
 
     public Long getIdProduto() {
