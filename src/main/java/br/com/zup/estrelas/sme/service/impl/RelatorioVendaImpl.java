@@ -1,11 +1,11 @@
 package br.com.zup.estrelas.sme.service.impl;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.InformacoesRelatorioVendaDTO;
+import br.com.zup.estrelas.sme.dto.IntervaloConsultaDataRelatorioDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioVendaDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioVendaDataDTO;
 import br.com.zup.estrelas.sme.entity.RelatorioVenda;
@@ -54,12 +54,14 @@ public class RelatorioVendaImpl implements RelatorioVendaService {
         return relatorioVenda;
     }
 
-    public RelatorioVendaDataDTO listarRelatorioVendaMes(LocalDate dataInicio) {
+    public RelatorioVendaDataDTO listarRelatorioVendaMes(
+            IntervaloConsultaDataRelatorioDTO intervaloConsultaDTO) {
 
         RelatorioVendaDataDTO relatorioVendaDataDTO = new RelatorioVendaDataDTO();
 
-        List<RelatorioVenda> vendasConsultadas = this.relatorioVendaRepository
-                .findAllByVendaDataVendaBetween(dataInicio, LocalDate.now());
+        List<RelatorioVenda> vendasConsultadas =
+                this.relatorioVendaRepository.findAllByVendaDataVendaBetween(
+                        intervaloConsultaDTO.getDataInicio(), intervaloConsultaDTO.getDataFinal());
 
         List<RelatorioVendaDataDTO> relatorioVenda = new ArrayList<RelatorioVendaDataDTO>();
 
