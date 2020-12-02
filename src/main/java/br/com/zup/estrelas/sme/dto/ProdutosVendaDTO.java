@@ -10,7 +10,7 @@ public class ProdutosVendaDTO {
 
     @NotNull(message = "O campo não pode ser vazio.")
     @Positive(message = "O campo deve ser maior que zero.")
-    private int quantidade;
+    private Integer quantidade;
 
     public Long getIdProduto() {
         return idProduto;
@@ -20,11 +20,11 @@ public class ProdutosVendaDTO {
         this.idProduto = idProduto;
     }
 
-    public int getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 
