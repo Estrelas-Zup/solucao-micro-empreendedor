@@ -9,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
 
 @Entity
 public class Estoque {
@@ -24,12 +22,9 @@ public class Estoque {
     private Produto produto;
 
     @Column(nullable = false)
-    // @Pattern(regexp = "[1-9]*", message = "O campo deve ser maior que zero.")
     private int quantidade;
 
     @Column(name = "data_validade", nullable = false)
-    @FutureOrPresent(message = "O campo deve possuir data atual ou superior a atual.")
-    @NotNull(message = "O campo não pode ser vazio.")
     private LocalDate dataValidade;
 
     @Column(columnDefinition = "boolean default false", insertable = false, updatable = true)

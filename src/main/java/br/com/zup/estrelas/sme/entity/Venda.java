@@ -9,10 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Venda {
@@ -26,18 +22,12 @@ public class Venda {
 
     @Column(name = "valor_desconto", columnDefinition = "DOUBLE DEFAULT 0", insertable = false,
             updatable = true)
-    @PositiveOrZero(message = "O campo deve ser igual ou maior a zero.")
-    @NotNull(message = "O campo não pode ser vazio.")
     private Double valorDesconto;
 
     @Column(name = "valor_total", nullable = false)
-    @Positive(message = "O campo deve ser maior que zero.")
-    @NotNull(message = "O campo não pode ser vazio.")
     private Double valorTotal;
 
     @Column(name = "data_venda", nullable = false)
-    @FutureOrPresent(message = "O campo deve possuir data atual ou superior a atual.")
-    @NotNull(message = "O campo não pode ser vazio.")
     private LocalDate dataVenda;
 
     @ManyToOne

@@ -8,9 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 @Entity
 public class Despesa {
@@ -20,12 +17,9 @@ public class Despesa {
     private Long idDespesa;
 
     @Column(nullable = false)
-    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String descricao;
 
     @Column(nullable = false)
-    @Positive(message = "O campo deve ser maior que zero.")
-    @NotNull(message = "O campo não pode ser vazio.")
     private Double valor;
 
     @ManyToOne

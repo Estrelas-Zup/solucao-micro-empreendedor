@@ -7,10 +7,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import br.com.zup.estrelas.sme.enums.UnidadeMedida;
 
 @Entity
@@ -21,7 +17,6 @@ public class Produto {
     private Long idProduto;
 
     @Column(nullable = false)
-    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String nome;
 
     @Column(nullable = true)
@@ -29,22 +24,15 @@ public class Produto {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "unidade_medida", nullable = false)
-    @NotNull(message = "O campo não pode ser vazio.")
     private UnidadeMedida unidadeMedida;
 
     @Column(name = "valor_venda", nullable = false)
-    @Positive(message = "O campo deve ser maior que zero.")
-    @NotNull(message = "O campo não pode ser vazio.")
     private Double valorVenda;
 
     @Column(name = "valor_custo", nullable = false)
-    @Positive(message = "O campo deve ser maior que zero.")
-    @NotNull(message = "O campo não pode ser vazio.")
     private Double valorCusto;
 
     @Column(name = "margem_desconto", nullable = false)
-    @PositiveOrZero(message = "O campo deve ser igual ou maior que zero.")
-    @NotNull(message = "O campo não pode ser vazio.")
     private Double margemDesconto;
 
     public Long getIdProduto() {

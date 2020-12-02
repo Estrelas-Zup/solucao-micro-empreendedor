@@ -1,13 +1,11 @@
 package br.com.zup.estrelas.sme.dto;
 
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-
 public class UsuarioDTO {
-    @Email(message = "O campo email esta invalido.")
+    @Email(message = "O formato do e-mail esta inválido.")
     @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String email;
 

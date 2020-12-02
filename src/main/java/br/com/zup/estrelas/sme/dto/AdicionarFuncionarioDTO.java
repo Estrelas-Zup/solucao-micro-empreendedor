@@ -15,14 +15,14 @@ public class AdicionarFuncionarioDTO {
     private String nome;
 
     @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
-    @CPF(message = "O campo CPF esta invalido.")
+    @CPF(message = "O formato do CPF esta inválido.")
     private String cpf;
 
     @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String endereco;
 
     @NotNull(message = "O campo não pode ser vazio.")
-    @Past(message = "O campo deve possuir data anterior ao dia atual")
+    @Past(message = "O campo deve possuir data anterior ao dia atual.")
     private LocalDate dataNascimento;
 
     @Size(min = 10, max = 11,
@@ -30,7 +30,7 @@ public class AdicionarFuncionarioDTO {
     @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String telefone;
 
-    @Email(message = "O campo email esta invalido.")
+    @Email(message = "O formato do e-mail esta inválido.")
     @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String email;
 

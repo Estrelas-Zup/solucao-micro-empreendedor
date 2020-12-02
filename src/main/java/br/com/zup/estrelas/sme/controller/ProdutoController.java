@@ -43,8 +43,8 @@ public class ProdutoController {
             value = {@ApiResponse(code = 200, message = "Alteração do produto feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum produto alterado!")})
     public MensagemDTO alteraProduto(@PathVariable Long idProduto,
-            @Valid @RequestBody ProdutoDTO produto) {
-        return produtoService.alterarProduto(idProduto, produto);
+            @Valid @RequestBody ProdutoDTO produtoDTO) {
+        return produtoService.alterarProduto(idProduto, produtoDTO);
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})

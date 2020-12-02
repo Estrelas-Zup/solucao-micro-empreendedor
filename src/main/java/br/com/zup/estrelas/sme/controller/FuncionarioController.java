@@ -50,6 +50,7 @@ public class FuncionarioController {
         return funcionarioService.alterarFuncionario(idFuncionario, alteraFuncionarioDTO);
     }
 
+    //TODO: Analisar possibilidade de passar CPF no corpo
     @GetMapping(path = "/{cpf}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar funcionário por CPF")
     @ApiResponses(value = {
@@ -69,6 +70,7 @@ public class FuncionarioController {
         return funcionarioService.listarFuncionarios();
     }
 
+    //TODO: Analisar possibilidade de passar CPF no corpo
     @DeleteMapping(path = "/{cpf}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover funcionário")
     @ApiResponses(value = {

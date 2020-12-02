@@ -35,8 +35,8 @@ public class UsuarioController {
     @ApiOperation(value = "Adicionar usuário")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
-    public MensagemDTO adicionarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
-        return usuarioService.adicionarUsuario(usuarioDTO);
+    public MensagemDTO adicionarUsuario(@Valid @RequestBody UsuarioDTO adicionarUsuarioDTO) {
+        return usuarioService.adicionarUsuario(adicionarUsuarioDTO);
     }
 
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -49,7 +49,7 @@ public class UsuarioController {
         return usuarioService.alterarUsuario(alterarUsuarioDTO);
     }
 
-    // TODO: Analisar possibilidade de consultar email pelo corpo
+    // TODO: Analisar possibilidade de consultar email pelo corpo EmailUsuarioDTO (String email)
     @GetMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar usuário por Email")
     @ApiResponses(value = {
@@ -71,6 +71,7 @@ public class UsuarioController {
 
     }
 
+    //TODO: Verificar possibilidade de alterar RemoveUsuarioDTO para EmailUsuarioDTO, para utilizar o mesmo em ConsultarUsuarioPorEmail
     @DeleteMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover usuário")
     @ApiResponses(

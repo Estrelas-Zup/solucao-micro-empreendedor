@@ -17,9 +17,9 @@ public class AlteraFuncionarioDTO {
     @Size(min = 10, max = 11,
             message = "O campo deve conter no mínimo 10 e no máximo 11 caracteres.")
     @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
-    private Double telefone;
+    private String telefone;
 
-    @Email(message = "O campo email esta invalido.")
+    @Email(message = "O formato do e-mail esta invalido.")
     @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String email;
 
@@ -46,11 +46,11 @@ public class AlteraFuncionarioDTO {
         this.endereco = endereco;
     }
 
-    public Double getTelefone() {
+    public String getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(Double telefone) {
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 

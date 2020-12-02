@@ -25,7 +25,6 @@ public class RelatorioVenda {
     private Estoque estoque;
 
     @Column(nullable = false)
-    // @Pattern(regexp = "[1-9]*", message = "O campo deve ser maior que zero.")
     private int quantidade;
 
     public Long getIdRelatorioVenda() {
