@@ -72,6 +72,10 @@ public class CaixaServiceImpl implements CaixaService {
 
         copiaDadosDTOParaCaixa(caixaDTO);
 
+        gestaoRepository.save(novoSaldoCapitalSocial(caixaDTO, gestao));
+
+        caixaRepository.save(copiaDadosDTOParaCaixa(caixaDTO));
+
         return new MensagemDTO(CAIXA_CADASTRADO_COM_SUCESSO);
     }
 
@@ -165,18 +169,18 @@ public class CaixaServiceImpl implements CaixaService {
         return listaGestao.stream().findFirst();
     }
 
-    private void copiaDadosDTOParaCaixa(CaixaDTO caixaDTO) {
+    private Caixa copiaDadosDTOParaCaixa(CaixaDTO caixaDTO) {
         Caixa caixa = new Caixa();
         BeanUtils.copyProperties(caixaDTO, caixa);
         caixa.setData(LocalDate.now());
         caixa.setCaixaAberto(true);
-        caixaRepository.save(caixa);
+        return caixa;
     }
 
-    private void novoSaldoCapitalSocial(CaixaDTO caixaDTO, Gestao gestao) {
+    private Gestao novoSaldoCapitalSocial(CaixaDTO caixaDTO, Gestao gestao) {
         double novoSaldoCapitalSocial = gestao.getCapitalSocial() - caixaDTO.getSaldoInicial();
         gestao.setCapitalSocial(novoSaldoCapitalSocial);
-        gestaoRepository.save(gestao);
+        return gestao;
     }
 
 }
