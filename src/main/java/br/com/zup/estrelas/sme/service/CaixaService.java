@@ -20,4 +20,6 @@ public interface CaixaService {
 
     public MensagemDTO removerCaixa(Long idCaixa);
 
+    public MensagemDTO fechamentoCaixa(Long idCaixa);
+
 }

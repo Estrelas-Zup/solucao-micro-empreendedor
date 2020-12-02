@@ -9,4 +9,6 @@ import br.com.zup.estrelas.sme.entity.Caixa;
 @Repository
 public interface CaixaRepository extends CrudRepository<Caixa, Long> {
     Optional<Caixa> findByData(LocalDate data);
+    
+    boolean existsByData(LocalDate data);
 }
