@@ -39,6 +39,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     public MensagemDTO adicionarFuncionario(AdicionarFuncionarioDTO adicionarFuncionarioDTO) {
 
         Funcionario funcionario = new Funcionario();
+        // TODO : Deve verificar se AdicionarFuncionarioDTO é nulo dentro deste metodo!
         BeanUtils.copyProperties(adicionarFuncionarioDTO, funcionario);
 
 
@@ -95,14 +96,14 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public MensagemDTO removerFuncionario(String cpf) {
-        Optional<Funcionario> funcionarioConsultado = funcionarioRepository.findByCpf(cpf);
+       // Optional<Funcionario> funcionarioConsultado = funcionarioRepository.findByCpf(cpf);
 
-        if (funcionarioConsultado.isEmpty()) {
-            return new MensagemDTO(FUNCIONARIO_INEXISTENTE);
+        if (funcionarioRepository.existsByCpf(cpf)) {
+            funcionarioRepository.deleteByCpf(cpf);;
+            return new MensagemDTO(FUNCIONARIO_REMOVIDO_COM_SUCESSO);
         }
 
-        funcionarioRepository.delete(funcionarioConsultado.get());
-        return new MensagemDTO(FUNCIONARIO_REMOVIDO_COM_SUCESSO);
+        return new MensagemDTO(FUNCIONARIO_INEXISTENTE);
     }
 
 

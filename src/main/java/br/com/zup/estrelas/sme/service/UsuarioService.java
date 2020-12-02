@@ -13,7 +13,7 @@ public interface UsuarioService {
     public MensagemDTO alterarUsuario(UsuarioDTO alteraUsuarioDTO);
 
     public Usuario consultarUsuarioPorEmail(String email);
-
+    
     public MensagemDTO removerUsuario(RemoveUsuarioDTO removeUsuarioDTO);
 
     public List<Usuario> listarUsuarios();
