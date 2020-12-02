@@ -2,6 +2,7 @@ package br.com.zup.estrelas.sme.controller;
 
 import java.util.List;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,21 +35,21 @@ public class UsuarioController {
     @ApiOperation(value = "Adicionar usuário")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
-    public MensagemDTO adicionarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        return usuarioService.adicionarUsuario(usuarioDTO);
+    public MensagemDTO adicionarUsuario(@Valid @RequestBody UsuarioDTO adicionarUsuarioDTO) {
+        return usuarioService.adicionarUsuario(adicionarUsuarioDTO);
     }
 
-    // TODO: Passar email no corpo e não na URL
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Alterar usuário")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Alteração do usuário feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário alterado!")})
     @Transactional
-    public MensagemDTO alterarUsuario(@RequestBody UsuarioDTO alterarUsuarioDTO) {
+    public MensagemDTO alterarUsuario(@Valid @RequestBody UsuarioDTO alterarUsuarioDTO) {
         return usuarioService.alterarUsuario(alterarUsuarioDTO);
     }
 
+    // TODO: Analisar possibilidade de consultar email pelo corpo EmailUsuarioDTO (String email)
     @GetMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar usuário por Email")
     @ApiResponses(value = {
@@ -70,13 +71,14 @@ public class UsuarioController {
 
     }
 
+    //TODO: Verificar possibilidade de alterar RemoveUsuarioDTO para EmailUsuarioDTO, para utilizar o mesmo em ConsultarUsuarioPorEmail
     @DeleteMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover usuário")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Remoção do usuário feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário removido!")})
     @Transactional
-    public MensagemDTO removerUsuario(@RequestBody RemoveUsuarioDTO removeUsuarioDTO) {
+    public MensagemDTO removerUsuario(@Valid @RequestBody RemoveUsuarioDTO removeUsuarioDTO) {
         return usuarioService.removerUsuario(removeUsuarioDTO);
     }
 

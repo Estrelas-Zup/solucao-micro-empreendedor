@@ -2,6 +2,7 @@ package br.com.zup.estrelas.sme.controller;
 
 import java.util.List;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +36,7 @@ public class FuncionarioController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor.")})
     public MensagemDTO adicionarFuncionario(
-            @RequestBody AdicionarFuncionarioDTO adicionarFuncionarioDTO) {
+            @Valid @RequestBody AdicionarFuncionarioDTO adicionarFuncionarioDTO) {
         return funcionarioService.adicionarFuncionario(adicionarFuncionarioDTO);
     }
 
@@ -45,10 +46,11 @@ public class FuncionarioController {
             @ApiResponse(code = 200, message = "Alteração do funcionário feita com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum funcionário alterado.")})
     public MensagemDTO alterarFuncionario(@PathVariable Long idFuncionario,
-            @RequestBody AlteraFuncionarioDTO alteraFuncionarioDTO) {
+            @Valid @RequestBody AlteraFuncionarioDTO alteraFuncionarioDTO) {
         return funcionarioService.alterarFuncionario(idFuncionario, alteraFuncionarioDTO);
     }
 
+    //TODO: Analisar possibilidade de passar CPF no corpo
     @GetMapping(path = "/{cpf}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar funcionário por CPF")
     @ApiResponses(value = {
@@ -68,6 +70,7 @@ public class FuncionarioController {
         return funcionarioService.listarFuncionarios();
     }
 
+    //TODO: Analisar possibilidade de passar CPF no corpo
     @DeleteMapping(path = "/{cpf}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover funcionário")
     @ApiResponses(value = {

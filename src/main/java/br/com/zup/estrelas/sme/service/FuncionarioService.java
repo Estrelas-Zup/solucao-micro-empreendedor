@@ -18,6 +18,7 @@ public interface FuncionarioService {
 
     public MensagemDTO removerFuncionario(String cpf);
     
-    public boolean verificarDisponibilidadeContratacao(Double salario);
+    //TODO: Verificar possibilidade de migrar método para Gestão
+    public boolean verificarDisponibilidadeCaixa(Double salario);
 
 }

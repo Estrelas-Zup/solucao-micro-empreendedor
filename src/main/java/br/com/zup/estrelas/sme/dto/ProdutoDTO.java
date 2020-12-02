@@ -9,26 +9,25 @@ import javax.validation.constraints.PositiveOrZero;
 import br.com.zup.estrelas.sme.enums.UnidadeMedida;
 
 public class ProdutoDTO {
-
-    @NotBlank(message = "Nome não pode ter apenas espaços!")
-    @NotNull(message = "O campo nome é obrigatório!")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String nome;
 
-    @NotBlank(message = "Descrição não pode ter apenas espaços!")
     private String descricao;
 
-    @NotBlank(message = "Unidade de medida não pode ter apenas espaços!")
-    @NotNull(message = "O campo unidade de medida é obrigatório!")
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "O campo não pode ser vazio.")
     private UnidadeMedida unidadeMedida;
 
-    @Positive(message = "Valor venda deve ser maior que zero!")
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private Double valorVenda;
 
-    @Positive(message = "Valor custo deve ser maior que zero!")
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private Double valorCusto;
 
-    @PositiveOrZero(message = "Margem de desconto deve ser igual ou maior a zero!")
+    @PositiveOrZero(message = "O campo deve ser igual ou maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private Double margemDesconto;
 
     public String getNome() {

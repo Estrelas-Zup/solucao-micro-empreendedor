@@ -9,10 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.validation.Valid;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 @Entity
 public class Estoque {
@@ -23,15 +19,11 @@ public class Estoque {
 
     @OneToOne
     @JoinColumn(name = "id_produto", foreignKey = @ForeignKey(name = "FK_PRODUTO_ESTOQUE"))
-    @NotNull(message = "IdProduto não pode ser vazio!")
-    @Valid
     private Produto produto;
 
-    @Positive(message = "Quantidade não deve ser negativa!")
     @Column(nullable = false)
     private int quantidade;
 
-    @FutureOrPresent(message = "Data de validade não deve ser menor que data atual")
     @Column(name = "data_validade", nullable = false)
     private LocalDate dataValidade;
 

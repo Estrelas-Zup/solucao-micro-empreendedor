@@ -17,17 +17,20 @@ import br.com.zup.estrelas.sme.service.GestaoService;
 @Service
 public class FuncionarioServiceImpl implements FuncionarioService {
 
-    private static final String LUCRO_MENSAL_INSUFICIENTE_PARA_A_CONTRATAÇÃO =
-            "Infelizmente não foi possivel realizar a operação, lucro mensal insuficiente para a contratação.";
+    private static final String INDISPONIBILIDADE_CAIXA =
+            "Infelizmente não foi possivel realizar a operação, não temos disponibilidade em caixa.";
     private static final String NOVO_SALARIO_NÃO_PODE_SER_MENOR_QUE_O_SALARIO_ATUAL =
             "Infelizmente não foi possivel realizar a alteração, o novo salario não pode ser menor que o salario atual.";
+    private static final String FUNCIONARIO_INEXISTENTE =
+            "Infelizmente não foi possivel realizar a alteração, funcionario inexistente.";
+
     private static final String FUNCIONARIO_CADASTRADO_COM_SUCESSO =
             "Funcionario cadastrado com sucesso!";
     private static final String FUNCIONARIO_ALTERADO_COM_SUCESSO =
             "Funcionario alterado com sucesso!";
     private static final String FUNCIONARIO_REMOVIDO_COM_SUCESSO =
             "Funcionario removido com sucesso!";
-    private static final String FUNCIONARIO_INEXISTENTE = "Funcionario inexistente.";
+
 
     @Autowired
     FuncionarioRepository funcionarioRepository;
@@ -37,20 +40,16 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public MensagemDTO adicionarFuncionario(AdicionarFuncionarioDTO adicionarFuncionarioDTO) {
-
         Funcionario funcionario = new Funcionario();
         BeanUtils.copyProperties(adicionarFuncionarioDTO, funcionario);
 
-
-        if (verificarDisponibilidadeContratacao(funcionario.getSalario())) {
-            funcionarioRepository.save(funcionario);
-
+        if (verificarDisponibilidadeCaixa(funcionario.getSalario())) {
             funcionario.setDataAdmissao(LocalDate.now());
             funcionarioRepository.save(funcionario);
             return new MensagemDTO(FUNCIONARIO_CADASTRADO_COM_SUCESSO);
         }
-        //TODO: Sugiro criar uma constante (Boas praticas :D)
-        return new MensagemDTO("Funcionario não cadastrado");
+
+        return new MensagemDTO(INDISPONIBILIDADE_CAIXA);
     }
 
     @Override
@@ -73,13 +72,13 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
         BeanUtils.copyProperties(alteraFuncionarioDTO, funcionario);
 
-        if (verificarDisponibilidadeContratacao(funcionario.getSalario())) {
+        if (verificarDisponibilidadeCaixa(funcionario.getSalario())) {
             funcionarioRepository.save(funcionario);
 
             return new MensagemDTO(FUNCIONARIO_ALTERADO_COM_SUCESSO);
         }
 
-        return new MensagemDTO(LUCRO_MENSAL_INSUFICIENTE_PARA_A_CONTRATAÇÃO);
+        return new MensagemDTO(INDISPONIBILIDADE_CAIXA);
 
     }
 
@@ -107,7 +106,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
 
     // TODO : finalizar implementação calcula lucro mensal em gestão.
-    public boolean verificarDisponibilidadeContratacao(Double salario) {
+    public boolean verificarDisponibilidadeCaixa(Double salario) {
         //
         // LucroDTO lucroDTO = gestaoService.calcularLucroMensal());
         //

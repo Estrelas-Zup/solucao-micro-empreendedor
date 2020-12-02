@@ -2,53 +2,47 @@ package br.com.zup.estrelas.sme.dto;
 
 import java.time.LocalDate;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.br.CPF;
 
 public class AdicionarFuncionarioDTO {
 
-    @NotNull(message = "O campo nome não pode ficar em branco")
-    @NotBlank(message = "O campo nome é obrigatório com caracteres!")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String nome;
 
-    @NotNull(message = "O campo CPF não pode ficar em branco")
-    @NotBlank(message = "O campo CPF é obrigatório com números!")
-    @Max(value = 11)
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
+    @CPF(message = "O formato do CPF esta inválido.")
     private String cpf;
 
-    @NotNull(message = "O campo endereço não pode ficar em branco")
-    @NotBlank(message = "O campo endereço é obrigatório caracteres!")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String endereco;
 
-    @NotNull(message = "O campo data nascimento não pode ficar em branco")
-    @Past(message = "Coloque uma data valida!")
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Past(message = "O campo deve possuir data anterior ao dia atual.")
     private LocalDate dataNascimento;
 
-    @NotNull(message = "O campo telefone não pode ficar em branco")
-    @Size(min = 10, max = 11, message = "numeros não validos")
+    @Size(min = 10, max = 11,
+            message = "O campo deve conter no mínimo 10 e no máximo 11 caracteres.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String telefone;
 
-    @NotNull(message = "O campo email não pode ficar em branco")
-    @NotBlank(message = "O campo email é obrigatório com caracteres!")
-    @Email(message = "O campo email esta com formato invalido.")
+    @Email(message = "O formato do e-mail esta inválido.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String email;
 
-    @NotNull(message = "O campo cargo não pode ficar em branco")
-    @NotBlank(message = "O campo cargo é obrigatório caracteres!")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String cargo;
 
-    @NotNull(message = "O campo salário não pode ficar em branco")
-    @Positive(message = "O campo salário deve ser maior que zero!")
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Positive(message = "O campo deve ser maior que zero.")
     private Double salario;
 
-    @NotNull(message = "O campo número da carteira de trabalh não pode ficar em branco")
-    @NotBlank(message = "O campo número da carteira de trabalho é obrigatório com numeros!")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String numeroCarteiraTrabalho;
-
 
     public String getNome() {
         return nome;

@@ -5,13 +5,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class DespesaDTO {
-    @NotNull(message = "Descrição não pode ser vazia!")
-    @NotBlank(message = "Descrição não pode estar em branco!")
+
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String descricao;
 
-    @NotNull(message = "Valor não pode ser vazia!")
-    @NotBlank(message = "Valor não pode estar em branco!")
-    @Positive(message = "Valor deve ser maior que zero!")
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private Double valor;
 
     public String getDescricao() {

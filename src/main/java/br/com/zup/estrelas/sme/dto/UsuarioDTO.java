@@ -1,26 +1,19 @@
 package br.com.zup.estrelas.sme.dto;
 
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 public class UsuarioDTO {
-
-
-    @Email(message = "O Email é obrigatorio")
-    @NotBlank(message = "Email não deve ter apenas espaço.")
+    @Email(message = "O formato do e-mail esta inválido.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String email;
 
-    @NotBlank(message = "Não pode conter espaço.")
-    @Size(min = 8, max = 16, message = "Senha deve conterno minimo 8 caracteres e no maximo 16 ")
-    @NotNull(message = "O campo não pode ficar vazio.")
+    @Size(min = 8, max = 16, message = "O campo deve conter no mínimo 8 e no máximo 16 caracteres.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String senha;
 
-    @NotNull(message = "O campo não pode ficar vazio.")
-    @NotBlank(message = "Não pode conter espaço.")
+    @NotBlank(message = "O campo não pode ficar vazio ou conter apenas espaços.")
     private String role;
 
     public String getEmail() {

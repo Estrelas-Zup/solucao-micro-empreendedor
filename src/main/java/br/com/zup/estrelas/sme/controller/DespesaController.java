@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.sme.controller;
 
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,7 @@ public class DespesaController {
     @ApiOperation(value = "Adicionar despesa")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Despesa adiconada com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
-    public MensagemDTO adicionarDespesa(@RequestBody DespesaDTO despesaDTO) {
+    public MensagemDTO adicionarDespesa(@Valid @RequestBody DespesaDTO despesaDTO) {
         return despesaService.adicionarDespesa(despesaDTO);
     }
 
@@ -42,7 +43,7 @@ public class DespesaController {
             value = {@ApiResponse(code = 200, message = "Alteração da despesa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum despesa alterado!")})
     public MensagemDTO alterarDespesa(@PathVariable Long idDespesa,
-            @RequestBody DespesaDTO despesaDTO) {
+            @Valid @RequestBody DespesaDTO despesaDTO) {
         return despesaService.alterarDespesa(idDespesa, despesaDTO);
     }
 

@@ -1,13 +1,13 @@
 package br.com.zup.estrelas.sme.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 public class AlterarVendaDTO {
-    @NotBlank(message = "Observação não deve ter apenas espaço")
     private String observacao;
 
-    @Positive(message = "Valor desconto deve ser maior que zero!")
+    @PositiveOrZero(message = "O campo deve ser igual ou maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
     private Double valorDesconto;
 
     public String getObservacao() {

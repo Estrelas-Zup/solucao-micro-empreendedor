@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.sme.controller;
 
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +34,7 @@ public class VendaController {
     @ApiOperation(value = "Adicionar venda")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
-    public MensagemDTO adicionarVenda(@RequestBody AdicionarVendaDTO adicionarVendaDTO) {
+    public MensagemDTO adicionarVenda(@Valid @RequestBody AdicionarVendaDTO adicionarVendaDTO) {
         return service.adicionarVenda(adicionarVendaDTO);
     }
 
@@ -43,7 +44,7 @@ public class VendaController {
             value = {@ApiResponse(code = 200, message = "Alteração da venda feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhuma venda alterada!")})
     public MensagemDTO alterarVenda(@PathVariable Long idVenda,
-            @RequestBody AlterarVendaDTO alterarVendaDTO) {
+            @Valid @RequestBody AlterarVendaDTO alterarVendaDTO) {
         return service.alterarVenda(idVenda, alterarVendaDTO);
     }
 
