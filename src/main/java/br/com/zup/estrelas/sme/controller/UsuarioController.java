@@ -4,6 +4,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.RemoveUsuarioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
@@ -36,6 +38,7 @@ public class UsuarioController {
     @ApiOperation(value = "Adicionar usuário")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
+    @ResponseStatus(HttpStatus.CREATED)
     public MensagemDTO adicionarUsuario(@Valid @RequestBody UsuarioDTO adicionarUsuarioDTO)
             throws GenericException {
         return usuarioService.adicionarUsuario(adicionarUsuarioDTO);
