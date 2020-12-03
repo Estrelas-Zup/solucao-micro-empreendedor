@@ -68,10 +68,6 @@ public class CaixaServiceImpl implements CaixaService {
             return new MensagemDTO(CAIXA_EXISTENTE);
         }
 
-        novoSaldoCapitalSocial(caixaDTO, gestao);
-
-        copiaDadosDTOParaCaixa(caixaDTO);
-
         gestaoRepository.save(novoSaldoCapitalSocial(caixaDTO, gestao));
 
         caixaRepository.save(copiaDadosDTOParaCaixa(caixaDTO));
