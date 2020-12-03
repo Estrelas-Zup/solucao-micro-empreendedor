@@ -12,7 +12,7 @@ public interface RelatorioVendaRepository extends CrudRepository<RelatorioVenda,
 
     List<RelatorioVenda> findAllByEstoqueProdutoIdProduto(Long idProduto);
 
-    List<RelatorioVenda> findAllByVendaDataVendaBetween(LocalDate dataInicio, LocalDate dataAtual);
+    List<RelatorioVenda> findAllByVendaDataVendaBetween(LocalDate dataInicial, LocalDate dataAtual);
 
     List<RelatorioVenda> findAllByVendaDataVenda(LocalDate data);
 }

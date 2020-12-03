@@ -1,13 +1,15 @@
 package br.com.zup.estrelas.sme.controller;
 
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import br.com.zup.estrelas.sme.dto.IntervaloConsultaDataRelatorioDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioVendaDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioVendaDataDTO;
 import br.com.zup.estrelas.sme.service.RelatorioVendaService;
@@ -39,7 +41,7 @@ public class RelatorioVendaController {
             message = "Procura do relatório pela data inicial e pela data final feita com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum relatório encontrado!")})
     public RelatorioVendaDataDTO listarRelatorioVendaMes(
-            @RequestBody IntervaloConsultaDataRelatorioDTO intervaloConsultaDTO) {
-        return relatorioVendaService.listarRelatorioVendaMes(intervaloConsultaDTO);
+            @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate dataInicial) {
+        return relatorioVendaService.listarRelatorioVendaMes(dataInicial);
     }
 }
