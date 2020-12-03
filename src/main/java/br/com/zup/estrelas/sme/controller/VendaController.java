@@ -16,6 +16,7 @@ import br.com.zup.estrelas.sme.dto.AdicionarVendaDTO;
 import br.com.zup.estrelas.sme.dto.AlterarVendaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Venda;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 import br.com.zup.estrelas.sme.service.VendaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +35,8 @@ public class VendaController {
     @ApiOperation(value = "Adicionar venda")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
-    public MensagemDTO adicionarVenda(@Valid @RequestBody AdicionarVendaDTO adicionarVendaDTO) {
+    public MensagemDTO adicionarVenda(@Valid @RequestBody AdicionarVendaDTO adicionarVendaDTO)
+            throws GenericException {
         return service.adicionarVenda(adicionarVendaDTO);
     }
 
@@ -44,7 +46,7 @@ public class VendaController {
             value = {@ApiResponse(code = 200, message = "Alteração da venda feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhuma venda alterada!")})
     public MensagemDTO alterarVenda(@PathVariable Long idVenda,
-            @Valid @RequestBody AlterarVendaDTO alterarVendaDTO) {
+            @Valid @RequestBody AlterarVendaDTO alterarVendaDTO) throws GenericException {
         return service.alterarVenda(idVenda, alterarVendaDTO);
     }
 
@@ -53,7 +55,7 @@ public class VendaController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Procura do ID da venda feita com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhuma venda encontrada pelo ID!")})
-    public Venda buscarVendaPorId(@PathVariable Long idVenda) {
+    public Venda buscarVendaPorId(@PathVariable Long idVenda) throws GenericException {
         return service.buscarVendaPorId(idVenda);
     }
 
@@ -62,7 +64,7 @@ public class VendaController {
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Listagem de venda realizada com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhuma venda encontrada!")})
-    public List<Venda> listarVendas() {
+    public List<Venda> listarVendas() throws GenericException {
         return service.listarVendas();
     }
 
@@ -71,7 +73,7 @@ public class VendaController {
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Remoção da venda feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhuma venda removida!")})
-    public MensagemDTO removerVenda(@PathVariable Long idVenda) {
+    public MensagemDTO removerVenda(@PathVariable Long idVenda) throws GenericException {
         return service.removerVenda(idVenda);
     }
 }
