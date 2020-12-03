@@ -17,6 +17,7 @@ import br.com.zup.estrelas.sme.dto.AdicionarFuncionarioDTO;
 import br.com.zup.estrelas.sme.dto.AlteraFuncionarioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Funcionario;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 import br.com.zup.estrelas.sme.service.FuncionarioService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +37,8 @@ public class FuncionarioController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor.")})
     public MensagemDTO adicionarFuncionario(
-            @Valid @RequestBody AdicionarFuncionarioDTO adicionarFuncionarioDTO) {
+            @Valid @RequestBody AdicionarFuncionarioDTO adicionarFuncionarioDTO)
+            throws GenericException {
         return funcionarioService.adicionarFuncionario(adicionarFuncionarioDTO);
     }
 
@@ -46,18 +48,19 @@ public class FuncionarioController {
             @ApiResponse(code = 200, message = "Alteração do funcionário feita com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum funcionário alterado.")})
     public MensagemDTO alterarFuncionario(@PathVariable Long idFuncionario,
-            @Valid @RequestBody AlteraFuncionarioDTO alteraFuncionarioDTO) {
+            @Valid @RequestBody AlteraFuncionarioDTO alteraFuncionarioDTO) throws GenericException {
         return funcionarioService.alterarFuncionario(idFuncionario, alteraFuncionarioDTO);
     }
 
-    //TODO: Analisar possibilidade de passar CPF no corpo
+    // TODO: Analisar possibilidade de passar CPF no corpo
     @GetMapping(path = "/{cpf}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar funcionário por CPF")
     @ApiResponses(value = {
             @ApiResponse(code = 200,
                     message = "Consulta do funcionário pelo CPF realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum funcionário encontrado pelo CPF.")})
-    public Funcionario consultarFuncionarioPorCpf(@PathVariable String cpf) {
+    public Funcionario consultarFuncionarioPorCpf(@PathVariable String cpf)
+            throws GenericException {
         return funcionarioService.consultarFuncionarioPorCpf(cpf);
     }
 
@@ -66,18 +69,18 @@ public class FuncionarioController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Listagem de funcionários realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum funcionário encontrado!")})
-    public List<Funcionario> listarFuncionarios() {
+    public List<Funcionario> listarFuncionarios() throws GenericException {
         return funcionarioService.listarFuncionarios();
     }
 
-    //TODO: Analisar possibilidade de passar CPF no corpo
+    // TODO: Analisar possibilidade de passar CPF no corpo
     @DeleteMapping(path = "/{cpf}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover funcionário")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Remoção do funcionário feita com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum funcionário removido!")})
     @Transactional
-    public MensagemDTO removerFuncionario(@PathVariable String cpf) {
+    public MensagemDTO removerFuncionario(@PathVariable String cpf) throws GenericException {
         return funcionarioService.removerFuncionario(cpf);
     }
 
