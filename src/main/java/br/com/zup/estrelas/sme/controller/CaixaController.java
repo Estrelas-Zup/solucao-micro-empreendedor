@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.sme.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.ConsultaDataDTO;
 import br.com.zup.estrelas.sme.dto.CaixaDTO;
@@ -61,8 +63,8 @@ public class CaixaController {
             @ApiResponse(code = 200, message = "Consulta caixa por data realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum caixa nesta data encontrado.")})
     @GetMapping(path = "/datas", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Caixa consultarCaixaPorData(@Valid @RequestBody ConsultaDataDTO consultaDataDTO) {
-        return caixaService.consultarCaixaPorData(consultaDataDTO);
+    public Caixa consultarCaixaPorData(@Valid @RequestParam LocalDate data) {
+        return caixaService.consultarCaixaPorData(data);
     }
 
     @ApiOperation(value = "Alterar caixa")
