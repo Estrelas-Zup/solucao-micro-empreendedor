@@ -6,10 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import br.com.zup.estrelas.sme.dto.MensagemDTO;
-import br.com.zup.estrelas.sme.dto.ProdutosVendaDTO;
 import br.com.zup.estrelas.sme.dto.AdicionarVendaDTO;
 import br.com.zup.estrelas.sme.dto.AlterarVendaDTO;
+import br.com.zup.estrelas.sme.dto.MensagemDTO;
+import br.com.zup.estrelas.sme.dto.ProdutosVendaDTO;
 import br.com.zup.estrelas.sme.entity.Caixa;
 import br.com.zup.estrelas.sme.entity.Estoque;
 import br.com.zup.estrelas.sme.entity.RelatorioVenda;
@@ -28,8 +28,6 @@ public class VendaServiceImpl implements VendaService {
     private static final String VENDA_ALTERADA_COM_SUCESSO = "Venda alterada com sucesso!";
     private static final String VENDA_INEXISTENTE =
             "Infelizmente não foi possivel realizar a operação, venda inexistente.";
-    private static final String PRODUTO_INEXISTENTE =
-            "Infelizmente não foi possivel relizar a operação, produto inexistente.";
     private static final String VENDA_CADASTRADA_COM_SUCESSO = "Venda cadastrada com sucesso!";
     private static final String ABERTURA_DE_CAIXA_NAO_REALIZADA =
             "Infelizmente não foi possivel realizar a operação, ainda não houve abertura de caixa no dia de hoje.";
@@ -53,33 +51,6 @@ public class VendaServiceImpl implements VendaService {
 
         List<ProdutosVendaDTO> produtosVenda = adicionarVendaDTO.getProdutosVenda();
 
-        // TODO: Validar idProduto iguais
-
-        for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) {
-            Optional<Estoque> estoqueConsultado = estoqueRepository
-                    .findFirstByDisponibilidadeAndProdutoIdProdutoOrderByDataValidadeAsc(true,
-                            produtosVendaDTO.getIdProduto());
-
-            // TODO: Validar quantidade em estoque
-            if (estoqueConsultado.isEmpty()) {
-                return new MensagemDTO(PRODUTO_INEXISTENTE);
-            }
-
-            Estoque estoque = estoqueConsultado.get();
-
-            Double valorVendaProduto =
-                    produtosVendaDTO.getQuantidade() * estoque.getProduto().getValorVenda();
-
-            valorTotalProdutos += valorVendaProduto;
-        }
-
-
-        Venda venda = new Venda();
-        BeanUtils.copyProperties(adicionarVendaDTO, venda);
-
-        // TODO: validar valor desconto menor que valorTotalProdutos
-        Double valorTotalComDesconto = valorTotalProdutos - adicionarVendaDTO.getValorDesconto();
-
         Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
 
         if (caixaConsultado.isEmpty()) {
@@ -87,6 +58,63 @@ public class VendaServiceImpl implements VendaService {
         }
 
         Caixa caixa = caixaConsultado.get();
+
+        for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) {
+            List<Estoque> estoqueConsultado = consultaEstoque(produtosVendaDTO);
+
+            if (estoqueConsultado.isEmpty()) {
+                return new MensagemDTO(
+                        "Infelizmente não foi possivel relizar a operação, não temos o produto com id: "
+                                + produtosVendaDTO.getIdProduto() + " disponivel em estoque.");
+            }
+
+            int quantidadeDesejada = produtosVendaDTO.getQuantidade();
+            int quantidadeTotalEstoque = 0;
+            Double precoUnitararioProduto = 0D;
+            long idProdutoConsultado = 0;
+
+            for (Estoque estoque : estoqueConsultado) {
+                quantidadeTotalEstoque += estoque.getQuantidade();
+                idProdutoConsultado = estoque.getProduto().getIdProduto();
+                precoUnitararioProduto = estoque.getProduto().getValorVenda();
+            }
+
+            boolean quantidadeDesejadaMaiorQueEstoque = quantidadeTotalEstoque < quantidadeDesejada;
+
+            if (quantidadeDesejadaMaiorQueEstoque) {
+                return new MensagemDTO(String.format(
+                        "A quantidade em estoque do produto com id: %d, inferior a quantidade desejada, temos apenas %d",
+                        idProdutoConsultado, quantidadeTotalEstoque));
+            }
+
+            Double valorVendaProduto = produtosVendaDTO.getQuantidade() * precoUnitararioProduto;
+
+            valorTotalProdutos += valorVendaProduto;
+        }
+
+        boolean valorDescontoMaiorQueValorTotal =
+                adicionarVendaDTO.getValorDesconto() > valorTotalProdutos;
+
+        if (valorDescontoMaiorQueValorTotal) {
+            return new MensagemDTO(
+                    "Infelizmente não foi possivel relizar a operação, valor do desconto não pode ser maior que o valor total da venda!");
+        }
+
+        Double valorTotalComDesconto = valorTotalProdutos - adicionarVendaDTO.getValorDesconto();
+
+        for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) {
+            List<Estoque> estoqueConsultado = consultaEstoque(produtosVendaDTO);
+
+            int quantidadeDesejada = produtosVendaDTO.getQuantidade();
+
+            alteraQuantidadeDoEstoque(estoqueConsultado, quantidadeDesejada);
+        }
+
+        Venda venda = new Venda();
+        BeanUtils.copyProperties(adicionarVendaDTO, venda);
+
+        caixa.setValorTotal(caixa.getValorTotal() + valorTotalComDesconto);
+        caixaRepository.save(caixa);
 
         venda.setValorTotal(valorTotalComDesconto);
         venda.setDataVenda(LocalDate.now());
@@ -97,6 +125,7 @@ public class VendaServiceImpl implements VendaService {
         adicionarRelatorioVenda(adicionarVendaDTO);
         return new MensagemDTO(VENDA_CADASTRADA_COM_SUCESSO);
     }
+
 
     @Override
     public MensagemDTO alterarVenda(Long idVenda, AlterarVendaDTO alterarVendaDTO) {
@@ -176,5 +205,29 @@ public class VendaServiceImpl implements VendaService {
 
             relatorioVendaRepository.save(relatorioVenda);
         }
+    }
+
+    private void alteraQuantidadeDoEstoque(List<Estoque> estoqueConsultado,
+            int quantidadeDesejada) {
+        for (Estoque estoque : estoqueConsultado) {
+            if (quantidadeDesejada >= estoque.getQuantidade()) {
+                quantidadeDesejada = quantidadeDesejada - estoque.getQuantidade();
+                estoque.setQuantidade(0);
+                estoque.setDisponibilidade(false);
+                estoqueRepository.save(estoque);
+            } else {
+                estoque.setQuantidade(estoque.getQuantidade() - quantidadeDesejada);
+                quantidadeDesejada = 0;
+                estoqueRepository.save(estoque);
+                break;
+            }
+        }
+    }
+
+    private List<Estoque> consultaEstoque(ProdutosVendaDTO produtosVendaDTO) {
+        List<Estoque> estoqueConsultado =
+                estoqueRepository.findAllByDisponibilidadeAndProdutoIdProdutoOrderByDataValidadeAsc(
+                        true, produtosVendaDTO.getIdProduto());
+        return estoqueConsultado;
     }
 }

@@ -1,7 +1,6 @@
 package br.com.zup.estrelas.sme.repository;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import br.com.zup.estrelas.sme.entity.Estoque;
@@ -12,5 +11,5 @@ public interface EstoqueRepository extends CrudRepository<Estoque, Long> {
     
     Estoque findFirstByProdutoIdProduto(Long idProduto);
     
-    Optional<Estoque> findFirstByDisponibilidadeAndProdutoIdProdutoOrderByDataValidadeAsc(boolean disponibilidade, Long idProduto);
+    List<Estoque> findAllByDisponibilidadeAndProdutoIdProdutoOrderByDataValidadeAsc(boolean disponibilidade, Long idProduto);
 }
