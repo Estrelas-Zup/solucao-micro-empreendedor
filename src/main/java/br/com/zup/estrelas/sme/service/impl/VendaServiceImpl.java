@@ -23,6 +23,10 @@ import br.com.zup.estrelas.sme.service.VendaService;
 @Service
 public class VendaServiceImpl implements VendaService {
 
+    private static final String DATA_DA_VENDA_INFERIOR_A_DATA_ATUAL = "Infelizmente não foi possivel relizar a operação, data da venda inferior a data atual!";
+    private static final String VENDA_REMOVIDA_COM_SUCESSO = "Venda removida com sucesso!";
+    private static final String DESCONTO_MAIOR_QUE_TOTAL_VENDA =
+            "Infelizmente não foi possivel relizar a operação, valor do desconto não pode ser maior que o valor total da venda!";
     private static final String VALOR_DESCONTO_SUPERIOR_AO_VALOR_TOTAL =
             "Infelizmente não foi possivel realizar a operação, valor desconto superior ao valor total.";
     private static final String VENDA_ALTERADA_COM_SUCESSO = "Venda alterada com sucesso!";
@@ -96,8 +100,7 @@ public class VendaServiceImpl implements VendaService {
                 adicionarVendaDTO.getValorDesconto() > valorTotalProdutos;
 
         if (valorDescontoMaiorQueValorTotal) {
-            return new MensagemDTO(
-                    "Infelizmente não foi possivel relizar a operação, valor do desconto não pode ser maior que o valor total da venda!");
+            return new MensagemDTO(DESCONTO_MAIOR_QUE_TOTAL_VENDA);
         }
 
         Double valorTotalComDesconto = valorTotalProdutos - adicionarVendaDTO.getValorDesconto();
@@ -134,27 +137,41 @@ public class VendaServiceImpl implements VendaService {
         if (vendaConsultada.isEmpty()) {
             return new MensagemDTO(VENDA_INEXISTENTE);
         }
-
+        
         Venda venda = vendaConsultada.get();
-
+        
+        boolean vericaDataVendaIgualDataAtual = venda.getDataVenda().equals(LocalDate.now());
+        
+        if (!vericaDataVendaIgualDataAtual) {
+            return new MensagemDTO(DATA_DA_VENDA_INFERIOR_A_DATA_ATUAL);
+        }
+      
         boolean verificarValorDescontoAtualIgualNovoValor =
                 venda.getValorDesconto().equals(alterarVendaDTO.getValorDesconto());
 
         if (!verificarValorDescontoAtualIgualNovoValor) {
             Double valorTotalSemDesconto = venda.getValorTotal() + venda.getValorDesconto();
 
-            boolean verificarValorDescontoInferiorOuIgualValorTotal =
-                    alterarVendaDTO.getValorDesconto() < valorTotalSemDesconto;
+            boolean verificarValorDescontoSuperiorValorTotal =
+                    alterarVendaDTO.getValorDesconto() > valorTotalSemDesconto;
 
-            if (!verificarValorDescontoInferiorOuIgualValorTotal) {
+            if (verificarValorDescontoSuperiorValorTotal) {
                 return new MensagemDTO(VALOR_DESCONTO_SUPERIOR_AO_VALOR_TOTAL);
             }
 
             Double descontoAlterado = alterarVendaDTO.getValorDesconto();
 
             Double novoValorTotal = valorTotalSemDesconto - descontoAlterado;
+
+            Double diferencaDescontoParaCaixa = venda.getValorTotal() - novoValorTotal;
+
             venda.setValorTotal(novoValorTotal);
             venda.setValorDesconto(descontoAlterado);
+            
+            Caixa caixa = caixaRepository.findByData(LocalDate.now()).get();
+            Double novoSaltoTotalCaixa = caixa.getValorTotal() - diferencaDescontoParaCaixa;
+            caixa.setValorTotal(novoSaltoTotalCaixa);
+            caixaRepository.save(caixa);
         }
 
         venda.setObservacao(alterarVendaDTO.getObservacao());
@@ -174,15 +191,41 @@ public class VendaServiceImpl implements VendaService {
 
     public MensagemDTO removerVenda(Long idVenda) {
         if (repository.existsById(idVenda)) {
+            
             List<RelatorioVenda> relatorioVendas =
                     relatorioVendaRepository.findAllByVendaIdVenda(idVenda);
+            
+            Venda venda = repository.findById(idVenda).get();
+
+            double valorVendaRemovida = venda.getValorTotal();
+
+            Caixa caixa = caixaRepository.findByData(LocalDate.now()).get();
+            double novoSaldoCaixa = caixa.getValorTotal() - valorVendaRemovida;
+            caixa.setValorTotal(novoSaldoCaixa);
+            caixaRepository.save(caixa);
+
+            adionaProdutosAoEstoque(relatorioVendas);
+
             relatorioVendaRepository.deleteAll(relatorioVendas);
 
             repository.deleteById(idVenda);
 
-            return new MensagemDTO("Venda removida com sucesso!");
+            return new MensagemDTO(VENDA_REMOVIDA_COM_SUCESSO);
         }
         return new MensagemDTO(VENDA_INEXISTENTE);
+    }
+
+
+    private void adionaProdutosAoEstoque(List<RelatorioVenda> relatorioVendas) {
+        for (RelatorioVenda relatorio : relatorioVendas) {
+            Estoque estoque =
+                    estoqueRepository.findById(relatorio.getEstoque().getIdEstoque()).get();
+
+            estoque.setDisponibilidade(true);
+            int novaQuantidadeEstoque = estoque.getQuantidade() + relatorio.getQuantidade();
+            estoque.setQuantidade(novaQuantidadeEstoque);
+            estoqueRepository.save(estoque);
+        }
     }
 
     // TODO: Verificar em um melhor tipo de retorno
