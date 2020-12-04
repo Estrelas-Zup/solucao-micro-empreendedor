@@ -55,7 +55,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public Usuario consultarUsuarioPorEmail(String email) {
-        return usuarioRepository.findByEmail(email);
+        return usuarioRepository.findByEmail(email).orElse(null);
     }
 
     public List<Usuario> listarUsuarios() {
