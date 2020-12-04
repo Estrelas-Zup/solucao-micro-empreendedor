@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import br.com.zup.estrelas.sme.dto.RemoveUsuarioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
+import br.com.zup.estrelas.sme.dto.RemoveUsuarioDTO;
 import br.com.zup.estrelas.sme.dto.UsuarioDTO;
 import br.com.zup.estrelas.sme.entity.Usuario;
 import br.com.zup.estrelas.sme.service.UsuarioService;
@@ -50,14 +50,13 @@ public class UsuarioController {
     }
 
     // TODO: Analisar possibilidade de consultar email pelo corpo EmailUsuarioDTO (String email)
-    @GetMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/email", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar usuário por Email")
     @ApiResponses(value = {
             @ApiResponse(code = 200,
                     message = "Consulta do usuário por email realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum usuário encontrado pelo Email.")})
-    public Usuario consultarUsuarioPorEmail(@PathVariable String email) {
-
+    public Usuario consultarUsuarioPorEmail(@RequestParam("email") String email) {
         return usuarioService.consultarUsuarioPorEmail(email);
     }
 
@@ -71,7 +70,8 @@ public class UsuarioController {
 
     }
 
-    //TODO: Verificar possibilidade de alterar RemoveUsuarioDTO para EmailUsuarioDTO, para utilizar o mesmo em ConsultarUsuarioPorEmail
+    // TODO: Verificar possibilidade de alterar RemoveUsuarioDTO para EmailUsuarioDTO, para utilizar
+    // o mesmo em ConsultarUsuarioPorEmail
     @DeleteMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover usuário")
     @ApiResponses(
