@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.sme.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.AdicionarVendaDTO;
 import br.com.zup.estrelas.sme.dto.AlterarVendaDTO;
+import br.com.zup.estrelas.sme.dto.ControleEstoqueVendaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.ProdutosVendaDTO;
+import br.com.zup.estrelas.sme.dto.ControleEstoqueVendaDTO;
 import br.com.zup.estrelas.sme.entity.Caixa;
 import br.com.zup.estrelas.sme.entity.Estoque;
 import br.com.zup.estrelas.sme.entity.RelatorioVenda;
@@ -23,7 +26,8 @@ import br.com.zup.estrelas.sme.service.VendaService;
 @Service
 public class VendaServiceImpl implements VendaService {
 
-    private static final String DATA_DA_VENDA_INFERIOR_A_DATA_ATUAL = "Infelizmente não foi possivel relizar a operação, data da venda inferior a data atual!";
+    private static final String DATA_DA_VENDA_INFERIOR_A_DATA_ATUAL =
+            "Infelizmente não foi possivel relizar a operação, data da venda inferior a data atual!";
     private static final String VENDA_REMOVIDA_COM_SUCESSO = "Venda removida com sucesso!";
     private static final String DESCONTO_MAIOR_QUE_TOTAL_VENDA =
             "Infelizmente não foi possivel relizar a operação, valor do desconto não pode ser maior que o valor total da venda!";
@@ -105,12 +109,15 @@ public class VendaServiceImpl implements VendaService {
 
         Double valorTotalComDesconto = valorTotalProdutos - adicionarVendaDTO.getValorDesconto();
 
+        List<ControleEstoqueVendaDTO> listaEstoqueASerAdicionadoRelatorio = new ArrayList<>();
+
         for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) {
             List<Estoque> estoqueConsultado = consultaEstoque(produtosVendaDTO);
 
             int quantidadeDesejada = produtosVendaDTO.getQuantidade();
 
-            alteraQuantidadeDoEstoque(estoqueConsultado, quantidadeDesejada);
+            listaEstoqueASerAdicionadoRelatorio
+                    .addAll(alteraQuantidadeDoEstoque(estoqueConsultado, quantidadeDesejada));
         }
 
         Venda venda = new Venda();
@@ -125,7 +132,7 @@ public class VendaServiceImpl implements VendaService {
 
         repository.save(venda);
 
-        adicionarRelatorioVenda(adicionarVendaDTO);
+        adicionarRelatorioVenda(venda, listaEstoqueASerAdicionadoRelatorio);
         return new MensagemDTO(VENDA_CADASTRADA_COM_SUCESSO);
     }
 
@@ -137,15 +144,15 @@ public class VendaServiceImpl implements VendaService {
         if (vendaConsultada.isEmpty()) {
             return new MensagemDTO(VENDA_INEXISTENTE);
         }
-        
+
         Venda venda = vendaConsultada.get();
-        
+
         boolean vericaDataVendaIgualDataAtual = venda.getDataVenda().equals(LocalDate.now());
-        
+
         if (!vericaDataVendaIgualDataAtual) {
             return new MensagemDTO(DATA_DA_VENDA_INFERIOR_A_DATA_ATUAL);
         }
-      
+
         boolean verificarValorDescontoAtualIgualNovoValor =
                 venda.getValorDesconto().equals(alterarVendaDTO.getValorDesconto());
 
@@ -167,7 +174,7 @@ public class VendaServiceImpl implements VendaService {
 
             venda.setValorTotal(novoValorTotal);
             venda.setValorDesconto(descontoAlterado);
-            
+
             Caixa caixa = caixaRepository.findByData(LocalDate.now()).get();
             Double novoSaltoTotalCaixa = caixa.getValorTotal() - diferencaDescontoParaCaixa;
             caixa.setValorTotal(novoSaltoTotalCaixa);
@@ -191,10 +198,10 @@ public class VendaServiceImpl implements VendaService {
 
     public MensagemDTO removerVenda(Long idVenda) {
         if (repository.existsById(idVenda)) {
-            
+
             List<RelatorioVenda> relatorioVendas =
                     relatorioVendaRepository.findAllByVendaIdVenda(idVenda);
-            
+
             Venda venda = repository.findById(idVenda).get();
 
             double valorVendaRemovida = venda.getValorTotal();
@@ -215,7 +222,6 @@ public class VendaServiceImpl implements VendaService {
         return new MensagemDTO(VENDA_INEXISTENTE);
     }
 
-
     private void adionaProdutosAoEstoque(List<RelatorioVenda> relatorioVendas) {
         for (RelatorioVenda relatorio : relatorioVendas) {
             Estoque estoque =
@@ -229,42 +235,72 @@ public class VendaServiceImpl implements VendaService {
     }
 
     // TODO: Verificar em um melhor tipo de retorno
-    public void adicionarRelatorioVenda(AdicionarVendaDTO adicionarVendaDTO) {
-        List<ProdutosVendaDTO> produtosVenda = adicionarVendaDTO.getProdutosVenda();
+    public void adicionarRelatorioVenda(Venda venda,
+            List<ControleEstoqueVendaDTO> listaEstoqueASerAdicionadoRelatorio) {
 
-        Venda ultimaVendaAdicionada = repository.findFirstByOrderByIdVendaDesc();
-
-
-        for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) {
+        for (ControleEstoqueVendaDTO controleEstoqueVendaDTO : listaEstoqueASerAdicionadoRelatorio) {
             RelatorioVenda relatorioVenda = new RelatorioVenda();
+            
+            relatorioVenda.setQuantidade(controleEstoqueVendaDTO.getQuantidade());
 
-            Estoque estoque =
-                    estoqueRepository.findFirstByProdutoIdProduto(produtosVendaDTO.getIdProduto());
-
-            relatorioVenda.setQuantidade(produtosVendaDTO.getQuantidade());
-
-            relatorioVenda.setVenda(ultimaVendaAdicionada);
-            relatorioVenda.setEstoque(estoque);
+            relatorioVenda.setVenda(venda);
+            relatorioVenda.setEstoque(controleEstoqueVendaDTO.getEstoque());
 
             relatorioVendaRepository.save(relatorioVenda);
         }
+
+
+        /*
+         * List<ProdutosVendaDTO> produtosVenda = adicionarVendaDTO.getProdutosVenda();
+         * 
+         * Venda ultimaVendaAdicionada = repository.findFirstByOrderByIdVendaDesc();
+         * 
+         * 
+         * for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) { RelatorioVenda relatorioVenda =
+         * new RelatorioVenda();
+         * 
+         * Estoque estoque =
+         * estoqueRepository.findFirstByProdutoIdProduto(produtosVendaDTO.getIdProduto());
+         * 
+         * relatorioVenda.setQuantidade(produtosVendaDTO.getQuantidade());
+         * 
+         * relatorioVenda.setVenda(ultimaVendaAdicionada); relatorioVenda.setEstoque(estoque);
+         * 
+         * relatorioVendaRepository.save(relatorioVenda); }
+         */
     }
 
-    private void alteraQuantidadeDoEstoque(List<Estoque> estoqueConsultado,
+    private List<ControleEstoqueVendaDTO> alteraQuantidadeDoEstoque(List<Estoque> estoqueConsultado,
             int quantidadeDesejada) {
+
+        List<ControleEstoqueVendaDTO> listaEstoqueASerAdicionadoRelatorio = new ArrayList<>();
+
         for (Estoque estoque : estoqueConsultado) {
+            ControleEstoqueVendaDTO controleEstoqueVendaDTO = new ControleEstoqueVendaDTO();
+
             if (quantidadeDesejada >= estoque.getQuantidade()) {
                 quantidadeDesejada = quantidadeDesejada - estoque.getQuantidade();
+
+                controleEstoqueVendaDTO.setEstoque(estoque);
+                controleEstoqueVendaDTO.setQuantidade(estoque.getQuantidade());
+                listaEstoqueASerAdicionadoRelatorio.add(controleEstoqueVendaDTO);
+
                 estoque.setQuantidade(0);
                 estoque.setDisponibilidade(false);
                 estoqueRepository.save(estoque);
             } else {
+                controleEstoqueVendaDTO.setEstoque(estoque);
+                controleEstoqueVendaDTO.setQuantidade(quantidadeDesejada);
+                listaEstoqueASerAdicionadoRelatorio.add(controleEstoqueVendaDTO);
+
                 estoque.setQuantidade(estoque.getQuantidade() - quantidadeDesejada);
                 quantidadeDesejada = 0;
                 estoqueRepository.save(estoque);
-                break;
+
+                return listaEstoqueASerAdicionadoRelatorio;
             }
         }
+        return listaEstoqueASerAdicionadoRelatorio;
     }
 
     private List<Estoque> consultaEstoque(ProdutosVendaDTO produtosVendaDTO) {
