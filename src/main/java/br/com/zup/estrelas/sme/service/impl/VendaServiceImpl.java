@@ -243,8 +243,11 @@ public class VendaServiceImpl implements VendaService {
             
             relatorioVenda.setQuantidade(controleEstoqueVendaDTO.getQuantidade());
 
+            Long idProdutoEstoque = controleEstoqueVendaDTO.getEstoque().getProduto().getIdProduto();
+            
             relatorioVenda.setVenda(venda);
             relatorioVenda.setEstoque(controleEstoqueVendaDTO.getEstoque());
+            relatorioVenda.setIdProdutoEstoque(idProdutoEstoque);
 
             relatorioVendaRepository.save(relatorioVenda);
         }

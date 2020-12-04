@@ -26,6 +26,9 @@ public class RelatorioVenda {
 
     @Column(nullable = false)
     private int quantidade;
+    
+    @Column(name = "id_produto_estoque", nullable = false)
+    private Long idProdutoEstoque;
 
     public Long getIdRelatorioVenda() {
         return idRelatorioVenda;
@@ -57,5 +60,13 @@ public class RelatorioVenda {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public Long getIdProdutoEstoque() {
+        return idProdutoEstoque;
+    }
+
+    public void setIdProdutoEstoque(Long idProdutoEstoque) {
+        this.idProdutoEstoque = idProdutoEstoque;
     }
 }
