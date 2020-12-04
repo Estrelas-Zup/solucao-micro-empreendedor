@@ -7,4 +7,5 @@ import br.com.zup.estrelas.sme.entity.Usuario;
 @Repository
 public interface UsuarioRepository extends CrudRepository<Usuario, String> {
 
+    Usuario findByEmail(String email);
 }

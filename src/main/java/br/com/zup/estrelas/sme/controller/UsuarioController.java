@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.RemoveUsuarioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
@@ -50,14 +51,14 @@ public class UsuarioController {
     }
 
     // TODO: Analisar possibilidade de consultar email pelo corpo EmailUsuarioDTO (String email)
-    @GetMapping(path = "/{email}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/findByEmail")
+    @ResponseBody
     @ApiOperation(value = "Consultar usuário por Email")
     @ApiResponses(value = {
             @ApiResponse(code = 200,
                     message = "Consulta do usuário por email realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum usuário encontrado pelo Email.")})
-    public Usuario consultarUsuarioPorEmail(@RequestParam(required = true) String email) {
-
+    public Usuario consultarUsuarioPorEmail(@RequestParam("email") String email) {
         return usuarioService.consultarUsuarioPorEmail(email);
     }
 
