@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +65,8 @@ public class CaixaController {
             @ApiResponse(code = 200, message = "Consulta caixa por data realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum caixa nesta data encontrado.")})
     @GetMapping(path = "/datas", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Caixa consultarCaixaPorData(@RequestParam LocalDate data) {
+    public Caixa consultarCaixaPorData(
+            @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate data) {
         return caixaService.consultarCaixaPorData(data);
     }
 
