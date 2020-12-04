@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.ProdutoDTO;
@@ -66,12 +67,12 @@ public class ProdutoController {
     }
 
     // TODO verificar possibilidade de passar nome no corpo ConsultarPeloNomeDTO
-    @GetMapping(path = "/nomes/{nome}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/nome", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consulta produto pelo nome")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Procura do nome do produto feita com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum produto encontrado pelo nome!")})
-    public List<Produto> consultarPeloNome(@PathVariable String nome) {
+    public List<Produto> consultarPeloNome(@RequestParam("nome") String nome) {
         return produtoService.consultarPeloNome(nome);
     }
 
