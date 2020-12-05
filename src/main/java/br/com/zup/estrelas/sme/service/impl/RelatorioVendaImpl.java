@@ -18,8 +18,6 @@ public class RelatorioVendaImpl implements RelatorioVendaService {
     @Autowired
     RelatorioVendaRepository relatorioVendaRepository;
 
-    Double somaValorTotal = 0D;
-
     public RelatorioVendaDTO consultarRelatorioProduto(Long idProduto) {
 
         RelatorioVendaDTO relatorioVenda = new RelatorioVendaDTO();
@@ -30,6 +28,8 @@ public class RelatorioVendaImpl implements RelatorioVendaService {
 
         List<InformacoesRelatorioVendaDTO> informacoesRelatorio =
                 new ArrayList<InformacoesRelatorioVendaDTO>();
+
+        Double somaValorTotal = 0D;
 
         for (RelatorioVenda relatorio : relatorioVendaConsultada) {
             InformacoesRelatorioVendaDTO informacoes = new InformacoesRelatorioVendaDTO();
@@ -64,6 +64,8 @@ public class RelatorioVendaImpl implements RelatorioVendaService {
 
         List<RelatorioVendaDataDTO> relatorioVenda = new ArrayList<RelatorioVendaDataDTO>();
 
+        Double somaValorTotal = 0D;
+
         for (RelatorioVenda vendaEntity : vendasConsultadas) {
             relatorioVendaDataDTO.setIdVenda(vendaEntity.getVenda().getIdVenda());
             relatorioVendaDataDTO.setNomeProduto(vendaEntity.getEstoque().getProduto().getNome());
@@ -87,33 +89,6 @@ public class RelatorioVendaImpl implements RelatorioVendaService {
     }
 
     public List<RelatorioVenda> consultarRelatorioVendaPorData(LocalDate data) {
-
-        RelatorioVenda dadosRelatorioVenda = new RelatorioVenda();
-        RelatorioVendaDTO dadosRelatorioVendaDTO = new RelatorioVendaDTO();
-
-        List<RelatorioVenda> vendaConsultada =
-                this.relatorioVendaRepository.findAllByVendaDataVenda(data);
-
-        List<RelatorioVenda> relatorioVenda = new ArrayList<RelatorioVenda>();
-        List<RelatorioVendaDTO> relatorioVendaDTO = new ArrayList<RelatorioVendaDTO>();
-
-        for (RelatorioVenda consultaPelaDataVenda : vendaConsultada) {
-            dadosRelatorioVendaDTO
-                    .setNomeProduto(consultaPelaDataVenda.getEstoque().getProduto().getNome());
-            dadosRelatorioVendaDTO.setValorUnitario(
-                    consultaPelaDataVenda.getEstoque().getProduto().getValorVenda());
-
-
-            dadosRelatorioVenda.setIdRelatorioVenda(consultaPelaDataVenda.getIdRelatorioVenda());;
-            dadosRelatorioVenda.setQuantidade(consultaPelaDataVenda.getQuantidade());
-
-
-            relatorioVendaDTO.add(dadosRelatorioVendaDTO);
-
-            relatorioVenda.add(dadosRelatorioVenda);
-
-        }
-
-        return relatorioVenda;
+        return (List<RelatorioVenda>) this.relatorioVendaRepository.findAllByVendaDataVenda(data);
     }
 }
