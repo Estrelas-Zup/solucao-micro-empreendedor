@@ -83,8 +83,8 @@ public class CaixaServiceImpl implements CaixaService {
         return caixaRepository.findById(idCaixa).orElse(null);
     }
 
-    public Caixa consultarCaixaPorData(ConsultaDataDTO dataDTO) {
-        return caixaRepository.findByData(dataDTO.getData()).orElse(null);
+    public Caixa consultarCaixaPorData(LocalDate data) {
+        return caixaRepository.findByData(data).orElse(null);
     }
 
     public MensagemDTO alterarCaixa(Long idCaixa, CaixaDTO caixaDTO) {
