@@ -52,7 +52,6 @@ public class VendaServiceImpl implements VendaService {
     @Autowired
     CaixaRepository caixaRepository;
 
-    @Override
     public MensagemDTO adicionarVenda(AdicionarVendaDTO adicionarVendaDTO) {
         Double valorTotalProdutos = 0D;
 
@@ -135,7 +134,6 @@ public class VendaServiceImpl implements VendaService {
         return new MensagemDTO(VENDA_CADASTRADA_COM_SUCESSO);
     }
 
-    @Override
     public MensagemDTO alterarVenda(Long idVenda, AlterarVendaDTO alterarVendaDTO) {
         Optional<Venda> vendaConsultada = repository.findById(idVenda);
 

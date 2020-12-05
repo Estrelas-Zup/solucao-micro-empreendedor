@@ -7,5 +7,7 @@ public interface GestaoService {
     public MensagemDTO aberturaComercio(AberturaComercioDTO aberturaComercioDTO);
     
     public MensagemDTO adicionarInvestimentoCapitalSocial(AberturaComercioDTO aberturaComercioDTO);
+    
+    public MensagemDTO encerrarComercio();
    // public GestaoDTO calcularPrecoVendaPorProduto(Long idProduto); 
 }
