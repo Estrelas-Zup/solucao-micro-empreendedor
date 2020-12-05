@@ -54,12 +54,13 @@ public class RelatorioVendaImpl implements RelatorioVendaService {
         return relatorioVenda;
     }
 
-    public RelatorioVendaDataDTO listarRelatorioVendaMes(LocalDate dataInicial) {
+    public RelatorioVendaDataDTO listarRelatorioVendaMes(LocalDate dataInicial,
+            LocalDate dataFinal) {
 
         RelatorioVendaDataDTO relatorioVendaDataDTO = new RelatorioVendaDataDTO();
 
         List<RelatorioVenda> vendasConsultadas = this.relatorioVendaRepository
-                .findAllByVendaDataVendaBetween(dataInicial, LocalDate.now());
+                .findAllByVendaDataVendaBetween(dataInicial, dataFinal);
 
         List<RelatorioVendaDataDTO> relatorioVenda = new ArrayList<RelatorioVendaDataDTO>();
 
@@ -83,5 +84,36 @@ public class RelatorioVendaImpl implements RelatorioVendaService {
         }
 
         return relatorioVendaDataDTO;
+    }
+
+    public List<RelatorioVenda> consultarRelatorioVendaPorData(LocalDate data) {
+
+        RelatorioVenda dadosRelatorioVenda = new RelatorioVenda();
+        RelatorioVendaDTO dadosRelatorioVendaDTO = new RelatorioVendaDTO();
+
+        List<RelatorioVenda> vendaConsultada =
+                this.relatorioVendaRepository.findAllByVendaDataVenda(data);
+
+        List<RelatorioVenda> relatorioVenda = new ArrayList<RelatorioVenda>();
+        List<RelatorioVendaDTO> relatorioVendaDTO = new ArrayList<RelatorioVendaDTO>();
+
+        for (RelatorioVenda consultaPelaDataVenda : vendaConsultada) {
+            dadosRelatorioVendaDTO
+                    .setNomeProduto(consultaPelaDataVenda.getEstoque().getProduto().getNome());
+            dadosRelatorioVendaDTO.setValorUnitario(
+                    consultaPelaDataVenda.getEstoque().getProduto().getValorVenda());
+
+
+            dadosRelatorioVenda.setIdRelatorioVenda(consultaPelaDataVenda.getIdRelatorioVenda());;
+            dadosRelatorioVenda.setQuantidade(consultaPelaDataVenda.getQuantidade());
+
+
+            relatorioVendaDTO.add(dadosRelatorioVendaDTO);
+
+            relatorioVenda.add(dadosRelatorioVenda);
+
+        }
+
+        return relatorioVenda;
     }
 }

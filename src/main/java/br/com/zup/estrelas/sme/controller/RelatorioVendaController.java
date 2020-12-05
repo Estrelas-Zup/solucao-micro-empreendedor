@@ -1,6 +1,7 @@
 package br.com.zup.estrelas.sme.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.RelatorioVendaDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioVendaDataDTO;
+import br.com.zup.estrelas.sme.entity.RelatorioVenda;
 import br.com.zup.estrelas.sme.service.RelatorioVendaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,7 +43,17 @@ public class RelatorioVendaController {
             message = "Procura do relatório pela data inicial e pela data final feita com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum relatório encontrado!")})
     public RelatorioVendaDataDTO listarRelatorioVendaMes(
-            @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate dataInicial) {
-        return relatorioVendaService.listarRelatorioVendaMes(dataInicial);
+            @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate dataInicial,
+            @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate dataFinal) {
+        return relatorioVendaService.listarRelatorioVendaMes(dataInicial, dataFinal);
+    }
+
+    @GetMapping(path = "/data", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(value = "")
+    @ApiResponses(value = {@ApiResponse(code = 200,
+            message = "Procura do relatório pela data feita com sucesso!"),})
+    public List<RelatorioVenda> consultarRelatorioPorData(
+            @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate data) {
+        return relatorioVendaService.consultarRelatorioVendaPorData(data);
     }
 }
