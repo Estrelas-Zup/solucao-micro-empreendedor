@@ -3,6 +3,7 @@ package br.com.zup.estrelas.sme.controller;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.DespesaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Despesa;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 import br.com.zup.estrelas.sme.service.DespesaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +36,9 @@ public class DespesaController {
     @ApiOperation(value = "Adicionar despesa")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Despesa adiconada com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
-    public MensagemDTO adicionarDespesa(@Valid @RequestBody DespesaDTO despesaDTO) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public MensagemDTO adicionarDespesa(@Valid @RequestBody DespesaDTO despesaDTO)
+            throws GenericException {
         return despesaService.adicionarDespesa(despesaDTO);
     }
 
@@ -43,7 +48,7 @@ public class DespesaController {
             value = {@ApiResponse(code = 200, message = "Alteração da despesa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum despesa alterado!")})
     public MensagemDTO alterarDespesa(@PathVariable Long idDespesa,
-            @Valid @RequestBody DespesaDTO despesaDTO) {
+            @Valid @RequestBody DespesaDTO despesaDTO) throws GenericException {
         return despesaService.alterarDespesa(idDespesa, despesaDTO);
     }
 
@@ -52,7 +57,7 @@ public class DespesaController {
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Procura da despesa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhuma despesa encontrado!")})
-    public List<Despesa> listarDespesa() {
+    public List<Despesa> listarDespesa() throws GenericException {
         return despesaService.listarDespesa();
     }
 
@@ -60,7 +65,7 @@ public class DespesaController {
     @ApiOperation(value = "Remover despesa")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Despesa removida com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhuma despesa encontrado!")})
-    public MensagemDTO removerDespesa(@PathVariable Long idDespesa) {
+    public MensagemDTO removerDespesa(@PathVariable Long idDespesa) throws GenericException {
         return despesaService.removerDespesa(idDespesa);
     }
 }

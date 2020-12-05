@@ -29,7 +29,7 @@ public class CaixaServiceImpl implements CaixaService {
     private static final String CAIXA_EXISTENTE =
             "Infelizmente não foi possivel realizar operação, caixa já existente com a data atual";
     private static final String SALDO_INICIAL_MAIOR_QUE_CAPITAL_INICIAL =
-            "Infelizmente não foi possivel realizar opreação, saldo inicial maior que capital inicial";
+            "Infelizmente não foi possivel realizar operação, saldo inicial maior que capital inicial";
     private static final String GESTÃO_INEXISTENTE =
             "Infelizmente não foi possivel realizar a operação, gestão inexistente!";
     private static final String CAIXA_CADASTRADO_COM_SUCESSO = "Caixa cadastrado com sucesso!";
@@ -67,10 +67,6 @@ public class CaixaServiceImpl implements CaixaService {
         if (caixaRepository.existsByData(LocalDate.now())) {
             return new MensagemDTO(CAIXA_EXISTENTE);
         }
-
-        novoSaldoCapitalSocial(caixaDTO, gestao);
-
-        copiaDadosDTOParaCaixa(caixaDTO);
 
         gestaoRepository.save(novoSaldoCapitalSocial(caixaDTO, gestao));
 
