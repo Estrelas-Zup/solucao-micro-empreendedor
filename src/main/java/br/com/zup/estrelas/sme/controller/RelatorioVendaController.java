@@ -29,7 +29,7 @@ public class RelatorioVendaController {
     RelatorioVendaService relatorioVendaService;
 
     @GetMapping(path = "/{idProduto}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Listar relatorio Venda")
+    @ApiOperation(value = "Listar relatório Venda")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Procura do relatório feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum relatório encontrado!")})
@@ -38,7 +38,7 @@ public class RelatorioVendaController {
     }
 
     @GetMapping(path = "/consultaData", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Listar relatorio pela data inicial e pela data final")
+    @ApiOperation(value = "Listar relatório da venda pela data inicial e pela data final")
     @ApiResponses(value = {@ApiResponse(code = 200,
             message = "Procura do relatório pela data inicial e pela data final feita com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum relatório encontrado!")})
@@ -49,9 +49,10 @@ public class RelatorioVendaController {
     }
 
     @GetMapping(path = "/data", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "")
-    @ApiResponses(value = {@ApiResponse(code = 200,
-            message = "Procura do relatório pela data feita com sucesso!"),})
+    @ApiOperation(value = "Listar relatório da venda pela data")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Procura do relatório pela data feita com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum relatório encontrado!")})
     public List<RelatorioVenda> consultarRelatorioPorData(
             @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate data) {
         return relatorioVendaService.consultarRelatorioVendaPorData(data);
