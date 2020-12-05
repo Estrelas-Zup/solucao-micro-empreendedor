@@ -7,7 +7,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.ConsultaDataDTO;
-import br.com.zup.estrelas.sme.dto.DespesaDTO;
 import br.com.zup.estrelas.sme.dto.CaixaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Caixa;
@@ -17,7 +16,6 @@ import br.com.zup.estrelas.sme.repository.CaixaRepository;
 import br.com.zup.estrelas.sme.repository.EstoqueRepository;
 import br.com.zup.estrelas.sme.repository.GestaoRepository;
 import br.com.zup.estrelas.sme.service.CaixaService;
-import br.com.zup.estrelas.sme.service.DespesaService;
 
 @Service
 public class CaixaServiceImpl implements CaixaService {
@@ -46,9 +44,6 @@ public class CaixaServiceImpl implements CaixaService {
 
     @Autowired
     EstoqueRepository estoqueRepository;
-
-    @Autowired
-    DespesaService despesaService;
 
     public MensagemDTO adicionarCaixa(CaixaDTO caixaDTO) {
         Optional<Gestao> gestaoConsultado = buscarGestao();
@@ -125,7 +120,6 @@ public class CaixaServiceImpl implements CaixaService {
         }
 
         double somaSaldoInicialEValorTotalCaixa = caixa.getSaldoInicial() + caixa.getValorTotal();
-        caixa.setValorTotal(somaSaldoInicialEValorTotalCaixa);
         caixa.setCaixaAberto(false);
         caixaRepository.save(caixa);
 
@@ -134,29 +128,23 @@ public class CaixaServiceImpl implements CaixaService {
         gestao.setCapitalSocial(novoCapitalSocial);
         gestaoRepository.save(gestao);
 
-        List<Estoque> verificaValiadeEmEstoques = (List<Estoque>) estoqueRepository.findAll();
+        List<Estoque> estoquesConsultados = (List<Estoque>) estoqueRepository.findAll();
 
-        double somaProdutosVencidos = 0;
+        verificaDataValidadeEmEstoque(estoquesConsultados);
 
+        return new MensagemDTO(CAIXA_FECHADO_COM_SUCESSO);
+    }
+
+    private void verificaDataValidadeEmEstoque(List<Estoque> verificaValiadeEmEstoques) {
         for (Estoque estoque : verificaValiadeEmEstoques) {
             if (estoque.getDataValidade().equals(LocalDate.now())) {
                 estoque.setPerda(true);
+                estoque.setMotivoPerda(PRODUTOS_COM_A_DATA_DE_VALIDADE_VENCIDO);
                 estoque.setDisponibilidade(false);
-                somaProdutosVencidos =
-                        +estoque.getQuantidade() * estoque.getProduto().getValorCusto();
+
+                estoqueRepository.save(estoque);
             }
         }
-
-        if (somaProdutosVencidos > 0) {
-            DespesaDTO despesaDTO = new DespesaDTO();
-            despesaDTO.setDescricao(PRODUTOS_COM_A_DATA_DE_VALIDADE_VENCIDO);
-            despesaDTO.setValor(somaProdutosVencidos);
-
-            despesaService.adicionarDespesa(despesaDTO);
-        }
-
-        return new MensagemDTO(CAIXA_FECHADO_COM_SUCESSO);
-
     }
 
     private Optional<Gestao> buscarGestao() {
