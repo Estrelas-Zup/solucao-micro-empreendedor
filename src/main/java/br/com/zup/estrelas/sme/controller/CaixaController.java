@@ -20,6 +20,7 @@ import br.com.zup.estrelas.sme.dto.ConsultaDataDTO;
 import br.com.zup.estrelas.sme.dto.CaixaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Caixa;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 import br.com.zup.estrelas.sme.service.CaixaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,7 +39,9 @@ public class CaixaController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO adicionarCaixa(@Valid @RequestBody CaixaDTO caixaDTO) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public MensagemDTO adicionarCaixa(@Valid @RequestBody CaixaDTO caixaDTO)
+            throws GenericException {
         return caixaService.adicionarCaixa(caixaDTO);
     }
 
@@ -47,7 +50,7 @@ public class CaixaController {
             value = {@ApiResponse(code = 200, message = "Listagem do caixa realizada com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum caixa encontrado.")})
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Caixa> listarCaixa() {
+    public List<Caixa> listarCaixa() throws GenericException {
         return caixaService.listarCaixa();
     }
 
@@ -56,7 +59,7 @@ public class CaixaController {
             value = {@ApiResponse(code = 200, message = "Procura ID do caixa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum caixa encontrado pelo ID.")})
     @GetMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Caixa consultarPorId(@PathVariable Long idCaixa) {
+    public Caixa consultarPorId(@PathVariable Long idCaixa) throws GenericException {
         return caixaService.consultarPorId(idCaixa);
     }
 
@@ -76,7 +79,7 @@ public class CaixaController {
                     @ApiResponse(code = 204, message = "Nenhum caixa alterado.")})
     @PutMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO alterarCaixa(@PathVariable Long idCaixa,
-            @Valid @RequestBody CaixaDTO caixaDTO) {
+            @Valid @RequestBody CaixaDTO caixaDTO) throws GenericException {
         return caixaService.alterarCaixa(idCaixa, caixaDTO);
     }
 
@@ -85,7 +88,7 @@ public class CaixaController {
             value = {@ApiResponse(code = 200, message = "Remoção do caixa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum caixa removido.")})
     @DeleteMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO removerCaixa(@PathVariable Long idCaixa) {
+    public MensagemDTO removerCaixa(@PathVariable Long idCaixa) throws GenericException {
         return caixaService.removerCaixa(idCaixa);
     }
 
@@ -94,7 +97,7 @@ public class CaixaController {
             value = {@ApiResponse(code = 200, message = "Fechamento do caixa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum caixa fechado.")})
     @PutMapping(path = "/fechamento/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO fechamentoCaixa(@PathVariable Long idCaixa) {
+    public MensagemDTO fechamentoCaixa(@PathVariable Long idCaixa) throws GenericException {
         return caixaService.fechamentoCaixa(idCaixa);
     }
 }
