@@ -236,10 +236,7 @@ public class VendaServiceImpl implements VendaService {
             List<ControleEstoqueVendaDTO> listaEstoqueASerAdicionadoRelatorio) {
 
         for (ControleEstoqueVendaDTO controleEstoqueVendaDTO : listaEstoqueASerAdicionadoRelatorio) {
-
-
-
-            relatorioVendaRepository.save(montarObjetoControleEstoqueVendaDTO(controleEstoqueVendaDTO, venda));
+            relatorioVendaRepository.save(montarObjetoRelatorioVenda(controleEstoqueVendaDTO, venda));
         }
     }
 
@@ -272,6 +269,13 @@ public class VendaServiceImpl implements VendaService {
         return listaEstoqueASerAdicionadoRelatorio;
     }
 
+    private List<Estoque> consultaEstoque(ProdutosVendaDTO produtosVendaDTO) {
+        List<Estoque> estoqueConsultado =
+                estoqueRepository.findAllByDisponibilidadeAndProdutoIdProdutoOrderByDataValidadeAsc(
+                        true, produtosVendaDTO.getIdProduto());
+        return estoqueConsultado;
+    }
+    
     private ControleEstoqueVendaDTO montarObjetoControleEstoqueVendaDTO(Estoque estoque) {
         ControleEstoqueVendaDTO controleEstoqueVendaDTO = new ControleEstoqueVendaDTO();
 
@@ -281,7 +285,7 @@ public class VendaServiceImpl implements VendaService {
         return controleEstoqueVendaDTO;
     }
 
-    private RelatorioVenda montarObjetoControleEstoqueVendaDTO(ControleEstoqueVendaDTO controleEstoqueVendaDTO, Venda venda) {
+    private RelatorioVenda montarObjetoRelatorioVenda(ControleEstoqueVendaDTO controleEstoqueVendaDTO, Venda venda) {
         RelatorioVenda relatorioVenda = new RelatorioVenda();
         
         Long idProdutoEstoque =
@@ -294,11 +298,5 @@ public class VendaServiceImpl implements VendaService {
         
         return relatorioVenda;
     }
-    
-    private List<Estoque> consultaEstoque(ProdutosVendaDTO produtosVendaDTO) {
-        List<Estoque> estoqueConsultado =
-                estoqueRepository.findAllByDisponibilidadeAndProdutoIdProdutoOrderByDataValidadeAsc(
-                        true, produtosVendaDTO.getIdProduto());
-        return estoqueConsultado;
-    }
+
 }
