@@ -246,17 +246,20 @@ public class VendaServiceImpl implements VendaService {
         List<ControleEstoqueVendaDTO> listaEstoqueASerAdicionadoRelatorio = new ArrayList<>();
 
         for (Estoque estoque : estoqueConsultado) {
-
+            int quantidade = 0;
             if (quantidadeDesejada >= estoque.getQuantidade()) {
                 quantidadeDesejada = quantidadeDesejada - estoque.getQuantidade();
-
-                listaEstoqueASerAdicionadoRelatorio.add(montarObjetoControleEstoqueVendaDTO(estoque));
+                
+                quantidade = estoque.getQuantidade();
+                
+                listaEstoqueASerAdicionadoRelatorio.add(montarObjetoControleEstoqueVendaDTO(estoque, quantidade));
 
                 estoque.setQuantidade(0);
                 estoque.setDisponibilidade(false);
                 estoqueRepository.save(estoque);
             } else {
-                listaEstoqueASerAdicionadoRelatorio.add(montarObjetoControleEstoqueVendaDTO(estoque));
+                quantidade = quantidadeDesejada;
+                listaEstoqueASerAdicionadoRelatorio.add(montarObjetoControleEstoqueVendaDTO(estoque, quantidade));
 
                 estoque.setQuantidade(estoque.getQuantidade() - quantidadeDesejada);
                 quantidadeDesejada = 0;
@@ -276,11 +279,11 @@ public class VendaServiceImpl implements VendaService {
         return estoqueConsultado;
     }
     
-    private ControleEstoqueVendaDTO montarObjetoControleEstoqueVendaDTO(Estoque estoque) {
+    private ControleEstoqueVendaDTO montarObjetoControleEstoqueVendaDTO(Estoque estoque, int quantidade) {
         ControleEstoqueVendaDTO controleEstoqueVendaDTO = new ControleEstoqueVendaDTO();
 
         controleEstoqueVendaDTO.setEstoque(estoque);
-        controleEstoqueVendaDTO.setQuantidade(estoque.getQuantidade());
+        controleEstoqueVendaDTO.setQuantidade(quantidade);
 
         return controleEstoqueVendaDTO;
     }
