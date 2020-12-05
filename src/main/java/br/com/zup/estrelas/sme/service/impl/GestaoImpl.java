@@ -14,6 +14,11 @@ import br.com.zup.estrelas.sme.service.GestaoService;
 @Service
 public class GestaoImpl implements GestaoService {
 
+    private static final String COMERCIO_ENCERRADO_COM_SUCESSO = "Comercio encerrado com sucesso!";
+
+    private static final String NENHUM_COMERCIO_ABERTO =
+            "Infelizmente não foi possivel realizar a operação, gestão não possui comercio aberto.";
+
     private static final String ALTERAÇÃO_REALIZADA_COM_SUCESSO =
             "Investimento adicionado com sucesso!";
 
@@ -29,7 +34,7 @@ public class GestaoImpl implements GestaoService {
     public MensagemDTO aberturaComercio(AberturaComercioDTO aberturaComercioDTO) {
         Long quantidadeGestao = gestaoRepository.count();
         boolean verificaGestaoNaoCriada = quantidadeGestao == 0;
-        
+
         if (verificaGestaoNaoCriada) {
             Gestao gestao = new Gestao();
             BeanUtils.copyProperties(aberturaComercioDTO, gestao);
@@ -43,17 +48,33 @@ public class GestaoImpl implements GestaoService {
     }
 
     public MensagemDTO adicionarInvestimentoCapitalSocial(AberturaComercioDTO aberturaComercioDTO) {
-        List<Gestao> listaGestaoConsultada =  (List<Gestao>) gestaoRepository.findAll();
-        
+        List<Gestao> listaGestaoConsultada = (List<Gestao>) gestaoRepository.findAll();
+
         Optional<Gestao> gestaoConsultada = listaGestaoConsultada.stream().findFirst();
-        
+
         Gestao novaGestao = gestaoConsultada.get();
-        Double novoValorCapitalSocial = novaGestao.getCapitalSocial() + aberturaComercioDTO.getCapitalSocial();
-        
-        novaGestao.setCapitalSocial(novoValorCapitalSocial);  
+        Double novoValorCapitalSocial =
+                novaGestao.getCapitalSocial() + aberturaComercioDTO.getCapitalSocial();
+
+        novaGestao.setCapitalSocial(novoValorCapitalSocial);
         gestaoRepository.save(novaGestao);
-        
+
         return new MensagemDTO(ALTERAÇÃO_REALIZADA_COM_SUCESSO);
     }
 
+    public MensagemDTO encerrarComercio() {
+        List<Gestao> listaGestaoConsultada = (List<Gestao>) gestaoRepository.findAll();
+
+        Optional<Gestao> gestaoConsultada = listaGestaoConsultada.stream().findFirst();
+
+        if (gestaoConsultada.isEmpty()) {
+            return new MensagemDTO(NENHUM_COMERCIO_ABERTO);
+        }
+
+        Gestao gestaoASerExcluida = gestaoConsultada.get();
+
+        gestaoRepository.delete(gestaoASerExcluida);
+        
+        return new MensagemDTO(COMERCIO_ENCERRADO_COM_SUCESSO + ", boa sorte em seu novo empredimento na Rua João Naves :D");
+    }
 }

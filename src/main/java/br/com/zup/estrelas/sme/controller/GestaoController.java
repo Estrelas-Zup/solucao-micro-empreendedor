@@ -4,6 +4,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,5 +46,14 @@ public class GestaoController {
     public MensagemDTO adicionarInvestimentoCapitalSocial(
             @Valid @RequestBody AberturaComercioDTO aberturaComercioDTO) throws GenericException {
         return gestaoService.adicionarInvestimentoCapitalSocial(aberturaComercioDTO);
+    }
+    
+    @DeleteMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(value = "Remover comercio")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Remoção do comercio realizado com sucesso!"),
+                    @ApiResponse(code = 204, message = "Nenhum comercio encerrado!")})
+    public MensagemDTO encerrarComercio() {
+        return gestaoService.encerrarComercio();
     }
 }
