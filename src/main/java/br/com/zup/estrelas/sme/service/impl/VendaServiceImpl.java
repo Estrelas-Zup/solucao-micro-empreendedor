@@ -12,7 +12,6 @@ import br.com.zup.estrelas.sme.dto.AlterarVendaDTO;
 import br.com.zup.estrelas.sme.dto.ControleEstoqueVendaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.ProdutosVendaDTO;
-import br.com.zup.estrelas.sme.dto.ControleEstoqueVendaDTO;
 import br.com.zup.estrelas.sme.entity.Caixa;
 import br.com.zup.estrelas.sme.entity.Estoque;
 import br.com.zup.estrelas.sme.entity.RelatorioVenda;
@@ -136,7 +135,6 @@ public class VendaServiceImpl implements VendaService {
         return new MensagemDTO(VENDA_CADASTRADA_COM_SUCESSO);
     }
 
-
     @Override
     public MensagemDTO alterarVenda(Long idVenda, AlterarVendaDTO alterarVendaDTO) {
         Optional<Venda> vendaConsultada = repository.findById(idVenda);
@@ -234,43 +232,15 @@ public class VendaServiceImpl implements VendaService {
         }
     }
 
-    // TODO: Verificar em um melhor tipo de retorno
     public void adicionarRelatorioVenda(Venda venda,
             List<ControleEstoqueVendaDTO> listaEstoqueASerAdicionadoRelatorio) {
 
         for (ControleEstoqueVendaDTO controleEstoqueVendaDTO : listaEstoqueASerAdicionadoRelatorio) {
-            RelatorioVenda relatorioVenda = new RelatorioVenda();
-            
-            relatorioVenda.setQuantidade(controleEstoqueVendaDTO.getQuantidade());
 
-            Long idProdutoEstoque = controleEstoqueVendaDTO.getEstoque().getProduto().getIdProduto();
-            
-            relatorioVenda.setVenda(venda);
-            relatorioVenda.setEstoque(controleEstoqueVendaDTO.getEstoque());
-            relatorioVenda.setIdProdutoEstoque(idProdutoEstoque);
 
-            relatorioVendaRepository.save(relatorioVenda);
+
+            relatorioVendaRepository.save(montarObjetoControleEstoqueVendaDTO(controleEstoqueVendaDTO, venda));
         }
-
-
-        /*
-         * List<ProdutosVendaDTO> produtosVenda = adicionarVendaDTO.getProdutosVenda();
-         * 
-         * Venda ultimaVendaAdicionada = repository.findFirstByOrderByIdVendaDesc();
-         * 
-         * 
-         * for (ProdutosVendaDTO produtosVendaDTO : produtosVenda) { RelatorioVenda relatorioVenda =
-         * new RelatorioVenda();
-         * 
-         * Estoque estoque =
-         * estoqueRepository.findFirstByProdutoIdProduto(produtosVendaDTO.getIdProduto());
-         * 
-         * relatorioVenda.setQuantidade(produtosVendaDTO.getQuantidade());
-         * 
-         * relatorioVenda.setVenda(ultimaVendaAdicionada); relatorioVenda.setEstoque(estoque);
-         * 
-         * relatorioVendaRepository.save(relatorioVenda); }
-         */
     }
 
     private List<ControleEstoqueVendaDTO> alteraQuantidadeDoEstoque(List<Estoque> estoqueConsultado,
@@ -279,22 +249,17 @@ public class VendaServiceImpl implements VendaService {
         List<ControleEstoqueVendaDTO> listaEstoqueASerAdicionadoRelatorio = new ArrayList<>();
 
         for (Estoque estoque : estoqueConsultado) {
-            ControleEstoqueVendaDTO controleEstoqueVendaDTO = new ControleEstoqueVendaDTO();
 
             if (quantidadeDesejada >= estoque.getQuantidade()) {
                 quantidadeDesejada = quantidadeDesejada - estoque.getQuantidade();
 
-                controleEstoqueVendaDTO.setEstoque(estoque);
-                controleEstoqueVendaDTO.setQuantidade(estoque.getQuantidade());
-                listaEstoqueASerAdicionadoRelatorio.add(controleEstoqueVendaDTO);
+                listaEstoqueASerAdicionadoRelatorio.add(montarObjetoControleEstoqueVendaDTO(estoque));
 
                 estoque.setQuantidade(0);
                 estoque.setDisponibilidade(false);
                 estoqueRepository.save(estoque);
             } else {
-                controleEstoqueVendaDTO.setEstoque(estoque);
-                controleEstoqueVendaDTO.setQuantidade(quantidadeDesejada);
-                listaEstoqueASerAdicionadoRelatorio.add(controleEstoqueVendaDTO);
+                listaEstoqueASerAdicionadoRelatorio.add(montarObjetoControleEstoqueVendaDTO(estoque));
 
                 estoque.setQuantidade(estoque.getQuantidade() - quantidadeDesejada);
                 quantidadeDesejada = 0;
@@ -302,10 +267,34 @@ public class VendaServiceImpl implements VendaService {
 
                 return listaEstoqueASerAdicionadoRelatorio;
             }
+
         }
         return listaEstoqueASerAdicionadoRelatorio;
     }
 
+    private ControleEstoqueVendaDTO montarObjetoControleEstoqueVendaDTO(Estoque estoque) {
+        ControleEstoqueVendaDTO controleEstoqueVendaDTO = new ControleEstoqueVendaDTO();
+
+        controleEstoqueVendaDTO.setEstoque(estoque);
+        controleEstoqueVendaDTO.setQuantidade(estoque.getQuantidade());
+
+        return controleEstoqueVendaDTO;
+    }
+
+    private RelatorioVenda montarObjetoControleEstoqueVendaDTO(ControleEstoqueVendaDTO controleEstoqueVendaDTO, Venda venda) {
+        RelatorioVenda relatorioVenda = new RelatorioVenda();
+        
+        Long idProdutoEstoque =
+                controleEstoqueVendaDTO.getEstoque().getProduto().getIdProduto();
+        
+        relatorioVenda.setQuantidade(controleEstoqueVendaDTO.getQuantidade());
+        relatorioVenda.setVenda(venda);
+        relatorioVenda.setEstoque(controleEstoqueVendaDTO.getEstoque());
+        relatorioVenda.setIdProdutoEstoque(idProdutoEstoque);
+        
+        return relatorioVenda;
+    }
+    
     private List<Estoque> consultaEstoque(ProdutosVendaDTO produtosVendaDTO) {
         List<Estoque> estoqueConsultado =
                 estoqueRepository.findAllByDisponibilidadeAndProdutoIdProdutoOrderByDataValidadeAsc(
