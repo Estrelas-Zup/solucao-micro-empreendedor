@@ -1,5 +1,6 @@
 package br.com.zup.estrelas.sme.controller;
 
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.AberturaComercioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
+import br.com.zup.estrelas.sme.dto.RelatorioLucroDespesaDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioPrejuizoUnitarioProdutoDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioSugestaoNovoPrecoVendaDTO;
 import br.com.zup.estrelas.sme.exceptions.GenericException;
@@ -62,18 +64,48 @@ public class GestaoController {
     }
 
     @ApiOperation(value = "Relatorio para sugerir alteração em preço de venda")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
-    @GetMapping(path = "/novoPrecoVenda/{idProdutoEstoque}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public RelatorioSugestaoNovoPrecoVendaDTO calcularPrecoVendaPorProduto(@PathVariable Long idProdutoEstoque) {
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
+    @GetMapping(path = "/novoPrecoVenda/{idProdutoEstoque}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public RelatorioSugestaoNovoPrecoVendaDTO calcularPrecoVendaPorProduto(
+            @PathVariable Long idProdutoEstoque) throws GenericException {
         return gestaoService.calcularPrecoVendaPorProduto(idProdutoEstoque);
     }
 
     @ApiOperation(value = "Relatorio para mostrar prejuizo de um produto")
-            @ApiResponses(value = {
-                    @ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
-    @GetMapping(path = "/prejuizoUnitario/{idProduto}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public RelatorioPrejuizoUnitarioProdutoDTO calcularPrejuizoUnitarioPorProduto(@PathVariable Long idProduto) {
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
+    @GetMapping(path = "/prejuizoUnitario/{idProduto}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public RelatorioPrejuizoUnitarioProdutoDTO calcularPrejuizoUnitarioPorProduto(
+            @PathVariable Long idProduto) throws GenericException {
         return gestaoService.calcularPrejuizoUnitarioPorProduto(idProduto);
+    }
+
+    @ApiOperation(value = "Relatorio para mostrar lucro diario")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
+    @GetMapping(path = "/lucroDiario", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public RelatorioLucroDespesaDTO calcularLucroDiario() throws GenericException {
+        return gestaoService.calcularLucroDiario();
+    }
+
+    @ApiOperation(value = "Relatorio para mostrar despesa diaria")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
+    @GetMapping(path = "/despesasDiaria", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public RelatorioLucroDespesaDTO calcularDespesaDiaria() throws GenericException {
+        return gestaoService.calcularDespesasDiaria();
+    }
+
+    @ApiOperation(value = "Relatorio para mostrar lucro mensal")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
+    @GetMapping(path = "/lucrosMensais", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<RelatorioLucroDespesaDTO> calcularLucroMensal() {
+        return gestaoService.calcularLucroMensal();
+    }
+
+    @ApiOperation(value = "Relatorio para mostrar despesa mensal")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
+    @GetMapping(path = "/despesasMensais", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<RelatorioLucroDespesaDTO> calcularDespesasDoMes() throws GenericException {
+        return gestaoService.calcularDespesasDoMes();
     }
 }

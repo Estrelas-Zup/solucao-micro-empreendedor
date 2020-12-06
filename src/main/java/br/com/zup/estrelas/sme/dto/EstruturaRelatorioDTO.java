@@ -3,7 +3,6 @@ package br.com.zup.estrelas.sme.dto;
 public class EstruturaRelatorioDTO {
     Integer totalQuantidadeVendida;
     Integer totalQuantidadePerdida;
-    Integer totalQuantidadeProduzida;
 
     Double precoCusto;
     Double precoVendaAtual;
@@ -22,14 +21,6 @@ public class EstruturaRelatorioDTO {
 
     public void setTotalQuantidadePerdida(Integer totalQuantidadePerdida) {
         this.totalQuantidadePerdida = totalQuantidadePerdida;
-    }
-
-    public Integer getTotalQuantidadeProduzida() {
-        return totalQuantidadeProduzida;
-    }
-
-    public void setTotalQuantidadeProduzida(Integer totalQuantidadeProduzida) {
-        this.totalQuantidadeProduzida = totalQuantidadeProduzida;
     }
 
     public Double getPrecoCusto() {
