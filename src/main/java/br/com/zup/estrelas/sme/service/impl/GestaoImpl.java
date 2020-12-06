@@ -6,7 +6,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.AberturaComercioDTO;
+import br.com.zup.estrelas.sme.dto.EstruturaRelatorioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
+import br.com.zup.estrelas.sme.dto.RelatorioPrejuizoUnitarioProdutoDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioSugestaoNovoPrecoVendaDTO;
 import br.com.zup.estrelas.sme.entity.Gestao;
 import br.com.zup.estrelas.sme.entity.Produto;
@@ -102,27 +104,93 @@ public class GestaoImpl implements GestaoService {
 
         Produto produto = produtoConsultado.get();
 
-        Integer totalQuantidadeVendida = relatorioVendaRepository.findByIdProdutoEstoque(idProduto);
+        EstruturaRelatorioDTO estruturaRelatorio = montarEstruturaRelatorios(idProduto, produto);
 
-        Integer totalQuantidadePerdida = estoqueRepository.findEstoqueByIdProdutoEstoque(idProduto);
-
-        Integer totalQuantidadeProduzida = totalQuantidadeVendida + totalQuantidadePerdida;
-
-        Double precoCusto = produto.getValorCusto();
-
-        Double precoVendaAtual = produto.getValorVenda();
-
-        Double lucroPorProduto = precoVendaAtual - precoCusto;
-
-        Double prejuizoPerda = totalQuantidadePerdida * lucroPorProduto;
-
-        Double sugestaoNovoPrecoVenda = (prejuizoPerda / totalQuantidadeVendida) + precoVendaAtual;
-        
         RelatorioSugestaoNovoPrecoVendaDTO relatorioSugestaoNovoPrecoVendaDTO =
-                new RelatorioSugestaoNovoPrecoVendaDTO(precoCusto, precoVendaAtual,
-                        sugestaoNovoPrecoVenda, totalQuantidadeProduzida, totalQuantidadeVendida,
-                        totalQuantidadePerdida);
+                new RelatorioSugestaoNovoPrecoVendaDTO();
+
+        BeanUtils.copyProperties(estruturaRelatorio, relatorioSugestaoNovoPrecoVendaDTO);
+
+        relatorioSugestaoNovoPrecoVendaDTO =
+                montarObjetoRelatorioSugestaoNovoPrecoVendaDTO(relatorioSugestaoNovoPrecoVendaDTO);
 
         return relatorioSugestaoNovoPrecoVendaDTO;
+    }
+
+    public RelatorioPrejuizoUnitarioProdutoDTO calcularPrejuizoUnitarioPorProduto(Long idProduto) {
+        Optional<Produto> produtoConsultado = produtoRepository.findById(idProduto);
+
+        if (produtoConsultado.isEmpty()) {
+            return null;
+        }
+
+        Produto produto = produtoConsultado.get();
+
+        EstruturaRelatorioDTO estruturaRelatorio = montarEstruturaRelatorios(idProduto, produto);
+
+        RelatorioPrejuizoUnitarioProdutoDTO relatorioPrejuizoUnitarioProdutoDTO =
+                new RelatorioPrejuizoUnitarioProdutoDTO();
+
+        BeanUtils.copyProperties(estruturaRelatorio, relatorioPrejuizoUnitarioProdutoDTO);
+
+        relatorioPrejuizoUnitarioProdutoDTO = montarObjetoRelatorioPrejuizoUnitarioProdutoDTO(
+                relatorioPrejuizoUnitarioProdutoDTO);
+
+        return relatorioPrejuizoUnitarioProdutoDTO;
+    }
+
+    public EstruturaRelatorioDTO montarEstruturaRelatorios(Long idProduto, Produto produto) {
+        EstruturaRelatorioDTO estruturaRelatorioDTO = new EstruturaRelatorioDTO();
+
+        estruturaRelatorioDTO.setTotalQuantidadeVendida(
+                relatorioVendaRepository.findByIdProdutoEstoque(idProduto));
+        estruturaRelatorioDTO.setTotalQuantidadePerdida(
+                estoqueRepository.findEstoqueByIdProdutoEstoque(idProduto));
+        estruturaRelatorioDTO.setPrecoCusto(produto.getValorCusto());
+        estruturaRelatorioDTO.setPrecoVendaAtual(produto.getValorVenda());
+
+        return estruturaRelatorioDTO;
+    }
+
+    public RelatorioSugestaoNovoPrecoVendaDTO montarObjetoRelatorioSugestaoNovoPrecoVendaDTO(
+            RelatorioSugestaoNovoPrecoVendaDTO relatorioSugestaoNovoPrecoVendaDTO) {
+
+        Integer totalQuantidadeProduzida =
+                relatorioSugestaoNovoPrecoVendaDTO.getTotalQuantidadeVendida()
+                        + relatorioSugestaoNovoPrecoVendaDTO.getTotalQuantidadePerdida();
+
+        Double lucroPorProduto = relatorioSugestaoNovoPrecoVendaDTO.getPrecoVendaAtual()
+                - relatorioSugestaoNovoPrecoVendaDTO.getPrecoCusto();
+
+        Double valorTotalPerda =
+                relatorioSugestaoNovoPrecoVendaDTO.getTotalQuantidadePerdida() * lucroPorProduto;
+
+        relatorioSugestaoNovoPrecoVendaDTO.setSugestaoNovoPrecoVenda(
+                valorTotalPerda / relatorioSugestaoNovoPrecoVendaDTO.getTotalQuantidadeVendida()
+                        + relatorioSugestaoNovoPrecoVendaDTO.getPrecoVendaAtual());
+
+        relatorioSugestaoNovoPrecoVendaDTO.setTotalQuantidadeProduzida(totalQuantidadeProduzida);
+
+        return relatorioSugestaoNovoPrecoVendaDTO;
+    }
+
+    public RelatorioPrejuizoUnitarioProdutoDTO montarObjetoRelatorioPrejuizoUnitarioProdutoDTO(
+            RelatorioPrejuizoUnitarioProdutoDTO relatorioPrejuizoUnitarioProdutoDTO) {
+
+        Double valorTotalPrecoVendaPerda =
+                relatorioPrejuizoUnitarioProdutoDTO.getTotalQuantidadePerdida()
+                        * relatorioPrejuizoUnitarioProdutoDTO.getPrecoVendaAtual();
+
+        Double valorTotalPrecoCustoPerda =
+                relatorioPrejuizoUnitarioProdutoDTO.getTotalQuantidadePerdida()
+                        * relatorioPrejuizoUnitarioProdutoDTO.getPrecoCusto();
+
+        relatorioPrejuizoUnitarioProdutoDTO
+                .setValorTotalLucroPerdido(valorTotalPrecoVendaPerda - valorTotalPrecoCustoPerda);
+        relatorioPrejuizoUnitarioProdutoDTO.setValorPrejuizoUnitario(
+                relatorioPrejuizoUnitarioProdutoDTO.getValorTotalLucroPerdido()
+                        / relatorioPrejuizoUnitarioProdutoDTO.getTotalQuantidadePerdida());;
+
+        return relatorioPrejuizoUnitarioProdutoDTO;
     }
 }

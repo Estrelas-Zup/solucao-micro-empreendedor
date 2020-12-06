@@ -8,17 +8,6 @@ public class RelatorioSugestaoNovoPrecoVendaDTO {
     private Integer totalQuantidadeVendida;
     private Integer totalQuantidadePerdida;
 
-    public RelatorioSugestaoNovoPrecoVendaDTO(Double precoCusto, Double precoVendaAtual,
-            Double sugestaoNovoPrecoVenda, Integer totalQuantidadeProduzida,
-            Integer totalQuantidadeVendida, Integer totalQuantidadePerdida) {
-        this.precoCusto = precoCusto;
-        this.precoVendaAtual = precoVendaAtual;
-        this.sugestaoNovoPrecoVenda = sugestaoNovoPrecoVenda;
-        this.totalQuantidadeProduzida = totalQuantidadeProduzida;
-        this.totalQuantidadeVendida = totalQuantidadeVendida;
-        this.totalQuantidadePerdida = totalQuantidadePerdida;
-    }
-
     public Double getPrecoCusto() {
         return precoCusto;
     }

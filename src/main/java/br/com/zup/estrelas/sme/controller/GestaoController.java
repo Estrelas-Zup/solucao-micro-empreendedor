@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.AberturaComercioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
+import br.com.zup.estrelas.sme.dto.RelatorioPrejuizoUnitarioProdutoDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioSugestaoNovoPrecoVendaDTO;
 import br.com.zup.estrelas.sme.exceptions.GenericException;
 import br.com.zup.estrelas.sme.service.GestaoService;
@@ -50,18 +51,29 @@ public class GestaoController {
             @Valid @RequestBody AberturaComercioDTO aberturaComercioDTO) throws GenericException {
         return gestaoService.adicionarInvestimentoCapitalSocial(aberturaComercioDTO);
     }
-    
+
     @DeleteMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover comercio")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Remoção do comercio realizado com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum comercio encerrado!")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Remoção do comercio realizado com sucesso!"),
+            @ApiResponse(code = 204, message = "Nenhum comercio encerrado!")})
     public MensagemDTO encerrarComercio() {
         return gestaoService.encerrarComercio();
     }
-    
+
+    @ApiOperation(value = "Relatorio para sugerir alteração em preço de venda")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
     @GetMapping(path = "/novoPrecoVenda/{idProdutoEstoque}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public RelatorioSugestaoNovoPrecoVendaDTO calcularPrecoVendaPorProduto(@PathVariable Long idProdutoEstoque) {
         return gestaoService.calcularPrecoVendaPorProduto(idProdutoEstoque);
+    }
+
+    @ApiOperation(value = "Relatorio para mostrar prejuizo de um produto")
+            @ApiResponses(value = {
+                    @ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
+    @GetMapping(path = "/prejuizoUnitario/{idProduto}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public RelatorioPrejuizoUnitarioProdutoDTO calcularPrejuizoUnitarioPorProduto(@PathVariable Long idProduto) {
+        return gestaoService.calcularPrejuizoUnitarioPorProduto(idProduto);
     }
 }
