@@ -7,8 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.AberturaComercioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
+import br.com.zup.estrelas.sme.dto.RelatorioSugestaoNovoPrecoVendaDTO;
 import br.com.zup.estrelas.sme.entity.Gestao;
+import br.com.zup.estrelas.sme.entity.Produto;
+import br.com.zup.estrelas.sme.repository.EstoqueRepository;
 import br.com.zup.estrelas.sme.repository.GestaoRepository;
+import br.com.zup.estrelas.sme.repository.ProdutoRepository;
+import br.com.zup.estrelas.sme.repository.RelatorioVendaRepository;
 import br.com.zup.estrelas.sme.service.GestaoService;
 
 @Service
@@ -30,6 +35,15 @@ public class GestaoImpl implements GestaoService {
 
     @Autowired
     GestaoRepository gestaoRepository;
+
+    @Autowired
+    EstoqueRepository estoqueRepository;
+
+    @Autowired
+    RelatorioVendaRepository relatorioVendaRepository;
+
+    @Autowired
+    ProdutoRepository produtoRepository;
 
     public MensagemDTO aberturaComercio(AberturaComercioDTO aberturaComercioDTO) {
         Long quantidadeGestao = gestaoRepository.count();
@@ -74,7 +88,41 @@ public class GestaoImpl implements GestaoService {
         Gestao gestaoASerExcluida = gestaoConsultada.get();
 
         gestaoRepository.delete(gestaoASerExcluida);
+
+        return new MensagemDTO(COMERCIO_ENCERRADO_COM_SUCESSO
+                + ", boa sorte em seu novo empredimento na Rua João Naves :D");
+    }
+
+    public RelatorioSugestaoNovoPrecoVendaDTO calcularPrecoVendaPorProduto(Long idProduto) {
+        Optional<Produto> produtoConsultado = produtoRepository.findById(idProduto);
+
+        if (produtoConsultado.isEmpty()) {
+            return null;
+        }
+
+        Produto produto = produtoConsultado.get();
+
+        Integer totalQuantidadeVendida = relatorioVendaRepository.findByIdProdutoEstoque(idProduto);
+
+        Integer totalQuantidadePerdida = estoqueRepository.findEstoqueByIdProdutoEstoque(idProduto);
+
+        Integer totalQuantidadeProduzida = totalQuantidadeVendida + totalQuantidadePerdida;
+
+        Double precoCusto = produto.getValorCusto();
+
+        Double precoVendaAtual = produto.getValorVenda();
+
+        Double lucroPorProduto = precoVendaAtual - precoCusto;
+
+        Double prejuizoPerda = totalQuantidadePerdida * lucroPorProduto;
+
+        Double sugestaoNovoPrecoVenda = (prejuizoPerda / totalQuantidadeVendida) + precoVendaAtual;
         
-        return new MensagemDTO(COMERCIO_ENCERRADO_COM_SUCESSO + ", boa sorte em seu novo empredimento na Rua João Naves :D");
+        RelatorioSugestaoNovoPrecoVendaDTO relatorioSugestaoNovoPrecoVendaDTO =
+                new RelatorioSugestaoNovoPrecoVendaDTO(precoCusto, precoVendaAtual,
+                        sugestaoNovoPrecoVenda, totalQuantidadeProduzida, totalQuantidadeVendida,
+                        totalQuantidadePerdida);
+
+        return relatorioSugestaoNovoPrecoVendaDTO;
     }
 }

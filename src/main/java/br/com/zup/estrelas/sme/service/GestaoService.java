@@ -2,6 +2,7 @@ package br.com.zup.estrelas.sme.service;
 
 import br.com.zup.estrelas.sme.dto.AberturaComercioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
+import br.com.zup.estrelas.sme.dto.RelatorioSugestaoNovoPrecoVendaDTO;
 
 public interface GestaoService {
     public MensagemDTO aberturaComercio(AberturaComercioDTO aberturaComercioDTO);
@@ -9,5 +10,6 @@ public interface GestaoService {
     public MensagemDTO adicionarInvestimentoCapitalSocial(AberturaComercioDTO aberturaComercioDTO);
     
     public MensagemDTO encerrarComercio();
-   // public GestaoDTO calcularPrecoVendaPorProduto(Long idProduto); 
+    
+    public RelatorioSugestaoNovoPrecoVendaDTO calcularPrecoVendaPorProduto(Long idProdutoEstoque); 
 }
