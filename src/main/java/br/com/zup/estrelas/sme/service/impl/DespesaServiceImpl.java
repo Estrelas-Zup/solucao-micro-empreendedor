@@ -22,7 +22,7 @@ public class DespesaServiceImpl implements DespesaService {
     private static final String NÃO_HOUVE_ABERTURA_DE_COMERCIO =
             "Infelizmente não foi possivel realizar a operação, não houve abertura de comercio.";
     private static final String VALOR_DA_DESPESA_SUPERIOR_AO_CAPITAL_SOCIAL =
-            "Infelizmente não foi possivel realizar a operação, valor da despesa superior ao capital social";
+            "Infelizmente não foi possivel realizar a operação, valor da despesa superior ao capital social, busque investimentos para seu négocio";
     private static final String ABERTURA_DE_CAIXA_NAO_REALIZADA =
             "Infelizmente não foi possivel realizar a operação, ainda não houve abertura de caixa no dia de hoje.";
     private static final String DESPESA_CADASTRADA_COM_SUCESSO = "Despesa cadastrada com sucesso!";
@@ -40,15 +40,8 @@ public class DespesaServiceImpl implements DespesaService {
     @Autowired
     GestaoRepository gestaoRepository;
 
+    //TODO: Refatorar verificação de Gestao e Caixa
     public MensagemDTO adicionarDespesa(DespesaDTO despesaDTO) {
-        Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
-
-        if (caixaConsultado.isEmpty()) {
-            return new MensagemDTO(ABERTURA_DE_CAIXA_NAO_REALIZADA);
-        }
-
-        Caixa caixa = caixaConsultado.get();
-
         Optional<Gestao> gestaoConsultada = buscarGestao();
 
         if (gestaoConsultada.isEmpty()) {
@@ -56,6 +49,14 @@ public class DespesaServiceImpl implements DespesaService {
         }
 
         Gestao gestao = gestaoConsultada.get();
+        
+        Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
+
+        if (caixaConsultado.isEmpty()) {
+            return new MensagemDTO(ABERTURA_DE_CAIXA_NAO_REALIZADA);
+        }
+
+        Caixa caixa = caixaConsultado.get();
 
         if (verificarDisponibilidadeCapitalSocial(despesaDTO, gestao)) {
             adicionarNovoValorCapitalSocialGestao(despesaDTO, gestao);
