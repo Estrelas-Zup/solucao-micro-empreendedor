@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
-import br.com.zup.estrelas.sme.dto.RemoveUsuarioDTO;
 import br.com.zup.estrelas.sme.dto.UsuarioDTO;
 import br.com.zup.estrelas.sme.entity.Usuario;
 import br.com.zup.estrelas.sme.exceptions.GenericException;
@@ -44,18 +44,17 @@ public class UsuarioController {
         return usuarioService.adicionarUsuario(adicionarUsuarioDTO);
     }
 
-    @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/{idUsuario}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Alterar usuário")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Alteração do usuário feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário alterado!")})
-    @Transactional
-    public MensagemDTO alterarUsuario(@Valid @RequestBody UsuarioDTO alterarUsuarioDTO)
+    public MensagemDTO alterarUsuario(@PathVariable Long idUsuario, @Valid @RequestBody UsuarioDTO alterarUsuarioDTO)
             throws GenericException {
-        return usuarioService.alterarUsuario(alterarUsuarioDTO);
+        return usuarioService.alterarUsuario(idUsuario, alterarUsuarioDTO);
     }
 
-    // TODO: Analisar possibilidade de consultar email pelo corpo EmailUsuarioDTO (String email)
+
     @RequestMapping(value = "/email", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar usuário por Email")
     @ApiResponses(value = {
@@ -76,15 +75,15 @@ public class UsuarioController {
 
     }
 
-    @DeleteMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(value = "/{idUsuario}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover usuário")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Remoção do usuário feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário removido!")})
     @Transactional
-    public MensagemDTO removerUsuario(@Valid @RequestBody RemoveUsuarioDTO removeUsuarioDTO)
+    public MensagemDTO removerUsuario(@PathVariable Long idUsuario)
             throws GenericException {
-        return usuarioService.removerUsuario(removeUsuarioDTO);
+        return usuarioService.removerUsuario(idUsuario);
     }
 
 }

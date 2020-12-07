@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,25 +71,6 @@ public class CaixaController {
     public Caixa consultarCaixaPorData(
             @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate data) {
         return caixaService.consultarCaixaPorData(data);
-    }
-
-    @ApiOperation(value = "Alterar caixa")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Alteração do caixa feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum caixa alterado.")})
-    @PutMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO alterarCaixa(@PathVariable Long idCaixa,
-            @Valid @RequestBody CaixaDTO caixaDTO) throws GenericException {
-        return caixaService.alterarCaixa(idCaixa, caixaDTO);
-    }
-
-    @ApiOperation(value = "Remover caixa")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Remoção do caixa feita com sucesso!"),
-                    @ApiResponse(code = 204, message = "Nenhum caixa removido.")})
-    @DeleteMapping(path = "/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public MensagemDTO removerCaixa(@PathVariable Long idCaixa) throws GenericException {
-        return caixaService.removerCaixa(idCaixa);
     }
 
     @ApiOperation(value = "Fechar caixa")

@@ -302,4 +302,20 @@ public class GestaoImpl implements GestaoService {
 
         return LocalDate.of(anoAtual, mesAtual, ultimoDiaDoMes);
     }
+    
+    public boolean verificarDisponibilidadeCapitalSocial(Double valor) {
+        List<Gestao> gestaoConsultada = (List<Gestao>) gestaoRepository.findAll();
+        
+        Double capitalSocial = 0D;
+        
+        for (Gestao gestao : gestaoConsultada) {
+            capitalSocial += gestao.getCapitalSocial();
+        }
+        
+        if(valor <= capitalSocial) {
+            return true;
+        }
+        
+        return false;
+    }
 }

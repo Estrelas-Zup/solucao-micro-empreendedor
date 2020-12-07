@@ -6,7 +6,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
-import br.com.zup.estrelas.sme.dto.RemoveUsuarioDTO;
 import br.com.zup.estrelas.sme.dto.UsuarioDTO;
 import br.com.zup.estrelas.sme.entity.Usuario;
 import br.com.zup.estrelas.sme.repository.UsuarioRepository;
@@ -38,9 +37,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     //TODO: Alterar UsuarioDTO para AlteraUsuarioDTO (senha, role)
-    public MensagemDTO alterarUsuario(UsuarioDTO alterarUsuarioDTO) {
+    public MensagemDTO alterarUsuario(Long idUsuario, UsuarioDTO alterarUsuarioDTO) {
 
-        Optional<Usuario> usuarioConsultado = usuarioRepository.findById(alterarUsuarioDTO.getEmail());
+        Optional<Usuario> usuarioConsultado = usuarioRepository.findById(idUsuario);
 
         if (usuarioConsultado.isEmpty()) {
             return new MensagemDTO(USUARIO_INEXISTENTE);
@@ -62,10 +61,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         return (List<Usuario>) usuarioRepository.findAll();
     }
 
-    public MensagemDTO removerUsuario(RemoveUsuarioDTO removeUsuarioDTO) {
+    public MensagemDTO removerUsuario(Long idUsuario) {
         
-        if (usuarioRepository.existsById(removeUsuarioDTO.getEmail())) {
-            usuarioRepository.deleteById(removeUsuarioDTO.getEmail());
+        if (usuarioRepository.existsById(idUsuario)) {
+            usuarioRepository.deleteById(idUsuario);
             return new MensagemDTO(USUARIO_EXCLUIDO_COM_SUCESSO);
         }
 
