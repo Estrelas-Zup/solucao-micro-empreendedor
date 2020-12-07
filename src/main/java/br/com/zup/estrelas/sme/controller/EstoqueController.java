@@ -71,7 +71,7 @@ public class EstoqueController {
         return estoqueService.listarEstoques();
     }
 
-    @PutMapping(path = "/perda/{idEstoque}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(path = "/{idEstoque}/perda", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Contabilizar Perda")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Alteração do estoque feita com sucesso!"),
