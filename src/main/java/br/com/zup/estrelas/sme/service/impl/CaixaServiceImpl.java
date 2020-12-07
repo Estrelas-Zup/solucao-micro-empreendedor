@@ -25,7 +25,7 @@ public class CaixaServiceImpl implements CaixaService {
     private static final String PRODUTOS_COM_A_DATA_DE_VALIDADE_VENCIDO =
             "Produtos com a data de validade vencido!";
     private static final String CAIXA_FECHADO_COM_SUCESSO = "Caixa fechado com sucesso!";
-    private static final String CAIXA_JÁ_ESTAR_FECHADO = "Caixa já se encontra fechado!";
+    private static final String CAIXA_JÁ_ESTA_FECHADO = "Caixa já se encontra fechado!";
     private static final String CAIXA_EXISTENTE =
             "Infelizmente não foi possivel realizar operação, caixa já existente com a data atual";
     private static final String SALDO_INICIAL_MAIOR_QUE_CAPITAL_INICIAL =
@@ -88,7 +88,6 @@ public class CaixaServiceImpl implements CaixaService {
     }
 
     public MensagemDTO alterarCaixa(Long idCaixa, CaixaDTO caixaDTO) {
-
         Optional<Caixa> caixaProcurado = caixaRepository.findById(idCaixa);
 
         if (caixaProcurado.isEmpty()) {
@@ -121,7 +120,7 @@ public class CaixaServiceImpl implements CaixaService {
         Caixa caixa = caixaConsultado.get();
 
         if (!caixa.isCaixaAberto()) {
-            return new MensagemDTO(CAIXA_JÁ_ESTAR_FECHADO);
+            return new MensagemDTO(CAIXA_JÁ_ESTA_FECHADO);
         }
 
         double somaSaldoInicialEValorTotalCaixa = caixa.getSaldoInicial() + caixa.getValorTotal();

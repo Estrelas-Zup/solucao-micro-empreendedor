@@ -149,6 +149,56 @@ public class GestaoImpl implements GestaoService {
         return relatorioPrejuizoUnitarioProdutoDTO;
     }
 
+    public RelatorioLucroDespesaDTO calcularLucroDiario() {
+        Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
+
+        if (caixaConsultado.isEmpty()) {
+            return null;
+        }
+
+        Caixa caixa = caixaConsultado.get();
+
+        return (montarObjetoRelatorioLucro(caixa));
+    }
+
+    public RelatorioLucroDespesaDTO calcularDespesasDiaria() {
+        Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
+
+        if (caixaConsultado.isEmpty()) {
+            return null;
+        }
+
+        Caixa caixa = caixaConsultado.get();
+
+        return montarObjetoRelatorioDespesa(caixa);
+    }
+
+    public List<RelatorioLucroDespesaDTO> calcularLucroMensal() {
+        List<Caixa> listaCaixaMes =
+                caixaRepository.findAllByDataBetween(calcularDataInicioMes(), calcularDataFimMes());
+
+        List<RelatorioLucroDespesaDTO> listaRelatorioLucroDespesa = new ArrayList<>();
+
+        for (Caixa caixa : listaCaixaMes) {
+            listaRelatorioLucroDespesa.add(montarObjetoRelatorioLucro(caixa));
+        }
+
+        return listaRelatorioLucroDespesa;
+    }
+
+    public List<RelatorioLucroDespesaDTO> calcularDespesasDoMes() {
+        List<Caixa> listaCaixaMes =
+                caixaRepository.findAllByDataBetween(calcularDataInicioMes(), calcularDataFimMes());
+
+        List<RelatorioLucroDespesaDTO> listaRelatorioLucroDespesa = new ArrayList<>();
+
+        for (Caixa caixa : listaCaixaMes) {
+            listaRelatorioLucroDespesa.add(montarObjetoRelatorioDespesa(caixa));
+        }
+
+        return listaRelatorioLucroDespesa;
+    }
+
     public EstruturaRelatorioDTO montarEstruturaRelatorios(Long idProduto, Produto produto) {
         EstruturaRelatorioDTO estruturaRelatorioDTO = new EstruturaRelatorioDTO();
 
@@ -203,56 +253,6 @@ public class GestaoImpl implements GestaoService {
                         / relatorioPrejuizoUnitarioProdutoDTO.getTotalQuantidadePerdida());;
 
         return relatorioPrejuizoUnitarioProdutoDTO;
-    }
-
-    public RelatorioLucroDespesaDTO calcularLucroDiario() {
-        Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
-
-        if (caixaConsultado.isEmpty()) {
-            return null;
-        }
-
-        Caixa caixa = caixaConsultado.get();
-
-        return (montarObjetoRelatorioLucro(caixa));
-    }
-
-    public RelatorioLucroDespesaDTO calcularDespesasDiaria() {
-        Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
-
-        if (caixaConsultado.isEmpty()) {
-            return null;
-        }
-
-        Caixa caixa = caixaConsultado.get();
-
-        return montarObjetoRelatorioDespesa(caixa);
-    }
-
-    public List<RelatorioLucroDespesaDTO> calcularLucroMensal() {
-        List<Caixa> listaCaixaMes =
-                caixaRepository.findAllByDataBetween(calcularDataInicioMes(), calcularDataFimMes());
-
-        List<RelatorioLucroDespesaDTO> listaRelatorioLucroDespesa = new ArrayList<>();
-
-        for (Caixa caixa : listaCaixaMes) {
-            listaRelatorioLucroDespesa.add(montarObjetoRelatorioLucro(caixa));
-        }
-
-        return listaRelatorioLucroDespesa;
-    }
-
-    public List<RelatorioLucroDespesaDTO> calcularDespesasDoMes() {
-        List<Caixa> listaCaixaMes =
-                caixaRepository.findAllByDataBetween(calcularDataInicioMes(), calcularDataFimMes());
-
-        List<RelatorioLucroDespesaDTO> listaRelatorioLucroDespesa = new ArrayList<>();
-
-        for (Caixa caixa : listaCaixaMes) {
-            listaRelatorioLucroDespesa.add(montarObjetoRelatorioDespesa(caixa));
-        }
-
-        return listaRelatorioLucroDespesa;
     }
 
     public Double calcularMediaLucroMensal() {
