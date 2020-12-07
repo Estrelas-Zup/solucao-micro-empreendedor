@@ -29,16 +29,12 @@ import br.com.zup.estrelas.sme.service.GestaoService;
 public class GestaoImpl implements GestaoService {
 
     private static final String COMERCIO_ENCERRADO_COM_SUCESSO = "Comercio encerrado com sucesso!";
-
     private static final String NENHUM_COMERCIO_ABERTO =
             "Infelizmente não foi possivel realizar a operação, gestão não possui comercio aberto.";
-
     private static final String ALTERAÇÃO_REALIZADA_COM_SUCESSO =
             "Investimento adicionado com sucesso!";
-
     private static final String ABERTURA_DO_COMERCIO_JA_REALIZADA =
             "Você já realizou a abertura de seu comercio, não pode realizar abertura novamente";
-
     private static final String BOM_TRABALHO_E_BOA_SORTE =
             "Abertura de comercio inicializada, bom trabalho e boa sorte!";
 
