@@ -39,7 +39,7 @@ public class CaixaController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseStatus(HttpStatus.CREATED)
     public MensagemDTO adicionarCaixa(@Valid @RequestBody CaixaDTO caixaDTO)
             throws GenericException {
         return caixaService.adicionarCaixa(caixaDTO);
