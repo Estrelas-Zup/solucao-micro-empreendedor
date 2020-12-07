@@ -30,6 +30,8 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
+    
+    
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Adicionar usuário")
