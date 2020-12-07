@@ -7,6 +7,7 @@ public class RelatorioLucroDespesaDTO {
     private Double valor;
     private Double mediaMensal;
 
+    
     public Double getMediaMensal() {
         return mediaMensal;
     }

@@ -14,7 +14,7 @@ public interface CaixaRepository extends CrudRepository<Caixa, Long> {
 
     boolean existsByData(LocalDate data);
 
-    @Query("SELECT AVG(c.valorTotal - c.valorTotalDespesa) FROM Caixa c")
+    @Query("SELECT AVG((c.saldoInicial + c.valorTotal) - c.valorTotalDespesa) FROM Caixa c")
     Double averageOfMediaLucroDiario();
 
     @Query("SELECT AVG(c.valorTotalDespesa) FROM Caixa c")

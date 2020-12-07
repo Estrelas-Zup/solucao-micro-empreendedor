@@ -267,7 +267,7 @@ public class GestaoImpl implements GestaoService {
         RelatorioLucroDespesaDTO relatorioLucroDespesaDTO = new RelatorioLucroDespesaDTO();
 
         relatorioLucroDespesaDTO.setData(LocalDate.now());
-        relatorioLucroDespesaDTO.setValor(caixa.getValorTotal() - caixa.getValorTotalDespesa());
+        relatorioLucroDespesaDTO.setValor((caixa.getSaldoInicial() + caixa.getValorTotal()) - caixa.getValorTotalDespesa());
 
         relatorioLucroDespesaDTO.setMediaMensal(calcularMediaLucroMensal());
 
