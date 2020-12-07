@@ -9,12 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.Valid;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Venda {
@@ -24,26 +18,20 @@ public class Venda {
     private Long idVenda;
 
     @Column(nullable = true)
-    @NotBlank(message = "Observação não deve ter apenas espaço")
     private String observacao;
 
     @Column(name = "valor_desconto", columnDefinition = "DOUBLE DEFAULT 0", insertable = false,
             updatable = true)
-    @PositiveOrZero(message = "Valor desconto deve ser igual ou maior a zero!")
     private Double valorDesconto;
 
     @Column(name = "valor_total", nullable = false)
-    @Positive(message = "Valor total deve ser maior que zero!")
     private Double valorTotal;
 
     @Column(name = "data_venda", nullable = false)
-    @FutureOrPresent(message = "Data de venda deve ser igual data atual ou superior.")
     private LocalDate dataVenda;
 
     @ManyToOne
     @JoinColumn(name = "id_caixa", foreignKey = @ForeignKey(name = "FK_CAIXA_VENDA"))
-    @NotNull(message = "Caixa não pode ser vazio!")
-    @Valid
     private Caixa caixa;
 
     public Long getIdVenda() {

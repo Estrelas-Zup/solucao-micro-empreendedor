@@ -6,4 +6,5 @@ import br.com.zup.estrelas.sme.entity.Gestao;
 
 @Repository
 public interface GestaoRepository extends CrudRepository<Gestao, Long> {
+
 }

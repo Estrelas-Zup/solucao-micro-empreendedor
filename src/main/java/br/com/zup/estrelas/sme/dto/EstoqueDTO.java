@@ -2,43 +2,40 @@ package br.com.zup.estrelas.sme.dto;
 
 import java.time.LocalDate;
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class EstoqueDTO {
-    @Positive(message = "IdProduto deve ser maior que zero!")
-    @NotNull(message = "IdProduto não pode ser vazia!")
-    @NotBlank(message = "IdProduto não pode estar em branco!")
-    private long idProduto;
+    @Positive(message = "O campo deve ser maior que zero.")
+    @NotNull(message = "O campo não pode ser vazio.")
+    private Long idProduto;
 
-    @Positive(message = "Quantidade deve ser maior que zero!")
-    @NotNull(message = "Quantidade não pode ser vazia!")
-    @NotBlank(message = "Quantidade não pode estar em branco!")
-    private int quantidade;
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Positive(message = "O campo deve ser maior que zero.")
+    private Integer quantidade;
 
-    @FutureOrPresent(message = "Data de validade não deve ser menor que data atual")
-    @NotNull(message = "Data de validade não pode ser vazia!")
-    @NotBlank(message = "Data de validade pode estar em branco!")
+    @FutureOrPresent(message = "O campo deve possuir data atual ou superior a atual.")
+    @NotNull(message = "O campo não pode ser vazio.")
+    // @Pattern(regexp = "^[0-9]{4}-((1[0-2])|([1-9]))-(([0-2][0-9])|([1-9])|(3[0-1]))$", message = "O formato de data esta inválido.")
     private LocalDate dataValidade;
 
     public EstoqueDTO() {
         super();
     }
 
-    public long getIdProduto() {
+    public Long getIdProduto() {
         return idProduto;
     }
 
-    public void setIdProduto(long idProduto) {
+    public void setIdProduto(Long idProduto) {
         this.idProduto = idProduto;
     }
 
-    public int getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 

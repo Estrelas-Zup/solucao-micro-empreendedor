@@ -18,6 +18,6 @@ public interface FuncionarioService {
 
     public MensagemDTO removerFuncionario(String cpf);
     
-    public boolean verificarDisponibilidadeContratacao(Double salario);
+    public boolean verificarDisponibilidadeCaixa(Double salario);
 
 }

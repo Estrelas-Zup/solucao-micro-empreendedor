@@ -8,9 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 @Entity
 public class RelatorioVenda {
@@ -18,22 +15,20 @@ public class RelatorioVenda {
     @Column(name = "id_relatorio_venda")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRelatorioVenda;
-    
-    @ManyToOne 
+
+    @ManyToOne
     @JoinColumn(name = "id_venda", foreignKey = @ForeignKey(name = "FK_VENDA_RELATORIOVENDA"))
-    @NotNull(message = "Venda não pode ser vazia!")
-    @Valid
     private Venda venda;
-    
-    @ManyToOne 
+
+    @ManyToOne
     @JoinColumn(name = "id_estoque", foreignKey = @ForeignKey(name = "FK_ESTOQUE_RELATORIOVENDA"))
-    @NotNull(message = "Estoque não pode ser vazio!")
-    @Valid
     private Estoque estoque;
-    
+
     @Column(nullable = false)
-    @Positive(message = "Quantidade deve ser maior que zero!")
     private int quantidade;
+    
+    @Column(name = "id_produto_estoque", nullable = false)
+    private Long idProdutoEstoque;
 
     public Long getIdRelatorioVenda() {
         return idRelatorioVenda;
@@ -65,5 +60,13 @@ public class RelatorioVenda {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public Long getIdProdutoEstoque() {
+        return idProdutoEstoque;
+    }
+
+    public void setIdProdutoEstoque(Long idProdutoEstoque) {
+        this.idProdutoEstoque = idProdutoEstoque;
     }
 }
