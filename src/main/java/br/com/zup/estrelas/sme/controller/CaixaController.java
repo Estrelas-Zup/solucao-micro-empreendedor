@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import br.com.zup.estrelas.sme.dto.ConsultaDataDTO;
 import br.com.zup.estrelas.sme.dto.CaixaDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Caixa;
@@ -39,7 +38,7 @@ public class CaixaController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-//    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED)
     public MensagemDTO adicionarCaixa(@Valid @RequestBody CaixaDTO caixaDTO)
             throws GenericException {
         return caixaService.adicionarCaixa(caixaDTO);
@@ -96,7 +95,7 @@ public class CaixaController {
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Fechamento do caixa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum caixa fechado.")})
-    @PutMapping(path = "/fechamento/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(path = "/{idCaixa}/fechamento", produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO fechamentoCaixa(@PathVariable Long idCaixa) throws GenericException {
         return caixaService.fechamentoCaixa(idCaixa);
     }
