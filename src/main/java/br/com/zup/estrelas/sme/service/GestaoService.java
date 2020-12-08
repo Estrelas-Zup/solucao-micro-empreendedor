@@ -25,5 +25,7 @@ public interface GestaoService {
     public List<RelatorioLucroDespesaDTO> calcularLucroMensal();
     
     public List<RelatorioLucroDespesaDTO> calcularDespesasDoMes();
+    
+    public boolean verificarDisponibilidadeCapitalSocial(Double valor);
 
 }

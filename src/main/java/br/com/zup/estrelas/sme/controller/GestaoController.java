@@ -108,4 +108,11 @@ public class GestaoController {
     public List<RelatorioLucroDespesaDTO> calcularDespesasDoMes() throws GenericException {
         return gestaoService.calcularDespesasDoMes();
     }
+    
+    @ApiOperation(value = "Verificar disponibilidade no capital social")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Verificação disponibilidade em meu capital social realizado com sucesso!")})
+    @GetMapping(path = "{valor}/disponibilidadeCapitalSocial", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public boolean verificarDisponibilidadeCapitalSocial(@PathVariable Double valor) throws GenericException {
+        return gestaoService.verificarDisponibilidadeCapitalSocial(valor);
+    }
 }

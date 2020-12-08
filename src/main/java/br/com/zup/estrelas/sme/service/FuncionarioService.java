@@ -17,7 +17,4 @@ public interface FuncionarioService {
     public List<Funcionario> listarFuncionarios();
 
     public MensagemDTO removerFuncionario(String cpf);
-    
-    public boolean verificarDisponibilidadeCaixa(Double salario);
-
 }

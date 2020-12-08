@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.AdicionarFuncionarioDTO;
 import br.com.zup.estrelas.sme.dto.AlteraFuncionarioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
-import br.com.zup.estrelas.sme.dto.RelatorioLucroDespesaDTO;
 import br.com.zup.estrelas.sme.entity.Funcionario;
 import br.com.zup.estrelas.sme.repository.FuncionarioRepository;
 import br.com.zup.estrelas.sme.service.FuncionarioService;
@@ -38,12 +37,11 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Autowired
     GestaoService gestaoService;
 
-    @Override
     public MensagemDTO adicionarFuncionario(AdicionarFuncionarioDTO adicionarFuncionarioDTO) {
         Funcionario funcionario = new Funcionario();
         BeanUtils.copyProperties(adicionarFuncionarioDTO, funcionario);
 
-        if (verificarDisponibilidadeCaixa(funcionario.getSalario())) {
+        if (gestaoService.verificarDisponibilidadeCapitalSocial(funcionario.getSalario())) {
             funcionario.setDataAdmissao(LocalDate.now());
             funcionarioRepository.save(funcionario);
             return new MensagemDTO(FUNCIONARIO_CADASTRADO_COM_SUCESSO);
@@ -52,7 +50,6 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         return new MensagemDTO(INDISPONIBILIDADE_CAIXA);
     }
 
-    @Override
     public MensagemDTO alterarFuncionario(Long idFuncionario,
             AlteraFuncionarioDTO alteraFuncionarioDTO) {
         Optional<Funcionario> funcionarioConsultado = funcionarioRepository.findById(idFuncionario);
@@ -72,7 +69,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
         BeanUtils.copyProperties(alteraFuncionarioDTO, funcionario);
 
-        if (verificarDisponibilidadeCaixa(funcionario.getSalario())) {
+        if (gestaoService.verificarDisponibilidadeCapitalSocial(funcionario.getSalario())) {
             funcionarioRepository.save(funcionario);
 
             return new MensagemDTO(FUNCIONARIO_ALTERADO_COM_SUCESSO);
@@ -82,17 +79,14 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     }
 
-    @Override
     public Funcionario consultarFuncionarioPorCpf(String cpf) {
         return funcionarioRepository.findByCpf(cpf).orElse(null);
     }
 
-    @Override
     public List<Funcionario> listarFuncionarios() {
         return (List<Funcionario>) funcionarioRepository.findAll();
     }
 
-    @Override
     public MensagemDTO removerFuncionario(String cpf) {
         Optional<Funcionario> funcionarioConsultado = funcionarioRepository.findByCpf(cpf);
 
@@ -103,21 +97,5 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         funcionarioRepository.delete(funcionarioConsultado.get());
         return new MensagemDTO(FUNCIONARIO_REMOVIDO_COM_SUCESSO);
     }
-
-    public boolean verificarDisponibilidadeCaixa(Double salario) {
-        List<RelatorioLucroDespesaDTO> relatorioLucro = gestaoService.calcularLucroMensal();
-        int somaLucroMensal = 0;
-
-        for (RelatorioLucroDespesaDTO relatorioLucroDespesaDTO : relatorioLucro) {
-            somaLucroMensal += relatorioLucroDespesaDTO.getValor();
-        }
-
-        if (salario <= somaLucroMensal) {
-            return true;
-        }
-        
-        return false;
-    }
-
 
 }

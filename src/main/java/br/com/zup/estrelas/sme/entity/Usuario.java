@@ -20,7 +20,7 @@ public class Usuario  implements UserDetails {
     @Column(name = "id_usuario")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idUsuario;
-    
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -29,6 +29,14 @@ public class Usuario  implements UserDetails {
 
     @Column(nullable = false)
     private String role;
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
     public String getEmail() {
         return email;

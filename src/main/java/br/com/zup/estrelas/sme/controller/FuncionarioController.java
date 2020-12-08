@@ -76,7 +76,6 @@ public class FuncionarioController {
         return funcionarioService.listarFuncionarios();
     }
 
-    // TODO: Analisar possibilidade de passar CPF no corpo
     @DeleteMapping(path = "/{cpf}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Remover funcionário")
     @ApiResponses(value = {
