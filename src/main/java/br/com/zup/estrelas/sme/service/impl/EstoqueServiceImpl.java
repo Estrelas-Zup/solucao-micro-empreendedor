@@ -38,10 +38,10 @@ public class EstoqueServiceImpl implements EstoqueService {
     @Autowired
     ProdutoRepository produtoRepository;
 
-    public MensagemDTO adicionarEstoque(EstoqueDTO estoqueDTO) {
+    public MensagemDTO adicionarEstoque(Long idProduto, EstoqueDTO estoqueDTO) {
         Estoque estoque = new Estoque();
 
-        Optional<Produto> produtoConsultado = produtoRepository.findById(estoqueDTO.getIdProduto());
+        Optional<Produto> produtoConsultado = produtoRepository.findById(idProduto);
 
         if (produtoConsultado.isEmpty()) {
             return new MensagemDTO(PRODUTO_INEXISTENTE);
@@ -56,7 +56,7 @@ public class EstoqueServiceImpl implements EstoqueService {
         return new MensagemDTO(ESTOQUE_CRIADO_COM_SUCESSO);
     }
 
-    public MensagemDTO alterarEstoque(Long idEstoque, EstoqueDTO estoqueDTO) {
+    public MensagemDTO alterarEstoque(Long idProduto, Long idEstoque, EstoqueDTO estoqueDTO) {
         Optional<Estoque> estoqueConsultado = estoqueRepository.findById(idEstoque);
 
         if (estoqueConsultado.isEmpty()) {
@@ -65,7 +65,7 @@ public class EstoqueServiceImpl implements EstoqueService {
 
         Estoque estoque = estoqueConsultado.get();
 
-        Optional<Produto> produtoConsultado = produtoRepository.findById(estoqueDTO.getIdProduto());
+        Optional<Produto> produtoConsultado = produtoRepository.findById(idProduto);
 
         if (produtoConsultado.isEmpty()) {
             return new MensagemDTO(PRODUTO_INEXISTENTE);
@@ -88,7 +88,14 @@ public class EstoqueServiceImpl implements EstoqueService {
         return (List<Estoque>) estoqueRepository.findAll();
     }
 
-    public MensagemDTO contablizarPerda(Long idEstoque, ContabilizaPerdaDTO contabilizaPerdaDTO) {
+    public MensagemDTO contablizarPerda(Long idProduto, Long idEstoque, ContabilizaPerdaDTO contabilizaPerdaDTO) {
+        
+        Optional<Produto> produtoConsultado = produtoRepository.findById(idProduto);
+
+        if (produtoConsultado.isEmpty()) {
+            return new MensagemDTO(PRODUTO_INEXISTENTE);
+        }
+        
         Optional<Estoque> estoqueConsultado = estoqueRepository.findById(idEstoque);
 
         if (estoqueConsultado.isEmpty()) {

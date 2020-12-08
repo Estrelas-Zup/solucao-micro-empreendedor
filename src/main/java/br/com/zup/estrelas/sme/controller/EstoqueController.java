@@ -25,34 +25,35 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/estoques")
+@RequestMapping("/produtos")
 @Api(value = "Estoque", description = "REST API Estoque", tags = {"Estoque"})
 public class EstoqueController {
 
     @Autowired
     EstoqueService estoqueService;
 
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/{idProduto}/estoques", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Adicionar estoque")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Criado com sucesso!"),
             @ApiResponse(code = 500, message = "Erro interno no servidor")})
     @ResponseStatus(HttpStatus.CREATED)
-    public MensagemDTO adicionarEstoque(@Valid @RequestBody EstoqueDTO estoqueDTO)
-            throws GenericException {
-        return estoqueService.adicionarEstoque(estoqueDTO);
+    public MensagemDTO adicionarEstoque(@PathVariable Long idProduto,
+            @Valid @RequestBody EstoqueDTO estoqueDTO) throws GenericException {
+        return estoqueService.adicionarEstoque(idProduto, estoqueDTO);
     }
 
-    @PutMapping(path = "/{idEstoque}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(path = "/{idProduto}/estoques/{idEstoque}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Alterar estoque")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Alteração do estoque feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum estoque alterado!")})
-    public MensagemDTO alterarEstoque(@PathVariable Long idEstoque,
+    public MensagemDTO alterarEstoque(@PathVariable Long idProduto, @PathVariable Long idEstoque,
             @Valid @RequestBody EstoqueDTO estoqueDTO) throws GenericException {
-        return estoqueService.alterarEstoque(idEstoque, estoqueDTO);
+        return estoqueService.alterarEstoque(idProduto, idEstoque, estoqueDTO);
     }
 
-    @GetMapping(path = "/{idProduto}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/{idProduto}/estoques", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Buscar estoque por produto")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Busca no estoque do produto feita com sucesso!"),
@@ -62,7 +63,7 @@ public class EstoqueController {
         return estoqueService.consultarEstoquePorProduto(idProduto);
     }
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/estoques", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Listar estoque")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Listagem de estoque realizada com sucesso!"),
@@ -71,13 +72,15 @@ public class EstoqueController {
         return estoqueService.listarEstoques();
     }
 
-    @PutMapping(path = "/{idEstoque}/perda", produces = {MediaType.APPLICATION_JSON_VALUE})
+
+    @PutMapping(path = "/{idProduto}/estoques/{idEstoque}/perda",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Contabilizar Perda")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Alteração do estoque feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum estoque alterado!")})
-    public MensagemDTO contabilizarPerda(@PathVariable Long idEstoque,
+    public MensagemDTO contabilizarPerda(@PathVariable Long idProduto, @PathVariable Long idEstoque,
             @Valid @RequestBody ContabilizaPerdaDTO contabilizaPerdaDTO) throws GenericException {
-        return estoqueService.contablizarPerda(idEstoque, contabilizaPerdaDTO);
+        return estoqueService.contablizarPerda(idProduto, idEstoque, contabilizaPerdaDTO);
     }
 }
