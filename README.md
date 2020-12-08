@@ -121,65 +121,77 @@
 #### ESPECIFICAÇÃO DTO'S
 
 
-|Classe  |    I/O   |     DTO'S          |                Atributos                                                                      |           
-|--------|----------|--------------------|-----------------------------------------------------------------------------------------------|
-|Usuario |  input   |  UsuarioDTO        | String email, String senha, String role                                                       |
-|        |  out     |  MensagemDTO       | String mensagem                                                                               |
-|        | input    |  AlterarUsuarioDTO | String senha, String role                                                                     |
-|        | out      |  Usuario           | String email, String senha, String role                                                       |
+|          |                    |                            Usuario                                                            |
+|----------|--------------------|-----------------------------------------------------------------------------------------------|
+|    I/O   |     DTO'S          |                Atributos                                                                      |           
+|  input   |  UsuarioDTO        | String email, String senha, String role                                                       |
+|  out     |  MensagemDTO       | String mensagem                                                                               |
+| input    |  AlterarUsuarioDTO | String senha, String role                                                                     |
+| out      |  Usuario           | String email, String senha, String role                                                       |
 
-|Classe     |I/O  |     DTO'S             |                Atributos                                                                      |           
-|-----------|-----|-----------------------|-----------------------------------------------------------------------------------------------|
-|Funcionario|input|CaixaDTO               |Long idCaixa, LocalDate data, Double saldoInicial, Double valorTotalDespesa, Double valorTotal|
-|           |out  |MensagemDTO            |String mensagem                                                                               |
-|           |input|AdicionarFuncionarioDTO|String cpf, endereco, telefone, email, cargo, LocalDate dataNascimento, Double salario, String numeroCarteiraTrabalho |
-|           |out  |Funcionario            |Long idFuncionario, String nome, String email, String telefone, String endereco, String cargo, String cpf, LocalDate dataNascimento, LocalDate dataAdmissao, Double salario, String numeroCarteiraTrabalho|
+|     |                       |               Funcionario                                                                     |
+|-----|-----------------------|-----------------------------------------------------------------------------------------------|
+|I/O  |     DTO'S             |                Atributos                                                                      |           
+|input|CaixaDTO               |Long idCaixa, LocalDate data, Double saldoInicial, Double valorTotalDespesa, Double valorTotal |
+|out  |MensagemDTO            |String mensagem                                                                                |
+|input|AdicionarFuncionarioDTO|String cpf, endereco, telefone, email, cargo, LocalDate dataNascimento, Double salario, String numeroCarteiraTrabalho |
+|out  |Funcionario            |Long idFuncionario, String nome, String email, String telefone, String endereco, String cargo, String cpf, LocalDate dataNascimento, LocalDate dataAdmissao, Double salario, String numeroCarteiraTrabalho|
 
-|Classe  |    I/O   |     DTO'S    |                Atributos                                                                                                         |           
-|--------|----------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-|Produto |  input   |  ProdutoDTO  | String nome, String descricao, UnidadeMedida unidadeMedida, Double valorVenda, Double valorCusto, Double margemDesconto                 |
-|        |  out     |  MensagemDTO | String mensagem                                                                                                                         |
-|        |  out     |  Produto     | Long idProduto, String nome, String descricao, UnidadeMedida unidadeMedida, Double valorVenda, Double valorCusto, Double margemDesconto | 
+|          |              |                      Produto                                                                                                            |
+|----------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+|    I/O   |     DTO'S    |                Atributos                                                                                                                |           
+|  input   |  ProdutoDTO  | String nome, String descricao, UnidadeMedida unidadeMedida, Double valorVenda, Double valorCusto, Double margemDesconto                 |
+|  out     |  MensagemDTO | String mensagem                                                                                                                         |
+|  out     |  Produto     | Long idProduto, String nome, String descricao, UnidadeMedida unidadeMedida, Double valorVenda, Double valorCusto, Double margemDesconto | 
   
-|Classe  |    I/O   |     DTO'S          |                Atributos                                                                      |           
-|--------|----------|--------------------|-----------------------------------------------------------------------------------------------|
-|Estoque |  input   |  EstoqueDTO        | Long idProduto, int quantidade, LocalDate dataValidade                                        |
-|        |  out     |  MensagemDTO       | String mensagem                                                                               |
-|        |  input   |ContabilizaPerdaDTO | String motivoPerda                                                                            | 
-|        |  out     | Estoque            | Long idEstoque, Produto produto, int quantidade, LocalDate dataValidade, boolean perda, String motivoPerda, boolean disponibilidade |
+|          |                    |  Estoque                                                                                                                            |
+|----------|--------------------|-------------------------------------------------------------------------------------------------------------------------------------|  
+|    I/O   |     DTO'S          |                Atributos                                                                                                            |           
+|  input   |  EstoqueDTO        | Long idProduto, int quantidade, LocalDate dataValidade                                                                              |
+|  out     |  MensagemDTO       | String mensagem                                                                                                                     |
+|  input   |ContabilizaPerdaDTO | String motivoPerda                                                                                                                  | 
+|  out     | Estoque            | Long idEstoque, Produto produto, int quantidade, LocalDate dataValidade, boolean perda, String motivoPerda, boolean disponibilidade |
 
-|Classe  |    I/O   |     DTO'S          |                Atributos                                                                      |           
-|--------|----------|--------------------|-----------------------------------------------------------------------------------------------|
-|Venda   |  input   |  AdicionarVendaDTO | String observacao, Double valorDesconto, List<ProdutosVendaDTO> produtosVenda                 |
-|        |  out     |  MensagemDTO       | String mensagem                                                                               |
-|        |  input   |  AlterarVendaDTO   | String observacao, Double valorDesconto                                                       |
-|        |  out     |  Venda             | Long idVenda, String observacao, Double valorDesconto, Double valorTotal, LocalDate dataVenda, Caixa caixa |
+|          |                    |                           Venda                                                                            |
+|----------|--------------------|------------------------------------------------------------------------------------------------------------| 
+|    I/O   |     DTO'S          |                Atributos                                                                                   |           
+|  input   |  AdicionarVendaDTO | String observacao, Double valorDesconto, List<ProdutosVendaDTO> produtosVenda                              |
+|  out     |  MensagemDTO       | String mensagem                                                                                            |
+|  input   |  AlterarVendaDTO   | String observacao, Double valorDesconto                                                                    |
+|  out     |  Venda             | Long idVenda, String observacao, Double valorDesconto, Double valorTotal, LocalDate dataVenda, Caixa caixa |
 
-|Classe  |    I/O   |     DTO'S        |                Atributos                                                                      |           
-|--------|----------|------------------|-----------------------------------------------------------------------------------------------|
-|Caixa   |  input   |  CaixaDTO        | Long idCaixa, LocalDate data, Double saldoInicial, Double valorTotalDespesa, Double valorTotal|
-|        |  out     |  MensagemDTO     | String mensagem                                                                               |
-|        |  input   | ConsultarDataDTO | LocalDate data                                                                                | 
+|          |                  |                     Caixa                                                                     |
+|----------|------------------|-----------------------------------------------------------------------------------------------| 
+|    I/O   |     DTO'S        |                Atributos                                                                      |           
+|  input   |  CaixaDTO        | Long idCaixa, LocalDate data, Double saldoInicial, Double valorTotalDespesa, Double valorTotal|
+|  out     |  MensagemDTO     | String mensagem                                                                               |
+|  input   | ConsultarDataDTO | LocalDate data                                                                                | 
 
-|Classe  |    I/O   |     DTO'S    |                Atributos                                                                      |           
-|--------|----------|--------------|-----------------------------------------------------------------------------------------------|
-|Despesa |  input   |  DespesaDTO  | String descricao, Double valor                                                                |
-|        |  out     |  MensagemDTO | String mensagem                                                                               |
-|        |  input   | Despesa      | Long idDespesa, String descricao, Double valor, Caixa caixa                                   |
-|        |  input   | Gestao       | Long idGestao, Double capitalSocial                                                           |
-|        |  out     | Gestao       | Long idGestao, Double capitalSocial                                                           |
+|          |              |                     Despesa                                                                   |
+|----------|--------------|-----------------------------------------------------------------------------------------------| 
+|    I/O   |     DTO'S    |                Atributos                                                                      |           
+|  input   |  DespesaDTO  | String descricao, Double valor                                                                |
+|  out     |  MensagemDTO | String mensagem                                                                               |
+|  input   | Despesa      | Long idDespesa, String descricao, Double valor, Caixa caixa                                   |
+|  input   | Gestao       | Long idGestao, Double capitalSocial                                                           |
+|  out     | Gestao       | Long idGestao, Double capitalSocial                                                           |
    
-|Classe  |    I/O   |     DTO'S         |                Atributos                                                                      |           
-|--------|----------|-------------------|-----------------------------------------------------------------------------------------------|
-|Gestão  |  input   |AberturaComercioDTO| Double capitalSocial                                                                          |
-|        |  out     |  MensagemDTO      | String mensagem                                                                               |   
-|        |  out     |  RelatorioSugestaoNovoPrecoVendaDTO      | Double precoCusto, Double precoVendaAtual, Double sugestaoNovoPrecoVenda, Integer totalQuantidadeProduzida, Integer totalQuantidadeVendida, Integer totalQuantidadePerdida                                                                               |   
-|        |  out     |  RelatorioPrejuizoUnitarioProdutoDTO      | Double precoCusto, Double precoVendaAtual, Double valorPrejuizoUnitario, Double valorTotalLucroPerdido, int totalQuantidadePerdida                                                                             |   
-|        |  out     |  RelatorioLucroDespesaDTO      | LocalDate data, Double valor, Double mediaMensal                                  |                                            |   
+   
+|          |                   |                    Gestao                                                                     |
+|----------|-------------------|-----------------------------------------------------------------------------------------------| 
+|    I/O   |     DTO'S         |                Atributos                                                                      |           
+|  input   |AberturaComercioDTO| Double capitalSocial                                                                          |
+|  out     |  MensagemDTO      | String mensagem                                                                               |   
+|  out     |  RelatorioSugestaoNovoPrecoVendaDTO      | Double precoCusto, Double precoVendaAtual, Double sugestaoNovoPrecoVenda, Integer totalQuantidadeProduzida, Integer totalQuantidadeVendida, Integer totalQuantidadePerdida                                                                         |   
+|  out     |  RelatorioPrejuizoUnitarioProdutoDTO      | Double precoCusto, Double precoVendaAtual, Double valorPrejuizoUnitario, Double valorTotalLucroPerdido, int totalQuantidadePerdida                                                                                                         |   
+|  out     |  RelatorioLucroDespesaDTO      | LocalDate data, Double valor, Double mediaMensal                                 |                                             
  
-|Classe           |    I/O   |     DTO'S    |                Atributos                                                                      |           
-|-----------------|----------|--------------|-----------------------------------------------------------------------------------------------|
-|RelatorioVenda   |  out     |  MensagemDTO | String mensagem                                                                               |
+ 
+|          |              |                         RelatorioVenda                                                        |
+|----------|--------------|-----------------------------------------------------------------------------------------------| 
+|    I/O   |     DTO'S    |                Atributos                                                                      |           
+|  out     |  MensagemDTO | String mensagem                                                                               |
+             
              
 #### TAREFAS EM ABERTO
 

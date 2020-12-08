@@ -65,7 +65,7 @@ public class GestaoController {
 
     @ApiOperation(value = "Relatorio para sugerir alteração em preço de venda")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
-    @GetMapping(path = "/novoPrecoVenda/{idProdutoEstoque}",
+    @GetMapping(path = "/{idProdutoEstoque}/novoPrecoVenda",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public RelatorioSugestaoNovoPrecoVendaDTO calcularPrecoVendaPorProduto(
             @PathVariable Long idProdutoEstoque) throws GenericException {
@@ -74,7 +74,7 @@ public class GestaoController {
 
     @ApiOperation(value = "Relatorio para mostrar prejuizo de um produto")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Relatorio realizado com sucesso!")})
-    @GetMapping(path = "/prejuizoUnitario/{idProduto}",
+    @GetMapping(path = "/{idProduto}/prejuizoUnitario",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public RelatorioPrejuizoUnitarioProdutoDTO calcularPrejuizoUnitarioPorProduto(
             @PathVariable Long idProduto) throws GenericException {

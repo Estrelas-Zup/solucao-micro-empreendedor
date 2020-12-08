@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.UsuarioDTO;
@@ -25,12 +26,17 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    PasswordEncoder encoder;
+    
 
     public MensagemDTO adicionarUsuario(UsuarioDTO adicionaUsuarioDTO) {
         
         Usuario usuario = new Usuario();
         BeanUtils.copyProperties(adicionaUsuarioDTO, usuario);
-
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
+        
         usuarioRepository.save(usuario);
 
         return new MensagemDTO(USUARIO_CADASTRADO_COM_SUCESSO);
@@ -54,7 +60,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public Usuario consultarUsuarioPorEmail(String email) {
-        return usuarioRepository.findByEmail(email);
+        return usuarioRepository.findByEmail(email).get();
     }
 
     public List<Usuario> listarUsuarios() {

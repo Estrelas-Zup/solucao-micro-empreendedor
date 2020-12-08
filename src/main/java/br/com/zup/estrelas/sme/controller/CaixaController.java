@@ -77,7 +77,7 @@ public class CaixaController {
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Fechamento do caixa feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum caixa fechado.")})
-    @PutMapping(path = "/fechamento/{idCaixa}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(path = "/{idCaixa}/fechamento", produces = {MediaType.APPLICATION_JSON_VALUE})
     public MensagemDTO fechamentoCaixa(@PathVariable Long idCaixa) throws GenericException {
         return caixaService.fechamentoCaixa(idCaixa);
     }
