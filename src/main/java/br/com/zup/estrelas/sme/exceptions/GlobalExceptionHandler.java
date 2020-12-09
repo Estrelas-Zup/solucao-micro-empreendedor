@@ -46,15 +46,17 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(RuntimeException.class)
-    public @ResponseBody ErrorDTO runtimeExceptionError(RuntimeException e) {
-        StringBuilder mensagemASerExibida = new StringBuilder();
-
-        mensagemASerExibida.append("Erro interno no servidor, contate o administrador do sistema.");
-
-        return new ErrorDTO(mensagemASerExibida.toString());
-    }
+    /*
+     * @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+     * 
+     * @ExceptionHandler(RuntimeException.class) public @ResponseBody ErrorDTO
+     * runtimeExceptionError(RuntimeException e) { StringBuilder mensagemASerExibida = new
+     * StringBuilder();
+     * 
+     * mensagemASerExibida.append("Erro interno no servidor, contate o administrador do sistema.");
+     * 
+     * return new ErrorDTO(mensagemASerExibida.toString()); }
+     */
 
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)

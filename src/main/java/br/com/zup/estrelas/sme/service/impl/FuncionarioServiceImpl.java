@@ -17,6 +17,8 @@ import br.com.zup.estrelas.sme.service.GestaoService;
 @Service
 public class FuncionarioServiceImpl implements FuncionarioService {
 
+    private static final String CPF_JÁ_CADASTRADO =
+            "Infelizmente não foi possivel realizar a operação, CPF já cadastrado.";
     private static final String INDISPONIBILIDADE_CAIXA =
             "Infelizmente não foi possivel realizar a operação, não temos disponibilidade em caixa.";
     private static final String NOVO_SALARIO_NÃO_PODE_SER_MENOR_QUE_O_SALARIO_ATUAL =
@@ -38,6 +40,10 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     GestaoService gestaoService;
 
     public MensagemDTO adicionarFuncionario(AdicionarFuncionarioDTO adicionarFuncionarioDTO) {
+        if (funcionarioRepository.existsByCpf(adicionarFuncionarioDTO.getCpf())) {
+            return new MensagemDTO(CPF_JÁ_CADASTRADO);
+        }
+
         Funcionario funcionario = new Funcionario();
         BeanUtils.copyProperties(adicionarFuncionarioDTO, funcionario);
 
