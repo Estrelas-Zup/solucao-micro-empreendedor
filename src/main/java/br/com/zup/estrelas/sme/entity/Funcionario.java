@@ -29,7 +29,7 @@ public class Funcionario {
     @Column(nullable = false)
     private String endereco;
 
-    @Column(nullable = false, unique = false, length = 11)
+    @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 
     @Column(nullable = false)

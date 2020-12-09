@@ -21,40 +21,41 @@ import br.com.zup.estrelas.sme.service.impl.AutenticacaoServiceImpl;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private AutenticacaoViaTokenFilter jwtRequestFilter;
+    @Autowired
+    private AutenticacaoViaTokenFilter jwtRequestFilter;
 
-	@Autowired
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-	@Autowired
-	private AutenticacaoServiceImpl autenticacaoService;
+    @Autowired
+    private AutenticacaoServiceImpl autenticacaoService;
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(autenticacaoService).passwordEncoder(passwordEncoder());
-	}
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(autenticacaoService).passwordEncoder(passwordEncoder());
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Override
-	@Bean
-	protected AuthenticationManager authenticationManager() throws Exception {
-		return super.authenticationManager();
-	}
+    @Override
+    @Bean
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
 
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable().authorizeRequests()
-				.antMatchers("/authenticate", "/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
-						"/configuration/**", "/swagger-ui.html", "/webjars/**")
-				.permitAll().anyRequest().authenticated().and().exceptionHandling()
-				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable().authorizeRequests()
+                .antMatchers("/authenticate", "/v2/api-docs", "/configuration/ui",
+                        "/swagger-resources/**", "/configuration/**", "/swagger-ui.html",
+                        "/webjars/**")
+                .permitAll().anyRequest().authenticated().and().exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-	}
+    }
 }

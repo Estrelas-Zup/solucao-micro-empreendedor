@@ -15,6 +15,9 @@ import br.com.zup.estrelas.sme.service.UsuarioService;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
+    private static final String EMAIL_JÁ_CADASTRADO =
+            "Infelizmente não foi possivel realizar a operação, email já cadastrado.";
+
     private static final String USUARIO_EXCLUIDO_COM_SUCESSO = "Usuario excluido com sucesso!";
 
     private static final String USUARIO_INEXISTENTE =
@@ -26,25 +29,28 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
-    
+
     @Autowired
     PasswordEncoder encoder;
-    
+
 
     public MensagemDTO adicionarUsuario(UsuarioDTO adicionaUsuarioDTO) {
-        
+        if (usuarioRepository.existsByEmail(adicionaUsuarioDTO.getEmail())) {
+            return new MensagemDTO(EMAIL_JÁ_CADASTRADO);
+        }
+
         Usuario usuario = new Usuario();
+
         BeanUtils.copyProperties(adicionaUsuarioDTO, usuario);
         usuario.setSenha(encoder.encode(usuario.getSenha()));
-        
+
         usuarioRepository.save(usuario);
 
         return new MensagemDTO(USUARIO_CADASTRADO_COM_SUCESSO);
     }
 
-    //TODO: Alterar UsuarioDTO para AlteraUsuarioDTO (senha, role)
     public MensagemDTO alterarUsuario(Long idUsuario, UsuarioDTO alterarUsuarioDTO) {
-
+        //TODO: Verificar se esta alterando usuario que est logado.
         Optional<Usuario> usuarioConsultado = usuarioRepository.findById(idUsuario);
 
         if (usuarioConsultado.isEmpty()) {
@@ -54,13 +60,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = usuarioConsultado.get();
 
         BeanUtils.copyProperties(alterarUsuarioDTO, usuario);
-
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
+        
         usuarioRepository.save(usuario);
         return new MensagemDTO(USUARIO_ALTERADO_COM_SUCESSO);
     }
 
     public Usuario consultarUsuarioPorEmail(String email) {
-        return usuarioRepository.findByEmail(email).get();
+        return usuarioRepository.findByEmail(email).orElse(null);
     }
 
     public List<Usuario> listarUsuarios() {
@@ -68,7 +75,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public MensagemDTO removerUsuario(Long idUsuario) {
-        
+
         if (usuarioRepository.existsById(idUsuario)) {
             usuarioRepository.deleteById(idUsuario);
             return new MensagemDTO(USUARIO_EXCLUIDO_COM_SUCESSO);

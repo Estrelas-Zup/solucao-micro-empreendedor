@@ -8,6 +8,7 @@ import br.com.zup.estrelas.sme.entity.Usuario;
 
 @Repository
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
-
 	Optional<Usuario> findByEmail(String email);
+	
+	boolean existsByEmail(String email);
 }

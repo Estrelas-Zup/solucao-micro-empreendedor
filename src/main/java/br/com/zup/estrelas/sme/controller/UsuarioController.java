@@ -33,8 +33,6 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
-    
-    
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Adicionar usuário")
@@ -51,8 +49,8 @@ public class UsuarioController {
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Alteração do usuário feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário alterado!")})
-    public MensagemDTO alterarUsuario(@PathVariable Long idUsuario, @Valid @RequestBody UsuarioDTO alterarUsuarioDTO)
-            throws GenericException {
+    public MensagemDTO alterarUsuario(@PathVariable Long idUsuario,
+            @Valid @RequestBody UsuarioDTO alterarUsuarioDTO) throws GenericException {
         return usuarioService.alterarUsuario(idUsuario, alterarUsuarioDTO);
     }
 
@@ -83,8 +81,7 @@ public class UsuarioController {
             value = {@ApiResponse(code = 200, message = "Remoção do usuário feita com sucesso!"),
                     @ApiResponse(code = 204, message = "Nenhum usuário removido!")})
     @Transactional
-    public MensagemDTO removerUsuario(@PathVariable Long idUsuario)
-            throws GenericException {
+    public MensagemDTO removerUsuario(@PathVariable Long idUsuario) throws GenericException {
         return usuarioService.removerUsuario(idUsuario);
     }
 
