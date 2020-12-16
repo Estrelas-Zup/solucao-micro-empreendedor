@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler({GenericException.class})
-    public @ResponseBody ResponseDTO handlerRegrasDeNegocio(Exception e) {
+    public @ResponseBody ResponseDTO handlerRegrasDeNegocio(GenericException e) {
         return new ResponseDTO(e.getMessage());
     }
 }
