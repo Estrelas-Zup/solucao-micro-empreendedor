@@ -69,7 +69,7 @@ public class CaixaController {
             @ApiResponse(code = 204, message = "Nenhum caixa nesta data encontrado.")})
     @GetMapping(path = "/datas", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Caixa consultarCaixaPorData(
-            @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate data) {
+            @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate data) throws GenericException {
         return caixaService.consultarCaixaPorData(data);
     }
 

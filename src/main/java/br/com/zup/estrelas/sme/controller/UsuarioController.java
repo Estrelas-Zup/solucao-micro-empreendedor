@@ -61,7 +61,7 @@ public class UsuarioController {
             @ApiResponse(code = 200,
                     message = "Consulta do usuário por email realizada com sucesso!"),
             @ApiResponse(code = 204, message = "Nenhum usuário encontrado pelo Email.")})
-    public Usuario consultarUsuarioPorEmail(@RequestParam("email") String email) {
+    public Usuario consultarUsuarioPorEmail(@RequestParam("email") String email) throws GenericException {
         return usuarioService.consultarUsuarioPorEmail(email);
     }
 

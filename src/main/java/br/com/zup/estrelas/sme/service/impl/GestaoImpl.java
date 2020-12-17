@@ -18,6 +18,7 @@ import br.com.zup.estrelas.sme.dto.RelatorioSugestaoNovoPrecoVendaDTO;
 import br.com.zup.estrelas.sme.entity.Caixa;
 import br.com.zup.estrelas.sme.entity.Gestao;
 import br.com.zup.estrelas.sme.entity.Produto;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 import br.com.zup.estrelas.sme.repository.CaixaRepository;
 import br.com.zup.estrelas.sme.repository.EstoqueRepository;
 import br.com.zup.estrelas.sme.repository.GestaoRepository;
@@ -28,6 +29,10 @@ import br.com.zup.estrelas.sme.service.GestaoService;
 @Service
 public class GestaoImpl implements GestaoService {
 
+    private static final String NÃO_HOUVE_ABERTURA_DE_CAIXA =
+            "Infelizmente não foi possivel realizar a operação, ainda não houve abertura de caixa.";
+    private static final String PRODUTO_INEXISTENTE =
+            "Infelizmente não foi possivel realizar a operação, produto inexistente";
     private static final String COMERCIO_ENCERRADO_COM_SUCESSO = "Comercio encerrado com sucesso!";
     private static final String NENHUM_COMERCIO_ABERTO =
             "Infelizmente não foi possivel realizar a operação, gestão não possui comercio aberto.";
@@ -101,11 +106,12 @@ public class GestaoImpl implements GestaoService {
                 + ", boa sorte em seu novo empredimento na Rua João Naves :D");
     }
 
-    public RelatorioSugestaoNovoPrecoVendaDTO calcularPrecoVendaPorProduto(Long idProduto) {
+    public RelatorioSugestaoNovoPrecoVendaDTO calcularPrecoVendaPorProduto(Long idProduto)
+            throws GenericException {
         Optional<Produto> produtoConsultado = produtoRepository.findById(idProduto);
 
         if (produtoConsultado.isEmpty()) {
-            return null;
+            throw new GenericException(PRODUTO_INEXISTENTE);
         }
 
         Produto produto = produtoConsultado.get();
@@ -123,11 +129,12 @@ public class GestaoImpl implements GestaoService {
         return relatorioSugestaoNovoPrecoVendaDTO;
     }
 
-    public RelatorioPrejuizoUnitarioProdutoDTO calcularPrejuizoUnitarioPorProduto(Long idProduto) {
+    public RelatorioPrejuizoUnitarioProdutoDTO calcularPrejuizoUnitarioPorProduto(Long idProduto)
+            throws GenericException {
         Optional<Produto> produtoConsultado = produtoRepository.findById(idProduto);
 
         if (produtoConsultado.isEmpty()) {
-            return null;
+            throw new GenericException(PRODUTO_INEXISTENTE);
         }
 
         Produto produto = produtoConsultado.get();
@@ -145,11 +152,11 @@ public class GestaoImpl implements GestaoService {
         return relatorioPrejuizoUnitarioProdutoDTO;
     }
 
-    public RelatorioLucroDespesaDTO calcularLucroDiario() {
+    public RelatorioLucroDespesaDTO calcularLucroDiario() throws GenericException {
         Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
 
         if (caixaConsultado.isEmpty()) {
-            return null;
+            throw new GenericException(NÃO_HOUVE_ABERTURA_DE_CAIXA);
         }
 
         Caixa caixa = caixaConsultado.get();
@@ -157,11 +164,11 @@ public class GestaoImpl implements GestaoService {
         return (montarObjetoRelatorioLucro(caixa));
     }
 
-    public RelatorioLucroDespesaDTO calcularDespesasDiaria() {
+    public RelatorioLucroDespesaDTO calcularDespesasDiaria() throws GenericException {
         Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
 
         if (caixaConsultado.isEmpty()) {
-            return null;
+            throw new GenericException(NÃO_HOUVE_ABERTURA_DE_CAIXA);
         }
 
         Caixa caixa = caixaConsultado.get();
@@ -263,7 +270,8 @@ public class GestaoImpl implements GestaoService {
         RelatorioLucroDespesaDTO relatorioLucroDespesaDTO = new RelatorioLucroDespesaDTO();
 
         relatorioLucroDespesaDTO.setData(LocalDate.now());
-        relatorioLucroDespesaDTO.setValor((caixa.getSaldoInicial() + caixa.getValorTotal()) - caixa.getValorTotalDespesa());
+        relatorioLucroDespesaDTO.setValor(
+                (caixa.getSaldoInicial() + caixa.getValorTotal()) - caixa.getValorTotalDespesa());
 
         relatorioLucroDespesaDTO.setMediaMensal(calcularMediaLucroMensal());
 
@@ -302,20 +310,20 @@ public class GestaoImpl implements GestaoService {
 
         return LocalDate.of(anoAtual, mesAtual, ultimoDiaDoMes);
     }
-    
+
     public boolean verificarDisponibilidadeCapitalSocial(Double valor) {
         List<Gestao> gestaoConsultada = (List<Gestao>) gestaoRepository.findAll();
-        
+
         Double capitalSocial = 0D;
-        
+
         for (Gestao gestao : gestaoConsultada) {
             capitalSocial += gestao.getCapitalSocial();
         }
-        
-        if(valor <= capitalSocial) {
+
+        if (valor <= capitalSocial) {
             return true;
         }
-        
+
         return false;
     }
 }

@@ -40,7 +40,7 @@ public class DespesaServiceImpl implements DespesaService {
     @Autowired
     GestaoRepository gestaoRepository;
 
-    //TODO: Refatorar verificação de Gestao e Caixa
+    // TODO: Refatorar verificação de Gestao e Caixa
     public MensagemDTO adicionarDespesa(DespesaDTO despesaDTO) {
         Optional<Gestao> gestaoConsultada = buscarGestao();
 
@@ -49,7 +49,7 @@ public class DespesaServiceImpl implements DespesaService {
         }
 
         Gestao gestao = gestaoConsultada.get();
-        
+
         Optional<Caixa> caixaConsultado = caixaRepository.findByData(LocalDate.now());
 
         if (caixaConsultado.isEmpty()) {

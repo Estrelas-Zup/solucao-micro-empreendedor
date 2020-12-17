@@ -18,17 +18,12 @@ import br.com.zup.estrelas.sme.service.EstoqueService;
 public class EstoqueServiceImpl implements EstoqueService {
 
     private static final String ESTOQUE_ALTERADO_COM_SUCESSO = "Estoque alterado com sucesso";
-
     private static final String ESTOQUE_JÁ_CONTABILIZADO_COMO_PERDA =
             "Estoque já foi contabilizado como perda";
-
     private static final String PERDA_ADICIONADA_COM_SUCESSO = "Perda adicionada com sucesso";
-
     private static final String ESTOQUE_INEXISTENTE =
             "Não foi possivel realizar a operação, estoque inexistente";
-
     private static final String ESTOQUE_CRIADO_COM_SUCESSO = "Estoque criado com sucesso!";
-
     private static final String PRODUTO_INEXISTENTE =
             "Infelizmente não foi possivel realizar a operação, produto inexistente.";
 
@@ -88,14 +83,15 @@ public class EstoqueServiceImpl implements EstoqueService {
         return (List<Estoque>) estoqueRepository.findAll();
     }
 
-    public MensagemDTO contablizarPerda(Long idProduto, Long idEstoque, ContabilizaPerdaDTO contabilizaPerdaDTO) {
-        
+    public MensagemDTO contablizarPerda(Long idProduto, Long idEstoque,
+            ContabilizaPerdaDTO contabilizaPerdaDTO) {
+
         Optional<Produto> produtoConsultado = produtoRepository.findById(idProduto);
 
         if (produtoConsultado.isEmpty()) {
             return new MensagemDTO(PRODUTO_INEXISTENTE);
         }
-        
+
         Optional<Estoque> estoqueConsultado = estoqueRepository.findById(idEstoque);
 
         if (estoqueConsultado.isEmpty()) {
@@ -108,6 +104,7 @@ public class EstoqueServiceImpl implements EstoqueService {
             return new MensagemDTO(ESTOQUE_JÁ_CONTABILIZADO_COMO_PERDA);
         }
 
+        // TODO: Desenvolver metodo para monstar estrutura
         estoque.setMotivoPerda(contabilizaPerdaDTO.getMotivoPerda());
         estoque.setPerda(true);
         estoque.setDisponibilidade(false);

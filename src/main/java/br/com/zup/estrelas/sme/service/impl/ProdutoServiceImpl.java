@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.ProdutoDTO;
 import br.com.zup.estrelas.sme.entity.Produto;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 import br.com.zup.estrelas.sme.repository.EstoqueRepository;
 import br.com.zup.estrelas.sme.repository.ProdutoRepository;
 import br.com.zup.estrelas.sme.service.ProdutoService;
@@ -42,8 +43,9 @@ public class ProdutoServiceImpl implements ProdutoService {
         return (List<Produto>) produtoRepository.findAll();
     }
 
-    public Produto consultarPorId(Long idProduto) {
-        return produtoRepository.findById(idProduto).orElse(null);
+    public Produto consultarPorId(Long idProduto) throws GenericException {
+        return produtoRepository.findById(idProduto)
+                .orElseThrow(() -> new GenericException(PRODUTO_INEXISTENTE));
     }
 
     public List<Produto> consultarPeloNome(String nome) {

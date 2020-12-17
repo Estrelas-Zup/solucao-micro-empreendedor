@@ -6,6 +6,7 @@ import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioLucroDespesaDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioPrejuizoUnitarioProdutoDTO;
 import br.com.zup.estrelas.sme.dto.RelatorioSugestaoNovoPrecoVendaDTO;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 
 public interface GestaoService {
     public MensagemDTO aberturaComercio(AberturaComercioDTO aberturaComercioDTO);
@@ -14,13 +15,13 @@ public interface GestaoService {
     
     public MensagemDTO encerrarComercio();
     
-    public RelatorioSugestaoNovoPrecoVendaDTO calcularPrecoVendaPorProduto(Long idProdutoEstoque); 
+    public RelatorioSugestaoNovoPrecoVendaDTO calcularPrecoVendaPorProduto(Long idProdutoEstoque) throws GenericException; 
     
-    public RelatorioPrejuizoUnitarioProdutoDTO calcularPrejuizoUnitarioPorProduto(Long idProduto);
+    public RelatorioPrejuizoUnitarioProdutoDTO calcularPrejuizoUnitarioPorProduto(Long idProduto) throws GenericException;
     
-    public RelatorioLucroDespesaDTO calcularLucroDiario();
+    public RelatorioLucroDespesaDTO calcularLucroDiario() throws GenericException;
     
-    public RelatorioLucroDespesaDTO calcularDespesasDiaria();
+    public RelatorioLucroDespesaDTO calcularDespesasDiaria() throws GenericException;
     
     public List<RelatorioLucroDespesaDTO> calcularLucroMensal();
     

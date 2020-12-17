@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.UsuarioDTO;
 import br.com.zup.estrelas.sme.entity.Usuario;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 import br.com.zup.estrelas.sme.repository.UsuarioRepository;
 import br.com.zup.estrelas.sme.service.UsuarioService;
 
@@ -17,14 +18,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private static final String EMAIL_JÁ_CADASTRADO =
             "Infelizmente não foi possivel realizar a operação, email já cadastrado.";
-
     private static final String USUARIO_EXCLUIDO_COM_SUCESSO = "Usuario excluido com sucesso!";
-
     private static final String USUARIO_INEXISTENTE =
             "Não foi possivel realizar a alteração, usuario inexistente.";
-
     private static final String USUARIO_ALTERADO_COM_SUCESSO = "Usuario alterado com sucesso!";
-
     private static final String USUARIO_CADASTRADO_COM_SUCESSO = "Usuario cadastrado com sucesso!";
 
     @Autowired
@@ -50,7 +47,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public MensagemDTO alterarUsuario(Long idUsuario, UsuarioDTO alterarUsuarioDTO) {
-        //TODO: Verificar se esta alterando usuario que est logado.
+        // TODO: Verificar se esta alterando usuario que est logado.
         Optional<Usuario> usuarioConsultado = usuarioRepository.findById(idUsuario);
 
         if (usuarioConsultado.isEmpty()) {
@@ -61,13 +58,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         BeanUtils.copyProperties(alterarUsuarioDTO, usuario);
         usuario.setSenha(encoder.encode(usuario.getSenha()));
-        
+
         usuarioRepository.save(usuario);
         return new MensagemDTO(USUARIO_ALTERADO_COM_SUCESSO);
     }
 
-    public Usuario consultarUsuarioPorEmail(String email) {
-        return usuarioRepository.findByEmail(email).orElse(null);
+    public Usuario consultarUsuarioPorEmail(String email) throws GenericException {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new GenericException(USUARIO_INEXISTENTE));
     }
 
     public List<Usuario> listarUsuarios() {
