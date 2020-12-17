@@ -55,7 +55,7 @@ public class UsuarioController {
     }
 
 
-    @RequestMapping(value = "/email", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/email", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consultar usuário por Email")
     @ApiResponses(value = {
             @ApiResponse(code = 200,

@@ -72,7 +72,7 @@ public class ProdutoController {
     }
 
     // TODO verificar possibilidade de passar nome no corpo ConsultarPeloNomeDTO
-    @RequestMapping(value = "/nome", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/nome", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Consulta produto pelo nome")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Procura do nome do produto feita com sucesso!"),
