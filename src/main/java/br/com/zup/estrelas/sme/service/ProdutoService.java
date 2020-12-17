@@ -4,6 +4,7 @@ import java.util.List;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.dto.ProdutoDTO;
 import br.com.zup.estrelas.sme.entity.Produto;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 
 public interface ProdutoService {
 
@@ -11,7 +12,7 @@ public interface ProdutoService {
 
     public List<Produto> listarProdutos();
 
-    public Produto consultarPorId(Long idProduto);
+    public Produto consultarPorId(Long idProduto) throws GenericException;
 
     public List<Produto> consultarPeloNome(String nome);
 

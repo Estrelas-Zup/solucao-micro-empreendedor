@@ -14,17 +14,17 @@ import br.com.zup.estrelas.sme.repository.UsuarioRepository;
 @Service
 public class AutenticacaoServiceImpl implements UserDetailsService {
 
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<Usuario> usuario = usuarioRepository.findByEmail(username);
-		if (usuario.isPresent()) {
-			return usuario.get();
-		}
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(username);
+        if (usuario.isPresent()) {
+            return usuario.get();
+        }
 
-		throw new UsernameNotFoundException("Dados inválidos!");
-	}
+        throw new UsernameNotFoundException("Dados inválidos!");
+    }
 
 }

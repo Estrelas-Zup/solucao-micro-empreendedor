@@ -5,6 +5,7 @@ import br.com.zup.estrelas.sme.dto.AdicionarFuncionarioDTO;
 import br.com.zup.estrelas.sme.dto.AlteraFuncionarioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Funcionario;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 
 public interface FuncionarioService {
 
@@ -12,7 +13,7 @@ public interface FuncionarioService {
 
     public MensagemDTO alterarFuncionario(Long idFUncionario, AlteraFuncionarioDTO alteraFuncionarioDTO);
 
-    public Funcionario consultarFuncionarioPorCpf(String cpf);
+    public Funcionario consultarFuncionarioPorCpf(String cpf) throws GenericException;
 
     public List<Funcionario> listarFuncionarios();
 

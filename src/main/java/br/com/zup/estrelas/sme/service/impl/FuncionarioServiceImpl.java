@@ -10,6 +10,7 @@ import br.com.zup.estrelas.sme.dto.AdicionarFuncionarioDTO;
 import br.com.zup.estrelas.sme.dto.AlteraFuncionarioDTO;
 import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Funcionario;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 import br.com.zup.estrelas.sme.repository.FuncionarioRepository;
 import br.com.zup.estrelas.sme.service.FuncionarioService;
 import br.com.zup.estrelas.sme.service.GestaoService;
@@ -85,8 +86,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     }
 
-    public Funcionario consultarFuncionarioPorCpf(String cpf) {
-        return funcionarioRepository.findByCpf(cpf).orElse(null);
+    public Funcionario consultarFuncionarioPorCpf(String cpf) throws GenericException {
+        return funcionarioRepository.findByCpf(cpf)
+                .orElseThrow(() -> new GenericException(FUNCIONARIO_INEXISTENTE));
     }
 
     public List<Funcionario> listarFuncionarios() {

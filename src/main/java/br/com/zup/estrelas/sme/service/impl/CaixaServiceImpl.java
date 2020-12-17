@@ -11,6 +11,7 @@ import br.com.zup.estrelas.sme.dto.MensagemDTO;
 import br.com.zup.estrelas.sme.entity.Caixa;
 import br.com.zup.estrelas.sme.entity.Estoque;
 import br.com.zup.estrelas.sme.entity.Gestao;
+import br.com.zup.estrelas.sme.exceptions.GenericException;
 import br.com.zup.estrelas.sme.repository.CaixaRepository;
 import br.com.zup.estrelas.sme.repository.EstoqueRepository;
 import br.com.zup.estrelas.sme.repository.GestaoRepository;
@@ -71,12 +72,13 @@ public class CaixaServiceImpl implements CaixaService {
         return (List<Caixa>) caixaRepository.findAll();
     }
 
-    public Caixa consultarPorId(Long idCaixa) {
-        return caixaRepository.findById(idCaixa).orElse(null);
+    public Caixa consultarPorId(Long idCaixa) throws GenericException {
+        return caixaRepository.findById(idCaixa).orElseThrow(() -> new GenericException(CAIXA_INEXISTENTE));
     }
 
-    public Caixa consultarCaixaPorData(LocalDate data) {
-        return caixaRepository.findByData(data).orElse(null);
+    public Caixa consultarCaixaPorData(LocalDate data) throws GenericException {
+        return caixaRepository.findByData(data)
+                .orElseThrow(() -> new GenericException(CAIXA_INEXISTENTE));
     }
 
     public MensagemDTO fechamentoCaixa(Long idCaixa) {
