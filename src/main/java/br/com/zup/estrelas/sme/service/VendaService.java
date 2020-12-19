@@ -16,5 +16,5 @@ public interface VendaService {
     
     public List<Venda> listarVendas();
     
-    public MensagemDTO removerVenda(Long idVenda);
+    public MensagemDTO removerVenda(Long idVenda) throws GenericException;
 }

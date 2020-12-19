@@ -194,7 +194,8 @@ public class VendaServiceImpl implements VendaService {
         return (List<Venda>) repository.findAll();
     }
 
-    public MensagemDTO removerVenda(Long idVenda) {
+    public MensagemDTO removerVenda(Long idVenda) throws GenericException {
+
         if (repository.existsById(idVenda)) {
 
             List<RelatorioVenda> relatorioVendas =
@@ -217,7 +218,9 @@ public class VendaServiceImpl implements VendaService {
 
             return new MensagemDTO(VENDA_REMOVIDA_COM_SUCESSO);
         }
-        return new MensagemDTO(VENDA_INEXISTENTE);
+
+        throw new GenericException(VENDA_INEXISTENTE);
+        // return new MensagemDTO(VENDA_INEXISTENTE);
     }
 
     private void adionaProdutosAoEstoque(List<RelatorioVenda> relatorioVendas) {
