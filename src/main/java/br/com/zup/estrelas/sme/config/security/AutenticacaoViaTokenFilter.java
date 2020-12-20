@@ -31,6 +31,8 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
+        System.out.println(request.getHeader("Content-Type"));
+        System.out.println(request.getHeader("Authorization"));
 
         String username = null;
         String jwtToken = null;
